@@ -78,3 +78,55 @@ https://jobs.ashbyhq.com/replit/1e1a651f-693d-4f9d-bfd9-280a50d28d13
 https://jobs.ashbyhq.com/jerry.ai/94bd4118-3d07-4182-863b-e37a367f8a27
 # Machinify — Product Director, GenAI
 https://jobs.ashbyhq.com/machinify/cfc5ee9c-85bd-467e-8c53-8f4138f605b3
+
+# ============================================================
+# Round 3 — named data/AI companies + director-level roles
+# ============================================================
+
+# ---- Greenhouse: Databricks (data + AI company — strong domain fit) ----
+# Databricks — Sr. Product Manager, Technical
+https://boards.greenhouse.io/databricks/jobs/8049577002
+# Databricks — Staff Technical Program Manager
+https://boards.greenhouse.io/databricks/jobs/8085290002
+# Databricks — Senior Staff Product Manager, New Product
+https://boards.greenhouse.io/databricks/jobs/6981705002
+# Databricks — Sr. Product Manager, DBSQL (data warehouse / SQL analytics)
+https://boards.greenhouse.io/databricks/jobs/7929994002
+
+# ---- Greenhouse: Anthropic ----
+# Anthropic — Technical Program Manager, Model Development
+https://boards.greenhouse.io/anthropic/jobs/4056094008
+
+# ---- Greenhouse: Director-level (stretch-up from Lead TPM, but enterprise scope fits) ----
+# G-P (Globalization Partners) — Director of Product Management, AI & Data
+https://boards.greenhouse.io/globalizationpartners/jobs/6079731003
+# Bloomreach — Director, Product Management, AI Search & Recommendations (your rec-systems work)
+https://boards.greenhouse.io/bloomreach/jobs/5602610
+# Momentive / SurveyMonkey — Director, Product, ML/AI
+https://boards.greenhouse.io/surveymonkey/jobs/3210801
+# Workato — Director of Product Analytics and Data Science
+https://boards.greenhouse.io/workato/jobs/5396313002
+# DeepMind — Director of Product Management, Generative AI Privacy & Security
+https://boards.greenhouse.io/deepmind/jobs/6530131
+# Plotly — Director, Product Management (data viz/analytics; remote US/Canada)
+https://boards.greenhouse.io/plotly/jobs/7656538002
+# MediaAlpha — Senior Director, Product Management, Analytics
+https://boards.greenhouse.io/mediaalpha/jobs/4926757002
+
+# ---- Lever ----
+# Xero — Technical Program Manager, AI-Driven Bank Reconciliation
+https://jobs.lever.co/xero/e49a3d29-cc40-4aeb-a6f6-e141ddf8c693
+# Netomi — Senior Program Manager (AI/ML, data science, engineering)
+https://jobs.lever.co/netomi/dce9acff-7fe3-4e58-b9dd-e6a53bef81e1
+# Jobgether — Technical Program Manager (enterprise AI/ML, remote, 10+ yrs)
+https://jobs.lever.co/jobgether/f4c38a91-756d-4864-a04b-f6bfe781c060
+# Zoox — Manager, Technical Program Manager, Artificial Intelligence
+https://jobs.lever.co/zoox/adf2fdd1-d5ca-46f6-aa97-16e4bedf2423
+
+# ---- Ashby ----
+# MeridianLink — Senior Product Manager, AI Platform
+https://jobs.ashbyhq.com/meridianlink/b85e5a73-a260-40e8-983b-87ea7342d153
+# Zapier — Sr. Product Manager, AI/ML
+https://jobs.ashbyhq.com/zapier/c0c2b50c-d184-4b31-bc76-ad3871407c8b
+# Moss — Senior Product Manager, AI Platform (agentic infra / internal enablement)
+https://jobs.ashbyhq.com/moss/fcca2a89-0836-4ec9-b1e5-d7d5f0c90319
