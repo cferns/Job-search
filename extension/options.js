@@ -10,14 +10,19 @@ const VET = ["I am not a protected veteran",
   "Decline to self-identify"];
 const DIS = ["Decline to self-identify", "No, I do not have a disability",
   "Yes, I have a disability or have had one in the past"];
+const EMP = ["Full-time", "Contract", "Part-time", "Internship", "Open to discuss"];
+const TRAVEL = ["Open to discuss", "Yes, up to 25%", "Yes, up to 50%", "Yes", "No"];
+const DECLINE3 = ["Decline to self-identify", "Yes", "No"];
 
 const BASE_FIELDS = [
   ["Contact", "firstName", "First name", "Clinton"],
+  ["Contact", "middleName", "Middle name", ""],
   ["Contact", "lastName", "Last name", "Fernandes"],
   ["Contact", "preferredName", "Preferred name", "Clinton"],
   ["Contact", "email", "Email", "clintonfernandes4u@gmail.com"],
   ["Contact", "phone", "Phone", "+1 801-946-9693"],
   ["Contact", "addressLine", "Street address", ""],
+  ["Contact", "addressLine2", "Address line 2", ""],
   ["Contact", "city", "City", "Saint Paul"],
   ["Contact", "state", "State / Province", "Minnesota"],
   ["Contact", "zip", "ZIP / Postal code", ""],
@@ -31,8 +36,13 @@ const BASE_FIELDS = [
   ["Professional summary", "currentCompany", "Current company", "Target"],
   ["Professional summary", "currentTitle", "Current title", "Lead Technical Program Manager"],
   ["Professional summary", "yearsExperience", "Years of experience", "8"],
+  ["Professional summary", "employmentType", "Desired employment type", "Full-time", "select", EMP],
   ["Professional summary", "desiredSalary", "Desired compensation", "175,000-200,000 USD (flexible)"],
+  ["Professional summary", "currentSalary", "Current compensation (optional)", ""],
   ["Professional summary", "earliestStart", "Earliest start / notice period", "Two weeks' notice"],
+  ["Professional summary", "willingToTravel", "Willing to travel?", "Open to discuss", "select", TRAVEL],
+  ["Professional summary", "skills", "Key skills", "Technical & Product Program Management, MLOps, GenAI, ML recommendation/ranking, enterprise data modernization, BI & self-service analytics, data governance, GCP/Vertex AI, Looker, Power BI, Python, stakeholder alignment, roadmapping, executive governance", "area"],
+  ["Professional summary", "certifications", "Certifications / licenses", "", "area"],
 
   ["Work authorization", "workAuthorized", "Authorized to work in the US?", "Yes", "select", YN],
   ["Work authorization", "needsSponsorship", "Require visa sponsorship (now or future)?", "Yes", "select", YN],
@@ -42,6 +52,11 @@ const BASE_FIELDS = [
   ["Work authorization", "remotePreference", "Remote / onsite preference", "Remote"],
   ["Work authorization", "workLocationState", "State you'll work from", "Minnesota"],
   ["Work authorization", "citizenship", "Citizenship / country (optional)", ""],
+  ["Work authorization", "securityClearance", "Security clearance", "None"],
+  ["Work authorization", "previouslyApplied", "Previously applied to this company?", "No", "select", YN],
+  ["Work authorization", "relatedToEmployee", "Related to a current employee?", "No", "select", YN],
+  ["Work authorization", "driversLicense", "Valid driver's license?", "Yes", "select", YN],
+  ["Work authorization", "felony", "Convicted of a felony? (sensitive — answer yourself)", ""],
 ];
 
 // Full work history (each becomes its own "Experience N" section of fields).
@@ -63,16 +78,24 @@ const EXPERIENCE = [
 ];
 
 const EDUCATION = [
-  { school: "University of Utah", degree: "M.S.", field: "Robotics", start: "2015", end: "2017" },
-  { school: "Goa University", degree: "B.E.", field: "Mechanical Engineering", start: "2010", end: "2014" },
+  { school: "University of Utah", degree: "M.S.", field: "Robotics", start: "2015", end: "2017", gpa: "" },
+  { school: "Goa University", degree: "B.E.", field: "Mechanical Engineering", start: "2010", end: "2014", gpa: "" },
+];
+
+// Professional references (blank — fill with people who agreed to be a reference).
+const REFERENCES = [
+  { name: "", relationship: "", company: "", email: "", phone: "" },
+  { name: "", relationship: "", company: "", email: "", phone: "" },
 ];
 
 const EEO_FIELDS = [
   ["Demographics (EEO — optional)", "gender", "Gender", "Decline to self-identify", "select", GENDER],
   ["Demographics (EEO — optional)", "race", "Race / Ethnicity", "Decline to self-identify", "select", RACE],
-  ["Demographics (EEO — optional)", "hispanicLatino", "Hispanic / Latino?", "Decline to self-identify", "select", ["Decline to self-identify", "Yes", "No"]],
+  ["Demographics (EEO — optional)", "hispanicLatino", "Hispanic / Latino?", "Decline to self-identify", "select", DECLINE3],
   ["Demographics (EEO — optional)", "veteranStatus", "Veteran status", "I am not a protected veteran", "select", VET],
   ["Demographics (EEO — optional)", "disability", "Disability status", "Decline to self-identify", "select", DIS],
+  ["Demographics (EEO — optional)", "sexualOrientation", "Sexual orientation (optional DEI)", "Decline to self-identify"],
+  ["Demographics (EEO — optional)", "transgender", "Transgender? (optional DEI)", "Decline to self-identify", "select", DECLINE3],
   ["Demographics (EEO — optional)", "pronouns", "Pronouns", ""],
 
   ["Other common questions", "howHeard", "How did you hear about us?", "LinkedIn"],
@@ -102,6 +125,15 @@ EDUCATION.forEach((e, i) => {
   FIELDS.push([s, `edu${i + 1}_field`, "Field of study", e.field]);
   FIELDS.push([s, `edu${i + 1}_start`, "Start year", e.start]);
   FIELDS.push([s, `edu${i + 1}_end`, "End year", e.end]);
+  FIELDS.push([s, `edu${i + 1}_gpa`, "GPA (optional)", e.gpa]);
+});
+REFERENCES.forEach((r, i) => {
+  const s = `Reference ${i + 1}`;
+  FIELDS.push([s, `ref${i + 1}_name`, "Name", r.name]);
+  FIELDS.push([s, `ref${i + 1}_relationship`, "Relationship", r.relationship]);
+  FIELDS.push([s, `ref${i + 1}_company`, "Company", r.company]);
+  FIELDS.push([s, `ref${i + 1}_email`, "Email", r.email]);
+  FIELDS.push([s, `ref${i + 1}_phone`, "Phone", r.phone]);
 });
 FIELDS.push(...EEO_FIELDS);
 
