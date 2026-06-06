@@ -25,7 +25,15 @@ scrapes the description, tailors your resume + cover letter with the Claude API,
 form, and **pauses for you to review and submit** — logging each application to
 `applications.csv`. See [`agent/README.md`](agent/README.md) for setup and the honest
 per-platform scope (Greenhouse/Lever/Ashby automate well; LinkedIn/Indeed are scrape-and-
-draft only to avoid account bans).
+draft only to avoid account bans). H1B targeting: see [`agent/h1b-sponsorship.md`](agent/h1b-sponsorship.md).
+
+## Job search kit (conversion assets)
+
+The agent gets you volume; [`job-search-kit/`](job-search-kit/README.md) gets you conversion —
+STAR interview stories from your real wins, referral/recruiter outreach templates (with H1B
+framing), a keyword-optimized LinkedIn rewrite, and a one-page positioning sheet with elevator
+pitches. **Cold applications convert low; referrals + recruiter outreach + interview readiness
+are what land the offer fast.**
 
 ## 1. Track applications
 
