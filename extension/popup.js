@@ -259,6 +259,22 @@ function scrapeAnswers() {
   return out;
 }
 
+// ---- Job searches: open prebuilt search pages from the "what jobs" preference ----
+document.getElementById("search").onclick = async () => {
+  const cfg = await chrome.storage.local.get(["jobQuery"]);
+  const q = ((cfg.jobQuery || "Technical Program Manager OR Product Manager data AI ML platform")
+    .split("\n")[0]).slice(0, 140);
+  const e = encodeURIComponent(q);
+  const urls = [
+    "https://www.linkedin.com/jobs/search/?keywords=" + e + "&f_WT=2",            // remote
+    "https://www.indeed.com/jobs?q=" + e + "&l=Remote",
+    "https://www.google.com/search?q=" + encodeURIComponent(q + " (site:boards.greenhouse.io OR site:jobs.lever.co OR site:jobs.ashbyhq.com)"),
+    "https://www.google.com/search?q=" + encodeURIComponent(q + " remote H1B visa sponsorship jobs"),
+  ];
+  urls.forEach((u) => chrome.tabs.create({ url: u }));
+  setStatus("Opened job searches for: " + q + "\nBrowse results, open a posting's apply form, then Tailor & Fill.");
+};
+
 const saveBtn = document.getElementById("saveAns");
 saveBtn.onclick = async () => {
   saveBtn.disabled = true;

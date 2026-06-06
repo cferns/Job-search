@@ -185,8 +185,13 @@ function render(saved) {
   document.getElementById("fields").innerHTML = html.replace(/^<\/div>/, "") + "</div>";
 }
 
+const DEFAULT_JOBQUERY =
+  "Lead/Principal Technical Program Manager OR Senior/Group Product Manager — Data, AI & ML platforms, MLOps, GenAI\n" +
+  "Remote (US-based). Open to roles offering H1B visa sponsorship. 8+ years; enterprise platform + adoption focus.";
+
 async function load() {
-  const cfg = await chrome.storage.local.get(["apiKey", "model", "resume", "profileData", "resumeFile"]);
+  const cfg = await chrome.storage.local.get(["apiKey", "model", "resume", "profileData", "resumeFile", "jobQuery"]);
+  document.getElementById("jobQuery").value = cfg.jobQuery || DEFAULT_JOBQUERY;
   document.getElementById("apiKey").value = cfg.apiKey || "";
   document.getElementById("model").value = cfg.model || "claude-sonnet-4-6";
   document.getElementById("resume").value = cfg.resume || DEFAULT_RESUME;
@@ -211,7 +216,8 @@ document.getElementById("save").onclick = async () => {
   const data = {};
   document.querySelectorAll("[data-k]").forEach((el) => { data[el.dataset.k] = el.value.trim(); });
   // human-readable, section-grouped block for the model prompt
-  let profile = ""; let sec = "";
+  const jobQuery = document.getElementById("jobQuery").value.trim();
+  let profile = jobQuery ? `[Job preferences]\n${jobQuery}\n` : ""; let sec = "";
   for (const [section, key, label] of FIELDS) {
     const v = data[key];
     if (!v || /\(add your URL\)/i.test(v)) continue;
@@ -222,6 +228,7 @@ document.getElementById("save").onclick = async () => {
     apiKey: document.getElementById("apiKey").value.trim(),
     model: document.getElementById("model").value,
     resume: document.getElementById("resume").value,
+    jobQuery,
     profileData: data,
     profile: profile.trim(),
   });
