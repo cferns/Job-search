@@ -1,5 +1,11 @@
 // Job Search session dashboard. SEARCHES, isJobUrl, getCfg, runFillOnTab come from core.js.
 function esc(s) { return (s || "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+function fitCell(j) {
+  if (j.confidence === undefined || j.confidence === null || j.confidence === "") return "<td>—</td>";
+  const c = Number(j.confidence);
+  const col = c >= 70 ? "#2a8a4a" : (c >= 45 ? "#c98a00" : "#c33");
+  return `<td title="${esc(j.fit_reason || "")}"><b style="color:${col}">${c}%</b></td>`;
+}
 async function getJobs() { return (await chrome.storage.local.get("jobs")).jobs || []; }
 async function setJobs(jobs) { await chrome.storage.local.set({ jobs }); }
 
@@ -19,6 +25,7 @@ async function render() {
       `<td>${esc(company)}</td>` +
       `<td><a href="${esc(j.url)}" target="_blank">${esc(j.title || j.url)}</a><div style="color:#aaa;font-size:11px">${esc(j.date || "")}</div></td>` +
       `<td class="desc">${esc(j.desc || "")}</td>` +
+      fitCell(j) +
       `<td><select data-id="${j.id}" class="st">` + ["Pending", "Applied", "Skipped"].map((s) => `<option ${j.status === s ? "selected" : ""}>${s}</option>`).join("") + `</select></td>` +
       `<td><button class="apply" data-id="${j.id}" style="background:#4f8cff;color:#fff;border:none;border-radius:6px;padding:6px 10px;cursor:pointer;font-weight:600;">Auto-apply ▶</button> <span class="msg" data-msg="${j.id}" style="font-size:11px;color:#666;"></span></td>` +
       `<td><button class="del" data-id="${j.id}" title="Remove">✕</button></td>`;
@@ -65,7 +72,7 @@ async function findJobs() {
     let added = 0;
     for (const f of found) {
       if (f && f.url && !have.has(f.url)) {
-        jobs.push({ id: Date.now().toString(36) + added, url: f.url, title: f.title || f.url, company: f.company || "", desc: f.description || "", status: "Pending", date: new Date().toISOString().slice(0, 10) });
+        jobs.push({ id: Date.now().toString(36) + added, url: f.url, title: f.title || f.url, company: f.company || "", desc: f.description || "", confidence: f.confidence, fit_reason: f.fit_reason || "", status: "Pending", date: new Date().toISOString().slice(0, 10) });
         have.add(f.url); added++;
       }
     }

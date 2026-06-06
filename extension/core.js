@@ -193,18 +193,24 @@ async function searchJobs(cfg, query, count) {
   const sys = "You are a job-search assistant. Use web_search to find CURRENT, OPEN job postings " +
     "matching the candidate's criteria. Strongly prefer direct application pages on Greenhouse " +
     "(boards.greenhouse.io / job-boards.greenhouse.io), Lever (jobs.lever.co), Ashby " +
-    "(jobs.ashbyhq.com), or the employer's own careers site. Return ONLY a JSON array (no prose, " +
-    "no markdown) of up to " + count + " items: " +
-    '[{"company":"...","title":"...","url":"...","description":"one short sentence"}]. ' +
+    "(jobs.ashbyhq.com), or the employer's own careers site. For EACH posting, also judge the " +
+    "candidate's realistic chances using the profile/resume provided: set \"confidence\" to an " +
+    "integer 0-100 = the calibrated likelihood THIS candidate lands an interview given their " +
+    "background AND the current competitive market (be realistic, not optimistic — most strong-fit " +
+    "roles are 50-75, reach roles lower). Add a one-sentence \"fit_reason\". " +
+    "Return ONLY a JSON array (no prose, no markdown) of up to " + count + " items: " +
+    '[{"company":"...","title":"...","url":"...","description":"one short sentence","confidence":NN,"fit_reason":"..."}]. ' +
     "The url MUST be a direct link to a specific posting, not a search page.";
+  const user = "# Candidate profile\n" + cfg.profile + "\n\n# Master resume\n" + cfg.resume +
+    "\n\n# Search criteria\n" + query + "\n\nFind matching current postings and score each.";
   const resp = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: { "content-type": "application/json", "x-api-key": cfg.apiKey, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
     body: JSON.stringify({
-      model: cfg.model, max_tokens: 4000,
+      model: cfg.model, max_tokens: 6000,
       tools: [{ type: "web_search_20250305", name: "web_search", max_uses: 6 }],
       system: sys,
-      messages: [{ role: "user", content: "Find current job postings matching:\n" + query }],
+      messages: [{ role: "user", content: user }],
     }),
   });
   if (!resp.ok) throw new Error("API " + resp.status + ": " + (await resp.text()).slice(0, 200));
