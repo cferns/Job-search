@@ -21,3 +21,7 @@ browser_profile_dir: "agent/.browser-profile"
 
 # Run the browser visibly (required for review mode so you can see/submit).
 headless: false
+
+# After each application (review mode), ask a couple of quick feedback questions and
+# remember your answers/corrections so the agent fills more next time. Set false to skip.
+collect_feedback: true

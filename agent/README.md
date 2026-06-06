@@ -50,7 +50,30 @@ python -m jobagent.cli draft "https://jobs.lever.co/acme/abc"
 
 # Rank — triage a list: scrape + score fit, detect remote + sponsorship, write shortlist.md
 python -m jobagent.cli rank --file urls.txt
+
+# Stats — jobs pipeline (from applications.csv) + what the agent has learned
+python -m jobagent.cli stats
 ```
+
+## The learning loop (the agent gets better as you use it)
+
+The agent keeps a memory in `agent/data/learnings.json` (gitignored — it holds your
+answers) and uses it to improve every run:
+
+1. **Answer bank.** Seeded from your `profile.yaml` (work authorization, sponsorship, years,
+   EEO, links…), so custom screener questions fill from the very first run. After each
+   application it asks two quick questions — *rate the tailoring 1–5* and *which fields did
+   you fill by hand?* (`label=value; label2=value2`) — and **remembers those answers**, so the
+   next posting that asks the same question is filled automatically. (Disable with
+   `collect_feedback: false`.)
+2. **Per-platform reliability.** It records which fields filled vs. were skipped per ATS, and
+   warns you up front about fields that usually need manual entry on that platform.
+3. **Sharper tailoring.** Recurring JD themes your resume under-covered across past postings
+   are fed back into the tailoring prompt (surfacing genuinely relevant experience — never
+   fabricating).
+4. **Jobs-applied view.** `stats` shows your pipeline (Saved/Applied/Interview/Offer…),
+   response rate, average tailoring rating, fill reliability per platform, and the recurring
+   gaps it's learned.
 
 ### Triage first with `rank` (recommended for long lists)
 

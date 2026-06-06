@@ -11,6 +11,12 @@ import yaml
 # Repo root is two levels up from this file: <repo>/agent/jobagent/config.py
 REPO_ROOT = Path(__file__).resolve().parents[2]
 AGENT_DIR = REPO_ROOT / "agent"
+DATA_DIR = AGENT_DIR / "data"
+
+
+def store_path() -> Path:
+    """Path to the learning store (gitignored — holds your answers)."""
+    return DATA_DIR / "learnings.json"
 
 
 def _load_yaml(path: Path) -> dict[str, Any]:
@@ -37,6 +43,7 @@ class Settings:
     tracker_csv: str = "applications.csv"
     browser_profile_dir: str = "agent/.browser-profile"
     headless: bool = False
+    collect_feedback: bool = True
     raw: dict[str, Any] = field(default_factory=dict)
 
 
@@ -49,6 +56,7 @@ def load_settings() -> Settings:
         tracker_csv=data.get("tracker_csv", "applications.csv"),
         browser_profile_dir=data.get("browser_profile_dir", "agent/.browser-profile"),
         headless=bool(data.get("headless", False)),
+        collect_feedback=bool(data.get("collect_feedback", True)),
         raw=data,
     )
 

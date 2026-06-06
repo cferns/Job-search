@@ -12,6 +12,9 @@ shortlist.md
 # Playwright persistent browser profile (logged-in sessions)
 agent/.browser-profile/
 
+# Agent learning store (contains your saved answers)
+agent/data/
+
 # Local secrets/config (also covered by agent/.gitignore)
 agent/config/profile.yaml
 agent/config/settings.yaml

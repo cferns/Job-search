@@ -9,9 +9,37 @@ from .adapters import get_adapter
 from .browser import browser_session, render_markdown_to_pdf
 from .detect import detect_ats
 from .models import JobPosting, JobScore
+from .store import Store, seed_answers
 from .tailor import score_posting, tailor_application
 from .textutil import markdown_to_text, slugify, split_role_company
 from .tracker import log_application
+
+
+def _compose_context(profile: dict[str, Any], store: Store) -> str:
+    """Profile extra_context + recurring-gap learnings, fed into tailoring."""
+    parts = [profile.get("extra_context", "").strip(), store.learnings_context()]
+    return "\n".join(p for p in parts if p).strip()
+
+
+def _collect_feedback(store: Store, ats: str) -> dict[str, Any]:
+    """Ask a couple of quick questions and remember the answers/corrections."""
+    fb: dict[str, Any] = {}
+    try:
+        rating = input("  Rate the tailoring 1-5 (Enter to skip): ").strip()
+        if rating.isdigit() and 1 <= int(rating) <= 5:
+            fb["rating"] = int(rating)
+        fixes = input("  Fields you filled by hand? 'label=value; label2=value2' (Enter=none): ").strip()
+        for pair in fixes.split(";"):
+            if "=" in pair:
+                label, value = pair.split("=", 1)
+                store.learn_answer(label.strip(), value.strip())
+                fb.setdefault("corrections", []).append(label.strip())
+        notes = input("  Notes for next time (Enter to skip): ").strip()
+        if notes:
+            fb["notes"] = notes
+    except EOFError:
+        pass
+    return fb
 
 
 def _slug(text: str) -> str:
@@ -82,6 +110,8 @@ def process_url(url: str, settings: config.Settings, profile: dict[str, Any],
                 master_resume: str) -> None:
     mode = settings.submit_mode
     posting = JobPosting(url=url)
+    store = Store.load(config.store_path())
+    context_text = _compose_context(profile, store)
 
     # ---- draft mode: no browser, just generate materials ----
     if mode == "draft":
@@ -91,13 +121,18 @@ def process_url(url: str, settings: config.Settings, profile: dict[str, Any],
         # In draft mode we can't scrape; ask the model to infer from the URL slug.
         posting.role = _slug(url).replace("-", " ")
         app = tailor_application(model=settings.model, master_resume=master_resume,
-                                 posting=posting, extra_context=profile.get("extra_context", ""))
+                                 posting=posting, extra_context=context_text)
         posting.company, posting.role = app.company, app.role
         rm, cm, pdf = _write_materials(settings, app, posting)
         _print_summary(posting, app)
         print(f"  Resume:  {rm}\n  Cover:   {cm}\n  PDF:     {pdf}")
         log_application(config.resolve(settings.tracker_csv), posting, "Saved",
                         notes=f"Draft generated. Fit {app.fit_score}/100.")
+        store.record_run({"url": url, "ats": posting.ats, "company": posting.company,
+                          "role": posting.role, "status": "Saved", "mode": "draft",
+                          "fit_score": app.fit_score,
+                          "missing_keywords": app.missing_keywords})
+        store.save()
         return
 
     # ---- review / auto mode: drive the browser ----
@@ -121,9 +156,14 @@ def process_url(url: str, settings: config.Settings, profile: dict[str, Any],
         print(f"  Detected platform: {posting.ats}   "
               f"({len(posting.description)} chars of JD scraped)")
 
+        gaps = store.known_gaps(posting.ats)
+        if gaps:
+            print(f"  Heads-up — fields often needing manual entry on {posting.ats}: "
+                  f"{', '.join(gaps)}")
+
         print("  Tailoring resume + cover letter with Claude...")
         app = tailor_application(model=settings.model, master_resume=master_resume,
-                                 posting=posting, extra_context=profile.get("extra_context", ""))
+                                 posting=posting, extra_context=context_text)
         if not posting.company:
             posting.company = app.company
         if not posting.role:
@@ -142,6 +182,9 @@ def process_url(url: str, settings: config.Settings, profile: dict[str, Any],
 
         print("  Filling the application form...")
         report = adapter.fill(page, profile, resume_pdf, _plain(app.cover_letter_markdown), posting)
+        # Learned answers fill custom/screener questions the core adapter skips.
+        answers = store.merged_answers(seed_answers(profile))
+        adapter.fill_learned(page, answers, report)
         if report.filled:
             print(f"    Filled: {', '.join(report.filled)}")
         if report.skipped:
@@ -149,10 +192,25 @@ def process_url(url: str, settings: config.Settings, profile: dict[str, Any],
         for note in report.notes:
             print(f"    Note: {note}")
 
+        # Remember what filled vs. skipped per ATS so future runs warn about gaps.
+        for f in report.filled:
+            store.record_field(posting.ats, f.replace("[learned] ", ""), True)
+        for s in report.skipped:
+            store.record_field(posting.ats, s, False)
+
+        def _finish(status: str, note: str, feedback: dict[str, Any] | None = None) -> None:
+            log_application(config.resolve(settings.tracker_csv), posting, status, notes=note)
+            store.record_run({"url": url, "ats": posting.ats, "company": posting.company,
+                              "role": posting.role, "status": status, "mode": mode,
+                              "fit_score": app.fit_score,
+                              "missing_keywords": app.missing_keywords,
+                              "filled": report.filled, "skipped": report.skipped,
+                              "feedback": feedback or {}})
+            store.save()
+
         if mode == "auto":
             _try_submit(page)
-            log_application(config.resolve(settings.tracker_csv), posting, "Applied",
-                            notes=f"Auto-submitted. Fit {app.fit_score}/100.")
+            _finish("Applied", f"Auto-submitted. Fit {app.fit_score}/100.")
             print("  Submitted (auto mode).")
             return
 
@@ -162,13 +220,58 @@ def process_url(url: str, settings: config.Settings, profile: dict[str, Any],
         if choice == "q":
             raise KeyboardInterrupt
         if choice == "s":
-            log_application(config.resolve(settings.tracker_csv), posting, "Saved",
-                            notes=f"Prepared, not submitted. Fit {app.fit_score}/100.")
+            fb = _collect_feedback(store, posting.ats) if settings.collect_feedback else {}
+            _finish("Saved", f"Prepared, not submitted. Fit {app.fit_score}/100.", fb)
             print("  Logged as Saved (not submitted).")
             return
-        log_application(config.resolve(settings.tracker_csv), posting, "Applied",
-                        notes=f"Reviewed and submitted by user. Fit {app.fit_score}/100.")
-        print("  Logged as Applied.")
+        fb = _collect_feedback(store, posting.ats) if settings.collect_feedback else {}
+        _finish("Applied", f"Reviewed and submitted by user. Fit {app.fit_score}/100.", fb)
+        print("  Logged as Applied. Learnings saved.")
+
+
+def show_stats(settings: config.Settings) -> None:
+    """Print the jobs-applied funnel (from applications.csv) + what the agent has learned."""
+    import csv as _csv
+    from collections import Counter
+
+    csv_path = config.resolve(settings.tracker_csv)
+    status_counts: Counter[str] = Counter()
+    if csv_path.exists():
+        with csv_path.open(newline="") as f:
+            for row in _csv.DictReader(f):
+                status_counts[(row.get("status") or "?").strip() or "?"] += 1
+
+    print("\n=== Jobs pipeline (applications.csv) ===")
+    if status_counts:
+        for status in ["Saved", "Applied", "Screening", "Interview", "Offer",
+                       "Rejected", "Withdrawn"]:
+            if status_counts.get(status):
+                print(f"  {status:<11} {status_counts[status]}")
+        for status, n in status_counts.items():
+            if status not in {"Saved", "Applied", "Screening", "Interview", "Offer",
+                              "Rejected", "Withdrawn"}:
+                print(f"  {status:<11} {n}")
+        applied = sum(v for k, v in status_counts.items() if k != "Saved")
+        responses = sum(status_counts.get(s, 0) for s in ("Screening", "Interview", "Offer"))
+        if applied:
+            print(f"  response rate: {round(100 * responses / applied)}% ({responses}/{applied})")
+    else:
+        print("  (no applications logged yet)")
+
+    store = Store.load(config.store_path())
+    s = store.summary()
+    print("\n=== Agent learnings ===")
+    print(f"  runs recorded:   {s['runs']}  (applied: {s['applied']})")
+    print(f"  learned answers: {s['learned_answers']}")
+    if s["avg_rating"] is not None:
+        print(f"  avg tailoring rating: {s['avg_rating']}/5")
+    if s["per_ats"]:
+        print("  fill reliability by platform:")
+        for ats, st in sorted(s["per_ats"].items()):
+            print(f"    {ats:<11} {st['fill_rate']}%  ({st['filled']} filled / {st['skipped']} skipped)")
+    ctx = store.learnings_context()
+    if ctx:
+        print(f"\n  Recurring gaps fed into tailoring:\n    {ctx}")
 
 
 def rank(urls: list[str], settings: config.Settings, profile: dict[str, Any],

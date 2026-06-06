@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 from . import config
-from .runner import process_url, rank
+from .runner import process_url, rank, show_stats
 from .tracker import applied_urls
 
 
@@ -46,7 +46,14 @@ def main(argv: list[str] | None = None) -> int:
             p.add_argument("--force", action="store_true",
                            help="Process even URLs already logged as Applied")
 
+    sub.add_parser("stats", help="Show the jobs pipeline + what the agent has learned")
+
     args = parser.parse_args(argv)
+
+    # stats is read-only — no API key, profile, or resume needed.
+    if args.command == "stats":
+        show_stats(config.load_settings())
+        return 0
 
     config.check_api_key()
     settings = config.load_settings()

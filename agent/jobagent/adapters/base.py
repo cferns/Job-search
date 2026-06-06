@@ -12,6 +12,7 @@ from typing import Any
 from playwright.sync_api import Page
 
 from ..models import FillReport, JobPosting
+from ..store import match_answer
 
 
 def safe_fill(page: Page, selectors: list[str], value: str, report: FillReport, label: str) -> bool:
@@ -51,6 +52,59 @@ class BaseAdapter:
     """Generic adapter. Tries common field names; relies on the human for the rest."""
 
     name = "generic"
+
+    def _label_for(self, page: Page, el) -> str:
+        """Best-effort human label for a field, for matching against the answer bank."""
+        for attr in ("aria-label", "placeholder", "name", "id"):
+            try:
+                v = el.get_attribute(attr)
+                if v and len(v) > 1:
+                    return v.replace("_", " ").replace("-", " ")
+            except Exception:
+                continue
+        try:  # associated <label for="id">
+            fid = el.get_attribute("id")
+            if fid:
+                lab = page.locator(f"label[for='{fid}']").first
+                if lab.count():
+                    return lab.inner_text(timeout=1000)
+        except Exception:
+            pass
+        return ""
+
+    def fill_learned(self, page: Page, answers: dict[str, str], report: FillReport) -> None:
+        """Fill custom/screener questions from the learned answer bank (best-effort)."""
+        if not answers:
+            return
+        # Text-like inputs and textareas that are currently empty.
+        loc = page.locator("input[type='text'], input:not([type]), textarea")
+        for i in range(min(loc.count(), 60)):
+            el = loc.nth(i)
+            try:
+                if not el.is_visible() or (el.input_value() or "").strip():
+                    continue
+                label = self._label_for(page, el)
+                ans = match_answer(answers, label)
+                if ans:
+                    el.fill(ans, timeout=2000)
+                    report.filled.append(f"[learned] {label[:40].strip()}")
+            except Exception:
+                continue
+        # Single-select dropdowns: pick the option matching the learned answer.
+        sel = page.locator("select")
+        for i in range(min(sel.count(), 30)):
+            el = sel.nth(i)
+            try:
+                if not el.is_visible():
+                    continue
+                label = self._label_for(page, el)
+                ans = match_answer(answers, label)
+                if not ans:
+                    continue
+                el.select_option(label=ans, timeout=1500)
+                report.filled.append(f"[learned] {label[:40].strip()}")
+            except Exception:
+                continue
 
     def open_application_form(self, page: Page) -> None:
         """Navigate from the JD to the actual application form, if needed.
