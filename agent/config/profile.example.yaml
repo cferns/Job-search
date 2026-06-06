@@ -26,8 +26,12 @@ years_experience: "8"
 desired_salary: ""              # leave blank to skip, or e.g. "180000"
 
 # Work authorization (common screener questions)
-work_authorized: true           # authorized to work in the country
-needs_sponsorship: false        # requires visa sponsorship now or in future
+# Set these truthfully — they drive how the agent answers form questions like
+# "Will you now or in the future require sponsorship?".
+work_authorized: true           # currently authorized to work (e.g. on a current visa)
+needs_sponsorship: true         # requires H1B (or other) visa sponsorship now or in future
+# NOTE: visa status is deliberately NOT mentioned in cover letters (it can hurt) —
+# it's only used to answer the explicit work-authorization form field.
 
 # Path to the resume PDF to upload. Leave blank to upload the auto-generated,
 # per-job tailored PDF (recommended). Set a path to always upload a fixed file.
