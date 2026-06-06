@@ -6,6 +6,7 @@ function fitCell(j) {
   const col = c >= 70 ? "#2a8a4a" : (c >= 45 ? "#c98a00" : "#c33");
   return `<td title="${esc(j.fit_reason || "")}"><b style="color:${col}">${c}%</b></td>`;
 }
+function dspin(on) { const s = document.getElementById("dspin"); if (s) s.style.display = on ? "inline-block" : "none"; }
 async function getJobs() { return (await chrome.storage.local.get("jobs")).jobs || []; }
 async function setJobs(jobs) { await chrome.storage.local.set({ jobs }); }
 
@@ -45,7 +46,7 @@ async function autoApply(id, btn) {
   if (!cfg.apiKey) { msg.textContent = "Set API key in Settings"; return; }
   const job = (await getJobs()).find((x) => x.id === id);
   if (!job) return;
-  btn.disabled = true;
+  btn.disabled = true; dspin(true);
   try {
     msg.textContent = "opening…";
     const tab = await chrome.tabs.create({ url: job.url, active: true });
@@ -55,7 +56,7 @@ async function autoApply(id, btn) {
   } catch (e) {
     msg.textContent = "error: " + (e.message || e);
   } finally {
-    btn.disabled = false;
+    btn.disabled = false; dspin(false);
   }
 }
 
@@ -63,7 +64,7 @@ async function runSearch(q, btn) {
   const setS = (m) => { document.getElementById("stats").textContent = m; };
   const cfg = await getCfg();
   if (!cfg.apiKey) { setS("Set your Anthropic API key in Settings first."); return; }
-  btn.disabled = true; const orig = btn.textContent; btn.textContent = "Searching…";
+  btn.disabled = true; const orig = btn.textContent; btn.textContent = "Searching…"; dspin(true);
   try {
     setS("Searching the web for jobs… (~20–40s)");
     const found = await searchJobs(cfg, q);
@@ -80,7 +81,7 @@ async function runSearch(q, btn) {
   } catch (e) {
     setS("Search error: " + (e.message || e));
   } finally {
-    btn.disabled = false; btn.textContent = orig;
+    btn.disabled = false; btn.textContent = orig; dspin(false);
   }
 }
 
@@ -101,7 +102,7 @@ async function findByCompanies() {
 
 async function refreshList() {
   const setS = (m) => { document.getElementById("stats").textContent = m; };
-  const btn = document.getElementById("refresh"); btn.disabled = true; const orig = btn.textContent;
+  const btn = document.getElementById("refresh"); btn.disabled = true; const orig = btn.textContent; dspin(true);
   try {
     const jobs = await getJobs();
     const missing = jobs.filter((j) => j.confidence === undefined || j.confidence === null || j.confidence === "");
@@ -120,7 +121,7 @@ async function refreshList() {
   } catch (e) {
     setS("Refresh error: " + (e.message || e));
   } finally {
-    btn.disabled = false; btn.textContent = orig;
+    btn.disabled = false; btn.textContent = orig; dspin(false);
   }
 }
 

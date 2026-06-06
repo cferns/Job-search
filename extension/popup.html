@@ -9,6 +9,8 @@
            background: #4f8cff; border: none; border-radius: 8px; cursor: pointer; }
   button:disabled { background: #9bbcf5; cursor: default; }
   #status { margin-top: 10px; font-size: 12px; color: #444; white-space: pre-wrap; line-height: 1.4; }
+  .spinner { display: inline-block; width: 13px; height: 13px; border: 2px solid #cfd8e8; border-top-color: #4f8cff; border-radius: 50%; animation: spin .7s linear infinite; vertical-align: middle; margin-right: 6px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
   a { color: #4f8cff; font-size: 12px; text-decoration: none; }
   .row { margin-top: 10px; text-align: center; }
 </style>
@@ -18,7 +20,7 @@
   <button id="search" style="background:#6f5cff;">🔎 Job searches</button>
   <button id="fill" style="margin-top:8px;">Tailor &amp; Fill this form</button>
   <button id="saveAns" style="margin-top:8px;background:#2a8a4a;">Save answers from this page</button>
-  <div id="status">Open a job application page, then click the button.</div>
+  <div id="status"><span id="spin" class="spinner" style="display:none"></span><span id="statusText">Open a job application page, then click the button.</span></div>
   <div id="downloads" style="margin-top:8px;font-size:12px;"></div>
   <div class="row"><a id="opts" href="#">Settings (API key, resume, profile)</a></div>
   <script src="core.js"></script>

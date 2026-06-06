@@ -1,7 +1,7 @@
 // Popup UI — uses the shared engine in core.js.
-const statusEl = document.getElementById("status");
 const fillBtn = document.getElementById("fill");
-function setStatus(msg) { statusEl.textContent = msg; }
+function setStatus(msg) { document.getElementById("statusText").textContent = msg; }
+function spin(on) { document.getElementById("spin").style.display = on ? "inline-block" : "none"; }
 
 document.getElementById("opts").onclick = () => chrome.runtime.openOptionsPage();
 document.getElementById("search").onclick = () => chrome.tabs.create({ url: chrome.runtime.getURL("jobs.html") });
@@ -29,7 +29,7 @@ async function recordJob(tab, desc) {
 }
 
 fillBtn.onclick = async () => {
-  fillBtn.disabled = true;
+  fillBtn.disabled = true; spin(true);
   try {
     const cfg = await getCfg();
     if (!cfg.apiKey) { setStatus("Set your Anthropic API key in Settings first."); return; }
@@ -47,13 +47,13 @@ fillBtn.onclick = async () => {
   } catch (e) {
     setStatus("Error: " + (e.message || e));
   } finally {
-    fillBtn.disabled = false;
+    fillBtn.disabled = false; spin(false);
   }
 };
 
 const saveBtn = document.getElementById("saveAns");
 saveBtn.onclick = async () => {
-  saveBtn.disabled = true;
+  saveBtn.disabled = true; spin(true);
   try {
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     const r = await chrome.scripting.executeScript({ target: { tabId: tab.id, allFrames: true }, func: scrapeAnswers });
@@ -69,6 +69,6 @@ saveBtn.onclick = async () => {
   } catch (e) {
     setStatus("Error saving: " + (e.message || e));
   } finally {
-    saveBtn.disabled = false;
+    saveBtn.disabled = false; spin(false);
   }
 };
