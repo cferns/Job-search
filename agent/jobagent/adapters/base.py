@@ -115,22 +115,62 @@ class BaseAdapter:
         return out
 
     def _label_for(self, page: Page, el) -> str:
-        """Best-effort human label for a field, for matching against the answer bank."""
-        for attr in ("aria-label", "placeholder", "name", "id"):
+        """Best-effort *human* label for a field (the real question, not a field id)."""
+        # 1. aria-label / aria-labelledby
+        try:
+            v = el.get_attribute("aria-label")
+            if v and len(v.strip()) > 2:
+                return v.strip()
+            lid = el.get_attribute("aria-labelledby")
+            if lid:
+                t = page.locator("#" + lid.split()[0]).first
+                if t.count():
+                    txt = (t.inner_text(timeout=800) or "").strip()
+                    if len(txt) > 2:
+                        return txt
+        except Exception:
+            pass
+        # 2. associated <label for="id">
+        try:
+            fid = el.get_attribute("id")
+            if fid:
+                lab = page.locator(f"label[for='{fid}']").first
+                if lab.count():
+                    txt = (lab.inner_text(timeout=800) or "").strip()
+                    if len(txt) > 2:
+                        return txt
+        except Exception:
+            pass
+        # 3. walk up to the question container and read its label text
+        #    (Lever .application-label, Greenhouse/Ashby labels/legends/asterisked text)
+        try:
+            txt = el.evaluate(
+                """e => {
+                  const sels = ['.application-label','.application-question label',
+                    'label','legend','[class*="label"]','[class*="question"]'];
+                  let n = e;
+                  for (let i=0; i<5 && n; i++) {
+                    n = n.parentElement; if (!n) break;
+                    for (const s of sels) {
+                      const l = n.querySelector(s);
+                      if (l && l.innerText && l.innerText.trim().length > 3) return l.innerText.trim();
+                    }
+                  }
+                  return '';
+                }"""
+            )
+            if txt and len(txt) > 3:
+                return txt.strip().splitlines()[0][:120]
+        except Exception:
+            pass
+        # 4. last resort: placeholder, then field name/id (least useful)
+        for attr in ("placeholder", "name", "id"):
             try:
                 v = el.get_attribute(attr)
                 if v and len(v) > 1:
                     return v.replace("_", " ").replace("-", " ")
             except Exception:
                 continue
-        try:  # associated <label for="id">
-            fid = el.get_attribute("id")
-            if fid:
-                lab = page.locator(f"label[for='{fid}']").first
-                if lab.count():
-                    return lab.inner_text(timeout=1000)
-        except Exception:
-            pass
         return ""
 
     def fill_learned(self, page: Page, answers: dict[str, str], report: FillReport) -> None:

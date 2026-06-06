@@ -221,18 +221,29 @@ def process_url(url: str, settings: config.Settings, profile: dict[str, Any],
                               "feedback": feedback or {}})
             store.save()
 
+        # Did we actually reach a real application form? (core field filled)
+        core_filled = any(f.split(" (")[0] in ("Full name", "First name", "Email")
+                          for f in report.filled)
         pending = adapter.pending_required(page)  # required fields still needing you
 
         if mode == "auto":
+            if not core_filled:
+                print("  No application form detected on this page — nothing submitted.")
+                _finish("Saved", "Auto: no application form detected; not submitted.")
+                return
             if pending:
                 print(f"  Not submitting — required fields still need you: {', '.join(pending)}")
                 _finish("Saved",
                         f"Auto: {len(pending)} required field(s) unfilled ({', '.join(pending)}). "
                         f"Fit {app.fit_score}/100.")
                 return
-            _try_submit(page)
-            _finish("Applied", f"Auto-submitted (all required fields filled). Fit {app.fit_score}/100.")
-            print("  Submitted (auto mode).")
+            clicked = _try_submit(page)
+            if clicked and _submitted_ok(page):
+                _finish("Applied", f"Auto-submitted (confirmed). Fit {app.fit_score}/100.")
+                print("  Submitted and CONFIRMED (auto mode).")
+            else:
+                _finish("Saved", "Auto: submit attempted but NOT confirmed — verify in the browser.")
+                print("  ⚠ Submit attempted but not confirmed — please verify manually. Not marked Applied.")
             return
 
         # review mode: hand control to the human, pointing at exactly what's left
@@ -393,14 +404,33 @@ def _write_shortlist(results: list[JobScore], out_path: Path) -> None:
     out_path.write_text("\n".join(lines) + "\n")
 
 
-def _try_submit(page) -> None:
-    for sel in ["button[type='submit']", "button:has-text('Submit')",
-                "button:has-text('Apply')", "input[type='submit']"]:
+def _try_submit(page) -> bool:
+    """Click a submit button. Returns True if a button was actually clicked."""
+    for sel in ["button[type='submit']", "button:has-text('Submit application')",
+                "button:has-text('Submit')", "input[type='submit']",
+                "button:has-text('Send application')"]:
         try:
             loc = page.locator(sel).first
             if loc.count() and loc.is_visible():
                 loc.click(timeout=5000)
                 page.wait_for_timeout(3000)
-                return
+                return True
         except Exception:
             continue
+    return False
+
+
+def _submitted_ok(page) -> bool:
+    """Verify the submission actually went through (confirmation URL or page text)."""
+    page.wait_for_timeout(2000)
+    try:
+        url = (page.url or "").lower()
+        if any(k in url for k in ("thank", "submitted", "confirmation", "success", "complete")):
+            return True
+        body = (page.locator("body").inner_text(timeout=2000) or "").lower()
+        return any(k in body for k in (
+            "thank you for applying", "application received", "successfully submitted",
+            "we received your application", "thanks for applying", "application submitted",
+        ))
+    except Exception:
+        return False
