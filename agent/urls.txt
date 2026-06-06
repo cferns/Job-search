@@ -1,0 +1,37 @@
+# Curated job postings matching your Lead TPM / PM — Data, AI & ML profile.
+# All are on platforms the agent automates well (Greenhouse / Lever / Ashby).
+#
+# Run a cheap dry run first (generates tailored materials, no browser):
+#     python -m jobagent.cli draft --file urls.txt
+# Then do the real thing with review-before-submit:
+#     python -m jobagent.cli apply --file urls.txt
+#
+# IMPORTANT: these links were found via web search and postings close fast —
+# verify each one still opens before relying on it. Delete any that 404, and
+# add your own. Lines starting with '#' are ignored.
+
+# ---- Greenhouse ----
+# DeepMind — Senior Technical Program Manager, Data
+https://boards.greenhouse.io/deepmind/jobs/5950384
+# Techstars — Technical Platform Product Manager (Investment Data, Analytics, AI/ML)
+https://boards.greenhouse.io/techstars57/jobs/5246104002
+# Correlation One — Head of Product Management (Data, AI/ML & Automation)
+https://boards.greenhouse.io/correlationone/jobs/4938078004
+# MORSE Corp — Program Manager, AI/ML  (DoD — likely needs US clearance/eligibility)
+https://boards.greenhouse.io/morsecorp/jobs/5870403003?gh_jid=5870403003
+
+# ---- Lever ----
+# Whoop — Senior Technical Program Manager, Health ML  ($150k–$215k)
+https://jobs.lever.co/whoop/07a5beee-b576-4266-acdf-56c3bd7afc5e
+# Snorkel AI — Technical Program Manager, Machine Learning
+https://jobs.lever.co/snorkel/477e2d50-8e8c-43b1-b31a-f179e5deefa5
+# QuantCo — Technical Program Manager
+https://jobs.lever.co/quantco-/3b7c9724-d4e3-4fe8-ad75-4e161a214f1a
+# Mistral AI — Technical Program Manager, Science Operations (Code)
+https://jobs.lever.co/mistral/c7a25da7-87e4-4a14-a50e-ef3222550136
+
+# ---- Ashby ----
+# OpenAI — Product Manager, Data Platform
+https://jobs.ashbyhq.com/openai/62762da5-4d32-4851-8568-489d3bf14e31
+# Suzy — Senior Product Manager, Data & Intelligence
+https://jobs.ashbyhq.com/suzy/b5ddcb5e-9f35-4582-82a0-8183c1793d6f
