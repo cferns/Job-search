@@ -108,7 +108,7 @@ truthful, tailored answer. Match the candidate's real work-authorization, sponso
 
 async function callClaude(cfg, data) {
   const learnedTxt = cfg.learned && Object.keys(cfg.learned).length
-    ? "\n\n# Saved answers (reuse VERBATIM when a field's question matches one of these)\n" +
+    ? "\n\n# Saved answers (reuse when a field's question matches — but the Candidate profile above WINS on any conflict)\n" +
       Object.entries(cfg.learned).map(([q, a]) => "Q: " + q + "\nA: " + a).join("\n")
     : "";
   const user =

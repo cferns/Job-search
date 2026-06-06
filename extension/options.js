@@ -230,4 +230,11 @@ document.getElementById("save").onclick = async () => {
   setTimeout(() => (s.textContent = ""), 2000);
 };
 
+document.getElementById("clearLearned").onclick = async () => {
+  await chrome.storage.local.set({ learned: {} });
+  const s = document.getElementById("status");
+  s.textContent = "Saved answers cleared ✓";
+  setTimeout(() => (s.textContent = ""), 2000);
+};
+
 load();
