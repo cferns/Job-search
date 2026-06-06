@@ -194,11 +194,21 @@ function scrapeFields() {
       if (txt(l) && txt(l).length > 2) return txt(l).split("\n")[0].slice(0, 160); }
     return el.getAttribute("placeholder") || el.getAttribute("name") || "";
   };
+  // Usable = not display:none/visibility:hidden; keep zero-size fields if they have a real
+  // label (custom career sites restyle inputs to 0-size behind styled widgets).
+  const usable = (el) => {
+    const s = getComputedStyle(el);
+    if (s.display === "none" || s.visibility === "hidden") return false;
+    const r = el.getBoundingClientRect();
+    if (r.width > 1 && r.height > 1) return true;
+    const lab = labelFor(el);
+    return !!(lab && lab.length > 2);
+  };
   let idx = 0; const out = []; const groups = {};
   deepAll('input,textarea,select,[role="radio"],[role="checkbox"]').forEach((el) => {
     const tag = el.tagName.toLowerCase(); const type = (el.getAttribute("type") || "").toLowerCase(); const role = (el.getAttribute("role") || "").toLowerCase();
     if (["hidden", "submit", "button", "file", "image", "reset"].includes(type)) return;
-    if (!isVis(el)) return;
+    if (!usable(el)) return;
     const isChoice = (tag === "input" && (type === "radio" || type === "checkbox")) || role === "radio" || role === "checkbox";
     if (isChoice) {
       const name = el.getAttribute("name") || ("grp_" + (groupQuestion(el) || idx));
