@@ -1,0 +1,49 @@
+# Copy this file to `config/profile.yaml` and fill it in. profile.yaml is gitignored
+# (it contains personal data). These values answer the common application form fields.
+
+# Identity
+first_name: "Clinton"
+last_name: "Fernandes"
+full_name: "Clinton Fernandes"
+email: "clintonfernandes4u@gmail.com"
+phone: ""                       # e.g. "+1 612 555 0100"
+
+# Location
+location: "Minneapolis, MN"     # free-text, used for "Location" fields
+city: "Minneapolis"
+state: "MN"
+country: "United States"
+
+# Links
+linkedin: ""                    # https://www.linkedin.com/in/...
+github: ""
+portfolio: ""                   # personal site / portfolio URL
+
+# Professional snapshot
+current_title: "Lead Technical Program Manager"
+current_company: "Target"
+years_experience: "8"
+desired_salary: ""              # leave blank to skip, or e.g. "180000"
+
+# Work authorization (common screener questions)
+work_authorized: true           # authorized to work in the country
+needs_sponsorship: false        # requires visa sponsorship now or in future
+
+# Path to the resume PDF to upload. Leave blank to upload the auto-generated,
+# per-job tailored PDF (recommended). Set a path to always upload a fixed file.
+resume_pdf: ""
+
+# Path to your master resume (markdown) used as the tailoring source of truth.
+# Relative paths are resolved from the repository root.
+master_resume: "resume/master-resume.md"
+
+# EEO / self-identification (US). Defaults decline to answer — change if you wish.
+gender: "Decline to self-identify"
+race: "Decline to self-identify"
+veteran_status: "I am not a protected veteran"
+disability: "Decline to self-identify"
+pronouns: ""
+
+# Optional: a short note appended to every cover letter prompt as extra context
+# (e.g. "Open to remote or Minneapolis/Twin Cities. Available immediately.")
+extra_context: ""

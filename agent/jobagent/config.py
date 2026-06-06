@@ -1,0 +1,72 @@
+"""Load profile + settings YAML and resolve repo-relative paths."""
+from __future__ import annotations
+
+import os
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Any
+
+import yaml
+
+# Repo root is two levels up from this file: <repo>/agent/jobagent/config.py
+REPO_ROOT = Path(__file__).resolve().parents[2]
+AGENT_DIR = REPO_ROOT / "agent"
+
+
+def _load_yaml(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        raise FileNotFoundError(
+            f"Missing config file: {path}\n"
+            f"Copy the matching *.example.yaml and fill it in."
+        )
+    with path.open() as f:
+        return yaml.safe_load(f) or {}
+
+
+def resolve(path_str: str) -> Path:
+    """Resolve a path from settings/profile relative to the repo root."""
+    p = Path(path_str)
+    return p if p.is_absolute() else (REPO_ROOT / p)
+
+
+@dataclass
+class Settings:
+    submit_mode: str = "review"
+    model: str = "claude-opus-4-8"
+    output_dir: str = "resume/tailored"
+    tracker_csv: str = "applications.csv"
+    browser_profile_dir: str = "agent/.browser-profile"
+    headless: bool = False
+    raw: dict[str, Any] = field(default_factory=dict)
+
+
+def load_settings() -> Settings:
+    data = _load_yaml(AGENT_DIR / "config" / "settings.yaml")
+    return Settings(
+        submit_mode=data.get("submit_mode", "review"),
+        model=data.get("model", "claude-opus-4-8"),
+        output_dir=data.get("output_dir", "resume/tailored"),
+        tracker_csv=data.get("tracker_csv", "applications.csv"),
+        browser_profile_dir=data.get("browser_profile_dir", "agent/.browser-profile"),
+        headless=bool(data.get("headless", False)),
+        raw=data,
+    )
+
+
+def load_profile() -> dict[str, Any]:
+    return _load_yaml(AGENT_DIR / "config" / "profile.yaml")
+
+
+def read_master_resume(profile: dict[str, Any]) -> str:
+    path = resolve(profile.get("master_resume", "resume/master-resume.md"))
+    if not path.exists():
+        raise FileNotFoundError(f"Master resume not found: {path}")
+    return path.read_text()
+
+
+def check_api_key() -> None:
+    if not os.environ.get("ANTHROPIC_API_KEY"):
+        raise SystemExit(
+            "ANTHROPIC_API_KEY is not set. Export it before running:\n"
+            "  export ANTHROPIC_API_KEY=sk-ant-..."
+        )

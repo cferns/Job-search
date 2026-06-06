@@ -1,0 +1,23 @@
+# Copy this file to `config/settings.yaml` and adjust. settings.yaml is gitignored.
+
+# Submission behavior:
+#   review  - agent fills everything, then pauses for you to review and submit (SAFE default)
+#   auto    - agent clicks submit without review (higher risk; use sparingly)
+#   draft   - agent only generates tailored resume + cover letter, no browser/form filling
+submit_mode: "review"
+
+# Anthropic model used for tailoring. Default is the most capable model.
+# Override only if you explicitly want a cheaper/faster one (e.g. "claude-sonnet-4-6").
+model: "claude-opus-4-8"
+
+# Where tailored resumes/cover letters are written (relative to repo root).
+output_dir: "resume/tailored"
+
+# Tracker CSV to append every application to (relative to repo root).
+tracker_csv: "applications.csv"
+
+# Playwright persistent profile dir (keeps you logged in across runs). Gitignored.
+browser_profile_dir: "agent/.browser-profile"
+
+# Run the browser visibly (required for review mode so you can see/submit).
+headless: false

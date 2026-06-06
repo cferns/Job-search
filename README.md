@@ -13,8 +13,19 @@ A lightweight, no-install toolkit for running a job search end to end.
 │   └── tailored/               # One tailored copy per application
 ├── templates/
 │   └── cover-letter-template.md
-└── applications.csv            # Optional: plain-text backup of your pipeline
+├── agent/                      # Job application agent (Python + Playwright + Claude API)
+│   └── README.md               # Setup & usage for the automated apply agent
+└── applications.csv            # Plain-text backup of your pipeline (shared with the agent)
 ```
+
+## Automated apply agent
+
+`agent/` contains a human-in-the-loop agent that, given a job posting URL, detects the ATS,
+scrapes the description, tailors your resume + cover letter with the Claude API, fills the
+form, and **pauses for you to review and submit** — logging each application to
+`applications.csv`. See [`agent/README.md`](agent/README.md) for setup and the honest
+per-platform scope (Greenhouse/Lever/Ashby automate well; LinkedIn/Indeed are scrape-and-
+draft only to avoid account bans).
 
 ## 1. Track applications
 
