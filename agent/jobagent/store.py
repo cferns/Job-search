@@ -14,7 +14,7 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
-_EMPTY: dict[str, Any] = {"answers": {}, "field_stats": {}, "runs": []}
+_EMPTY: dict[str, Any] = {"answers": {}, "field_stats": {}, "runs": [], "strategies": {}}
 
 _STOP = {
     "the", "a", "an", "do", "you", "your", "please", "of", "to", "for", "is", "are",
@@ -154,6 +154,33 @@ class Store:
         return ("Across recent postings, these JD themes were often under-evidenced in the "
                 "resume — surface genuinely relevant experience for them if it exists (never "
                 "fabricate): " + ", ".join(common) + ".")
+
+    # --- A/B cover-letter strategies (a simple ratings bandit) ---
+    def strategy_avg(self, name: str) -> float | None:
+        st = self.data["strategies"].get(name)
+        if not st or not st.get("rating_count"):
+            return None
+        return st["rating_sum"] / st["rating_count"]
+
+    def pick_strategy(self, options: list[str]) -> str:
+        """Greedy with cold-start: try each unused angle once, then prefer the
+        highest average rating (ties broken by the given order)."""
+        if not options:
+            return ""
+        for o in options:  # cold start — explore anything never tried
+            if self.data["strategies"].get(o, {}).get("uses", 0) == 0:
+                return o
+        return max(options, key=lambda o: (self.strategy_avg(o) or 0.0, -options.index(o)))
+
+    def record_strategy(self, name: str, rating: int | None = None) -> None:
+        if not name:
+            return
+        st = self.data["strategies"].setdefault(
+            name, {"uses": 0, "rating_count": 0, "rating_sum": 0})
+        st["uses"] += 1
+        if rating:
+            st["rating_count"] += 1
+            st["rating_sum"] += rating
 
     def summary(self) -> dict[str, Any]:
         runs = self.data["runs"]

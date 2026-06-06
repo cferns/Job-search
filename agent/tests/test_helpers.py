@@ -17,7 +17,7 @@ from jobagent.detect import detect_ats          # noqa: E402
 from jobagent.textutil import (                  # noqa: E402
     clean_title, markdown_to_text, slugify, split_role_company,
 )
-from jobagent.tracker import applied_urls, CSV_COLS  # noqa: E402
+from jobagent.tracker import applied_urls, update_status, CSV_COLS  # noqa: E402
 
 
 def test_detect_ats():
@@ -65,6 +65,13 @@ def test_applied_urls(tmp_path: Path | None = None):
     got = applied_urls(csv_path)
     assert got == {"https://a/1"}                    # only Applied, not Saved
     assert applied_urls(d / "missing.csv") == set()  # missing file -> empty
+
+    # update_status rewrites the matching row and reports hit/miss
+    assert update_status(csv_path, "https://a/2", "Interview", note="phone screen") is True
+    assert update_status(csv_path, "https://nope", "Offer") is False
+    statuses = {r["url"]: r["status"] for r in csv.DictReader(csv_path.open())}
+    assert statuses["https://a/2"] == "Interview"
+    assert statuses["https://a/1"] == "Applied"      # untouched
 
 
 def _run_all() -> int:

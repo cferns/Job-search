@@ -53,6 +53,9 @@ python -m jobagent.cli rank --file urls.txt
 
 # Stats — jobs pipeline (from applications.csv) + what the agent has learned
 python -m jobagent.cli stats
+
+# Outcome — update a job's status as it progresses (feeds conversion stats)
+python -m jobagent.cli outcome "<job url>" Interview --note "phone screen w/ recruiter"
 ```
 
 ## The learning loop (the agent gets better as you use it)
@@ -71,9 +74,15 @@ answers) and uses it to improve every run:
 3. **Sharper tailoring.** Recurring JD themes your resume under-covered across past postings
    are fed back into the tailoring prompt (surfacing genuinely relevant experience — never
    fabricating).
-4. **Jobs-applied view.** `stats` shows your pipeline (Saved/Applied/Interview/Offer…),
-   response rate, average tailoring rating, fill reliability per platform, and the recurring
-   gaps it's learned.
+4. **A/B cover-letter angles.** Each run picks one of three opening angles (impact-first /
+   mission-fit / problem-solver). Your 1–5 ratings drive a simple bandit: it tries each once,
+   then favors the highest-rated. `stats` shows the standings and which it's favoring.
+5. **Outcome tracking.** As a role progresses, record it: `outcome <url> Interview`. This
+   updates `applications.csv` and powers a **conversion-by-platform** view in `stats`, so you
+   can see which sources actually convert (not just where you applied most).
+6. **Jobs-applied view.** `stats` shows your pipeline (Saved/Applied/Interview/Offer…),
+   response rate, conversion by platform, average tailoring rating, fill reliability per
+   platform, A/B standings, and the recurring gaps it's learned.
 
 ### Triage first with `rank` (recommended for long lists)
 

@@ -23,6 +23,16 @@ Rules:
 - missing_keywords lists important JD requirements the resume does not clearly evidence,
   so the candidate knows the real gaps before applying."""
 
+# A/B cover-letter angles. The agent rotates these and learns which your ratings prefer.
+COVER_ANGLES = {
+    "impact-first": "Open the cover letter with your single strongest quantified "
+                    "achievement, then connect it directly to this role.",
+    "mission-fit": "Open with a specific, genuine reason this company/mission appeals, "
+                   "then tie your relevant experience to it.",
+    "problem-solver": "Open by naming a concrete problem this role likely needs solved, "
+                      "then show how you've solved a similar one (with a metric).",
+}
+
 USER_TEMPLATE = """# Master resume (source of truth — use only these facts)
 
 {master_resume}
@@ -49,6 +59,7 @@ def tailor_application(
     master_resume: str,
     posting: JobPosting,
     extra_context: str = "",
+    angle: str = "",
 ) -> TailoredApplication:
     """Call Claude to produce a tailored resume + cover letter as structured output."""
     client = anthropic.Anthropic()
@@ -62,6 +73,8 @@ def tailor_application(
         description=posting.description or "(description not captured — infer from role/company)",
         extra_context=extra_context or "(none)",
     )
+    if angle in COVER_ANGLES:
+        user += f"\n\n# Cover letter angle for this application\n{COVER_ANGLES[angle]}"
 
     response = client.messages.parse(
         model=model,

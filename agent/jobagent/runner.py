@@ -10,7 +10,7 @@ from .browser import browser_session, render_markdown_to_pdf
 from .detect import detect_ats
 from .models import JobPosting, JobScore
 from .store import Store, seed_answers
-from .tailor import score_posting, tailor_application
+from .tailor import COVER_ANGLES, score_posting, tailor_application
 from .textutil import markdown_to_text, slugify, split_role_company
 from .tracker import log_application
 
@@ -112,6 +112,7 @@ def process_url(url: str, settings: config.Settings, profile: dict[str, Any],
     posting = JobPosting(url=url)
     store = Store.load(config.store_path())
     context_text = _compose_context(profile, store)
+    angle = store.pick_strategy(list(COVER_ANGLES))  # A/B cover-letter angle
 
     # ---- draft mode: no browser, just generate materials ----
     if mode == "draft":
@@ -121,16 +122,18 @@ def process_url(url: str, settings: config.Settings, profile: dict[str, Any],
         # In draft mode we can't scrape; ask the model to infer from the URL slug.
         posting.role = _slug(url).replace("-", " ")
         app = tailor_application(model=settings.model, master_resume=master_resume,
-                                 posting=posting, extra_context=context_text)
+                                 posting=posting, extra_context=context_text, angle=angle)
         posting.company, posting.role = app.company, app.role
         rm, cm, pdf = _write_materials(settings, app, posting)
         _print_summary(posting, app)
+        print(f"  Cover-letter angle: {angle}")
         print(f"  Resume:  {rm}\n  Cover:   {cm}\n  PDF:     {pdf}")
         log_application(config.resolve(settings.tracker_csv), posting, "Saved",
                         notes=f"Draft generated. Fit {app.fit_score}/100.")
+        store.record_strategy(angle)
         store.record_run({"url": url, "ats": posting.ats, "company": posting.company,
                           "role": posting.role, "status": "Saved", "mode": "draft",
-                          "fit_score": app.fit_score,
+                          "fit_score": app.fit_score, "angle": angle,
                           "missing_keywords": app.missing_keywords})
         store.save()
         return
@@ -161,9 +164,9 @@ def process_url(url: str, settings: config.Settings, profile: dict[str, Any],
             print(f"  Heads-up — fields often needing manual entry on {posting.ats}: "
                   f"{', '.join(gaps)}")
 
-        print("  Tailoring resume + cover letter with Claude...")
+        print(f"  Tailoring resume + cover letter with Claude (angle: {angle})...")
         app = tailor_application(model=settings.model, master_resume=master_resume,
-                                 posting=posting, extra_context=context_text)
+                                 posting=posting, extra_context=context_text, angle=angle)
         if not posting.company:
             posting.company = app.company
         if not posting.role:
@@ -200,9 +203,10 @@ def process_url(url: str, settings: config.Settings, profile: dict[str, Any],
 
         def _finish(status: str, note: str, feedback: dict[str, Any] | None = None) -> None:
             log_application(config.resolve(settings.tracker_csv), posting, status, notes=note)
+            store.record_strategy(angle, (feedback or {}).get("rating"))
             store.record_run({"url": url, "ats": posting.ats, "company": posting.company,
                               "role": posting.role, "status": status, "mode": mode,
-                              "fit_score": app.fit_score,
+                              "fit_score": app.fit_score, "angle": angle,
                               "missing_keywords": app.missing_keywords,
                               "filled": report.filled, "skipped": report.skipped,
                               "feedback": feedback or {}})
@@ -260,6 +264,24 @@ def show_stats(settings: config.Settings) -> None:
 
     store = Store.load(config.store_path())
     s = store.summary()
+
+    # Conversion by platform: join each tracked URL's current status with the ATS the
+    # agent recorded for it. "Advanced" = reached Screening or beyond.
+    url_to_ats = {r.get("url"): r.get("ats") for r in store.data["runs"] if r.get("url")}
+    advanced = {"Screening", "Interview", "Offer"}
+    conv: dict[str, dict[str, int]] = {}
+    if csv_path.exists():
+        with csv_path.open(newline="") as f:
+            for row in _csv.DictReader(f):
+                ats = url_to_ats.get((row.get("url") or "").strip())
+                st = (row.get("status") or "").strip()
+                if not ats or st in ("", "Saved"):
+                    continue
+                c = conv.setdefault(ats, {"applied": 0, "advanced": 0})
+                c["applied"] += 1
+                if st in advanced:
+                    c["advanced"] += 1
+
     print("\n=== Agent learnings ===")
     print(f"  runs recorded:   {s['runs']}  (applied: {s['applied']})")
     print(f"  learned answers: {s['learned_answers']}")
@@ -269,6 +291,21 @@ def show_stats(settings: config.Settings) -> None:
         print("  fill reliability by platform:")
         for ats, st in sorted(s["per_ats"].items()):
             print(f"    {ats:<11} {st['fill_rate']}%  ({st['filled']} filled / {st['skipped']} skipped)")
+    if conv:
+        print("  conversion by platform (reached screening+):")
+        for ats, c in sorted(conv.items(), key=lambda kv: kv[1]["advanced"], reverse=True):
+            rate = round(100 * c["advanced"] / c["applied"]) if c["applied"] else 0
+            print(f"    {ats:<11} {rate}%  ({c['advanced']}/{c['applied']})")
+    if store.data["strategies"]:
+        print("  cover-letter A/B (avg rating · uses):")
+        for name in COVER_ANGLES:
+            stt = store.data["strategies"].get(name)
+            if stt and stt["uses"]:
+                avg = store.strategy_avg(name)
+                avg_s = f"{avg:.1f}" if avg is not None else "—"
+                print(f"    {name:<14} {avg_s}  ·  {stt['uses']} uses")
+        best = store.pick_strategy(list(COVER_ANGLES))
+        print(f"    -> currently favoring: {best}")
     ctx = store.learnings_context()
     if ctx:
         print(f"\n  Recurring gaps fed into tailoring:\n    {ctx}")

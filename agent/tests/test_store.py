@@ -74,6 +74,25 @@ def test_store_roundtrip_and_summary():
     assert "kubernetes" in reloaded.learnings_context()
 
 
+def test_strategy_bandit():
+    d = Path(tempfile.mkdtemp())
+    store = Store.load(d / "s.json")
+    opts = ["impact-first", "mission-fit", "problem-solver"]
+    # cold start explores each unused option in order
+    assert store.pick_strategy(opts) == "impact-first"
+    store.record_strategy("impact-first", 3)
+    assert store.pick_strategy(opts) == "mission-fit"
+    store.record_strategy("mission-fit", 5)
+    assert store.pick_strategy(opts) == "problem-solver"
+    store.record_strategy("problem-solver", 2)
+    # all used -> exploit the highest average rating
+    assert store.pick_strategy(opts) == "mission-fit"
+    assert store.strategy_avg("mission-fit") == 5.0
+    # record without a rating still counts a use
+    store.record_strategy("problem-solver")
+    assert store.data["strategies"]["problem-solver"]["uses"] == 2
+
+
 def _run_all() -> int:
     fns = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
     failed = 0

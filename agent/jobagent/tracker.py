@@ -15,6 +15,38 @@ CSV_COLS = [
 ]
 
 
+VALID_STATUSES = [
+    "Saved", "Applied", "Screening", "Interview", "Offer", "Rejected", "Withdrawn",
+]
+
+
+def update_status(csv_path: Path, url: str, status: str, note: str = "") -> bool:
+    """Update the status (and optionally append a note) for an existing tracked URL.
+
+    Returns True if a matching row was found and rewritten.
+    """
+    if not csv_path.exists():
+        return False
+    with csv_path.open(newline="") as f:
+        rows = list(csv.DictReader(f))
+    found = False
+    today = date.today().isoformat()
+    for r in rows:
+        if (r.get("url") or "").strip() == url.strip():
+            r["status"] = status
+            if status == "Applied" and not r.get("dateApplied"):
+                r["dateApplied"] = today
+            if note:
+                r["notes"] = (f"{r.get('notes', '')} | {note}".strip(" |"))
+            found = True
+    if found:
+        with csv_path.open("w", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=CSV_COLS, extrasaction="ignore")
+            w.writeheader()
+            w.writerows(rows)
+    return found
+
+
 def applied_urls(csv_path: Path) -> set[str]:
     """URLs already logged with status 'Applied' — used to avoid double-applying."""
     if not csv_path.exists():

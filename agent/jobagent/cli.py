@@ -13,7 +13,8 @@ from pathlib import Path
 
 from . import config
 from .runner import process_url, rank, show_stats
-from .tracker import applied_urls
+from .store import Store
+from .tracker import VALID_STATUSES, applied_urls, update_status
 
 
 def _collect_urls(args) -> list[str]:
@@ -48,11 +49,29 @@ def main(argv: list[str] | None = None) -> int:
 
     sub.add_parser("stats", help="Show the jobs pipeline + what the agent has learned")
 
+    po = sub.add_parser("outcome", help="Update a job's status (e.g. after an interview)")
+    po.add_argument("url", help="The job posting URL (must already be tracked)")
+    po.add_argument("status", choices=VALID_STATUSES, help="New status")
+    po.add_argument("--note", default="", help="Optional note to append")
+
     args = parser.parse_args(argv)
 
-    # stats is read-only — no API key, profile, or resume needed.
+    # stats / outcome are local bookkeeping — no API key, profile, or resume needed.
     if args.command == "stats":
         show_stats(config.load_settings())
+        return 0
+
+    if args.command == "outcome":
+        settings = config.load_settings()
+        ok = update_status(config.resolve(settings.tracker_csv), args.url, args.status, args.note)
+        if not ok:
+            print(f"No tracked application found for {args.url} — nothing updated.")
+            return 1
+        store = Store.load(config.store_path())
+        store.record_run({"url": args.url, "status": args.status, "mode": "outcome",
+                          "note": args.note})
+        store.save()
+        print(f"Updated {args.url} -> {args.status}.")
         return 0
 
     config.check_api_key()
