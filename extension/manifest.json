@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "Job Application Autofill (Claude)",
+  "version": "0.1.0",
+  "description": "Reads the job application form you're viewing and fills it from your resume using Claude. You review and submit.",
+  "permissions": ["activeTab", "scripting", "storage"],
+  "host_permissions": ["https://api.anthropic.com/*"],
+  "action": { "default_popup": "popup.html" },
+  "options_page": "options.html"
+}

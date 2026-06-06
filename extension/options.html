@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<style>
+  body { font: 14px -apple-system, system-ui, sans-serif; max-width: 720px; margin: 24px auto; padding: 0 16px; color: #1a1a1a; }
+  h1 { font-size: 18px; } label { display: block; font-weight: 600; margin: 16px 0 4px; }
+  input, select, textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 8px; font: inherit; box-sizing: border-box; }
+  textarea { min-height: 160px; font-family: ui-monospace, monospace; font-size: 12px; }
+  button { margin-top: 16px; padding: 10px 18px; font-weight: 600; color: #fff; background: #4f8cff; border: none; border-radius: 8px; cursor: pointer; }
+  .hint { color: #666; font-size: 12px; font-weight: 400; }
+  #status { margin-left: 12px; color: #2a8a4a; }
+</style>
+</head>
+<body>
+  <h1>Job Application Autofill — Settings</h1>
+  <label>Anthropic API key <span class="hint">(stored locally in this browser only)</span></label>
+  <input id="apiKey" type="password" placeholder="sk-ant-..." />
+  <label>Model</label>
+  <select id="model">
+    <option value="claude-sonnet-4-6">claude-sonnet-4-6 (faster, cheaper — recommended)</option>
+    <option value="claude-opus-4-8">claude-opus-4-8 (highest quality, slower)</option>
+  </select>
+  <label>Profile <span class="hint">(answers to common fields — edit freely)</span></label>
+  <textarea id="profile"></textarea>
+  <label>Master resume <span class="hint">(source of truth for tailoring; never trim it)</span></label>
+  <textarea id="resume"></textarea>
+  <div><button id="save">Save</button><span id="status"></span></div>
+  <script src="options.js"></script>
+</body>
+</html>
