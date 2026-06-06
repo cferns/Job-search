@@ -18,7 +18,8 @@ async function render() {
     ? `${jobs.length} jobs · ${counts.Applied || 0} applied · ${counts.Pending || 0} pending · ${counts.Skipped || 0} skipped`
     : "";
   tb.innerHTML = "";
-  jobs.slice().reverse().forEach((j) => {
+  const sorted = jobs.slice().sort((a, b) => Number(b.confidence ?? -1) - Number(a.confidence ?? -1));
+  sorted.forEach((j) => {
     const tr = document.createElement("tr");
     const company = j.company || (j.title || "").split(/ [-|@] | at /)[1] || "";
     tr.innerHTML =
@@ -85,6 +86,31 @@ async function findJobs() {
   }
 }
 
+async function refreshList() {
+  const setS = (m) => { document.getElementById("stats").textContent = m; };
+  const btn = document.getElementById("refresh"); btn.disabled = true; const orig = btn.textContent;
+  try {
+    const jobs = await getJobs();
+    const missing = jobs.filter((j) => j.confidence === undefined || j.confidence === null || j.confidence === "");
+    if (missing.length) {
+      const cfg = await getCfg();
+      if (!cfg.apiKey) { setS("Set your API key in Settings to score Fit."); }
+      else {
+        btn.textContent = "Scoring…"; setS("Scoring " + missing.length + " job(s) for Fit…");
+        const scored = await scoreJobs(cfg, missing.map((j) => ({ title: j.title, company: j.company, desc: j.desc })));
+        scored.forEach((s) => { const j = missing[s.i]; if (j) { j.confidence = s.confidence; j.fit_reason = s.fit_reason || ""; } });
+        await setJobs(jobs);
+      }
+    }
+    render();
+    setS("Sorted by Fit." + (missing.length ? " Scored " + missing.length + " new." : ""));
+  } catch (e) {
+    setS("Refresh error: " + (e.message || e));
+  } finally {
+    btn.disabled = false; btn.textContent = orig;
+  }
+}
+
 async function init() {
   const { jobQuery } = await chrome.storage.local.get("jobQuery");
   const q = ((jobQuery || "Technical Program Manager OR Product Manager data AI ML platform").split("\n")[0]).slice(0, 140);
@@ -93,6 +119,7 @@ async function init() {
     const b = document.createElement("button"); b.textContent = label; b.onclick = () => chrome.tabs.create({ url: fn(q) }); sdiv.appendChild(b);
   });
   document.getElementById("findJobs").onclick = findJobs;
+  document.getElementById("refresh").onclick = refreshList;
   render();
   chrome.storage.onChanged.addListener((ch) => { if (ch.jobs) render(); });
 }

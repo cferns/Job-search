@@ -221,6 +221,28 @@ async function searchJobs(cfg, query, count) {
   try { return JSON.parse(m[0]); } catch (e) { return []; }
 }
 
+// Score a batch of jobs (no web search) -> [{i, confidence, fit_reason}] in input order.
+async function scoreJobs(cfg, items) {
+  const list = items.map((it, i) => ({ i, company: it.company || "", title: it.title || "", desc: it.desc || "" }));
+  const sys = "You rate a candidate's realistic chance of landing an interview for each job, given " +
+    "their profile/resume and the current competitive market. Be calibrated: strong fits 50-75, " +
+    "reach roles lower, weak fits under 30. Return ONLY a JSON array (no prose), one object per " +
+    'input item with the SAME "i": [{"i":N,"confidence":NN,"fit_reason":"one short sentence"}].';
+  const user = "# Candidate profile\n" + cfg.profile + "\n\n# Master resume\n" + cfg.resume +
+    "\n\n# Jobs to score\n" + JSON.stringify(list).slice(0, 13000) + "\n\nReturn the JSON array now.";
+  const resp = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: { "content-type": "application/json", "x-api-key": cfg.apiKey, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
+    body: JSON.stringify({ model: cfg.model, max_tokens: 4000, system: sys, messages: [{ role: "user", content: user }] }),
+  });
+  if (!resp.ok) throw new Error("API " + resp.status + ": " + (await resp.text()).slice(0, 200));
+  const j = await resp.json();
+  const t = (j.content || []).filter((b) => b.type === "text").map((b) => b.text).join("\n");
+  const m = t.match(/\[[\s\S]*\]/);
+  if (!m) return [];
+  try { return JSON.parse(m[0]); } catch (e) { return []; }
+}
+
 // Scrape (all frames) -> Claude -> fill -> resume. Tries clicking "Apply" once if no form found.
 async function runFillOnTab(tabId, cfg, onStatus) {
   const status = onStatus || (() => {});
