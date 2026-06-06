@@ -10,7 +10,7 @@ from .browser import browser_session, render_markdown_to_pdf
 from .detect import detect_ats
 from .models import JobPosting, JobScore
 from .store import Store, seed_answers
-from .tailor import COVER_ANGLES, score_posting, tailor_application
+from .tailor import COVER_ANGLES, answer_question, score_posting, tailor_application
 from .textutil import markdown_to_text, slugify, split_role_company
 from .tracker import log_application
 
@@ -188,6 +188,15 @@ def process_url(url: str, settings: config.Settings, profile: dict[str, Any],
         # Learned answers fill custom/screener questions the core adapter skips.
         answers = store.merged_answers(seed_answers(profile))
         adapter.fill_learned(page, answers, report)
+        # Auto-answer required essay/free-text questions with Claude (grounded in resume).
+        if settings.auto_answer_questions:
+            print("  Auto-answering required free-text questions...")
+            adapter.fill_required_freetext(
+                page,
+                lambda q: answer_question(model=settings.model, master_resume=master_resume,
+                                          posting=posting, question=q, extra_context=context_text),
+                report,
+            )
         if report.filled:
             print(f"    Filled: {', '.join(report.filled)}")
         if report.skipped:

@@ -44,6 +44,7 @@ class Settings:
     browser_profile_dir: str = "agent/.browser-profile"
     headless: bool = False
     collect_feedback: bool = True
+    auto_answer_questions: bool = True
     raw: dict[str, Any] = field(default_factory=dict)
 
 
@@ -57,6 +58,7 @@ def load_settings() -> Settings:
         browser_profile_dir=data.get("browser_profile_dir", "agent/.browser-profile"),
         headless=bool(data.get("headless", False)),
         collect_feedback=bool(data.get("collect_feedback", True)),
+        auto_answer_questions=bool(data.get("auto_answer_questions", True)),
         raw=data,
     )
 

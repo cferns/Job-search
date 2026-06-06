@@ -25,3 +25,8 @@ headless: false
 # After each application (review mode), ask a couple of quick feedback questions and
 # remember your answers/corrections so the agent fills more next time. Set false to skip.
 collect_feedback: true
+
+# Auto-answer required essay / free-text questions (e.g. "something you've built using AI")
+# with Claude, grounded in your master resume. Lets auto mode submit more without stopping.
+# Set false if you'd rather write every essay yourself.
+auto_answer_questions: true

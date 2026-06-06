@@ -142,3 +142,32 @@ def score_posting(*, model: str, master_resume: str, posting: JobPosting) -> Job
     if response.stop_reason == "refusal" or response.parsed_output is None:
         raise RuntimeError(f"Scoring failed (stop_reason={response.stop_reason}).")
     return response.parsed_output
+
+
+QA_SYSTEM = """You answer ONE job-application question for a candidate, using only facts in \
+their master resume. Be specific, truthful, and concise — never invent employers, metrics, \
+titles, dates, or skills. Plain text only (no markdown, no preamble like 'Sure' or 'Here is'). \
+Keep it to 1–2 short paragraphs unless the question clearly asks for a list. Write in first \
+person as the candidate."""
+
+
+def answer_question(*, model: str, master_resume: str, posting: JobPosting,
+                    question: str, extra_context: str = "") -> str:
+    """Generate a truthful, grounded answer to an arbitrary application question."""
+    client = anthropic.Anthropic()
+    user = (
+        f"# Candidate master resume (only source of facts)\n{master_resume}\n\n"
+        f"# Job\n{posting.role} at {posting.company}\n"
+        f"JD (may be partial):\n{(posting.description or '')[:4000]}\n\n"
+        f"# Extra context\n{extra_context or '(none)'}\n\n"
+        f"# Application question\n{question}\n\n"
+        f"Write only the answer, in plain text."
+    )
+    resp = client.messages.create(
+        model=model,
+        max_tokens=1200,
+        thinking={"type": "adaptive"},
+        system=QA_SYSTEM,
+        messages=[{"role": "user", "content": user}],
+    )
+    return "".join(b.text for b in resp.content if b.type == "text").strip()

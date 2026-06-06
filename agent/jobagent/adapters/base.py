@@ -53,6 +53,38 @@ class BaseAdapter:
 
     name = "generic"
 
+    def fill_required_freetext(self, page: Page, generate, report: FillReport,
+                               limit: int = 6) -> None:
+        """Auto-answer required free-text/essay questions via the model (best-effort).
+
+        `generate(label) -> str` returns an answer for a question label. Only fills
+        visible, required, currently-empty textareas — so it adds essay answers
+        (e.g. "something you've built using AI") without touching anything optional.
+        """
+        loc = page.locator("textarea")
+        filled = 0
+        for i in range(min(loc.count(), 25)):
+            if filled >= limit:
+                break
+            el = loc.nth(i)
+            try:
+                if not el.is_visible() or (el.input_value() or "").strip():
+                    continue
+                required = (el.get_attribute("required") is not None
+                            or (el.get_attribute("aria-required") or "").lower() == "true")
+                if not required:
+                    continue
+                label = self._label_for(page, el)
+                if not label or len(label) < 6:
+                    continue
+                ans = generate(label)
+                if ans:
+                    el.fill(ans, timeout=5000)
+                    report.filled.append(f"[ai] {label[:40].strip()}")
+                    filled += 1
+            except Exception:
+                continue
+
     def pending_required(self, page: Page) -> list[str]:
         """Labels of visible *required* fields that are still empty — what truly needs you.
 
