@@ -8,6 +8,7 @@ from . import config
 from .adapters import get_adapter
 from .browser import browser_session, render_markdown_to_pdf
 from .detect import detect_ats
+from . import smartfill
 from .models import JobPosting, JobScore
 from .store import Store, seed_answers
 from .tailor import COVER_ANGLES, answer_question, score_posting, tailor_application
@@ -44,6 +45,31 @@ def _collect_feedback(store: Store, ats: str) -> dict[str, Any]:
 
 def _slug(text: str) -> str:
     return slugify(text)
+
+
+def _posting_problem(page, requested_url: str) -> str:
+    """Detect a dead/moved posting or a careers-index page so we don't tailor against junk."""
+    from urllib.parse import urlparse
+    try:
+        final = page.url or ""
+    except Exception:
+        return ""
+    rh = (urlparse(requested_url).hostname or "").replace("www.", "")
+    fh = (urlparse(final).hostname or "").replace("www.", "")
+    if rh and fh and rh not in fh and fh not in rh:
+        return f"redirected to {fh} — the posting has likely moved or closed"
+    try:
+        body = (page.locator("body").inner_text(timeout=2500) or "").lower()
+    except Exception:
+        body = ""
+    for m in ("no longer available", "position has been filled", "posting is not available",
+              "job is no longer", "page not found", "this job is closed"):
+        if m in body:
+            return f"posting unavailable (page says '{m}')"
+    if (any(k in body for k in ("current job openings", "open positions", "all job openings",
+                                "search all jobs")) and "submit application" not in body):
+        return "this looks like a careers listing page, not a single application"
+    return ""
 
 
 def _settle(page, timeout: int = 8000) -> None:
@@ -153,6 +179,16 @@ def process_url(url: str, settings: config.Settings, profile: dict[str, Any],
         posting.ats = detect_ats(url, html)
         adapter = get_adapter(posting.ats)
 
+        problem = _posting_problem(page, url)
+        if problem:
+            print(f"  ⚠ Skipping — {problem}.")
+            log_application(config.resolve(settings.tracker_csv), posting, "Saved",
+                            notes=f"Not applied: {problem}.")
+            store.record_run({"url": url, "ats": posting.ats, "status": "Saved",
+                              "mode": mode, "note": problem})
+            store.save()
+            return
+
         posting.company, posting.role = _extract_meta(page)
         posting.location = profile.get("location", "")
         posting.description = adapter.get_job_description(page)
@@ -197,6 +233,11 @@ def process_url(url: str, settings: config.Settings, profile: dict[str, Any],
                                           posting=posting, question=q, extra_context=context_text),
                 report,
             )
+        # Vision pass: read the rendered form and fill what selectors missed
+        # (radio cards, odd widgets, remaining essays).
+        if settings.vision:
+            print("  Vision pass: reading the form and filling remaining fields...")
+            smartfill.fill(page, settings.model, master_resume, profile, posting, report)
         if report.filled:
             print(f"    Filled: {', '.join(report.filled)}")
         if report.skipped:

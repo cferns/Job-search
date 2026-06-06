@@ -45,6 +45,7 @@ class Settings:
     headless: bool = False
     collect_feedback: bool = True
     auto_answer_questions: bool = True
+    vision: bool = True
     raw: dict[str, Any] = field(default_factory=dict)
 
 
@@ -59,6 +60,7 @@ def load_settings() -> Settings:
         headless=bool(data.get("headless", False)),
         collect_feedback=bool(data.get("collect_feedback", True)),
         auto_answer_questions=bool(data.get("auto_answer_questions", True)),
+        vision=bool(data.get("vision", True)),
         raw=data,
     )
 
@@ -74,9 +76,24 @@ def read_master_resume(profile: dict[str, Any]) -> str:
     return path.read_text()
 
 
+def _load_dotenv() -> None:
+    """Load agent/.env (KEY=VALUE per line) so the API key persists without re-exporting."""
+    p = AGENT_DIR / ".env"
+    if not p.exists():
+        return
+    for line in p.read_text().splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        k, v = line.split("=", 1)
+        os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
+
+
 def check_api_key() -> None:
+    _load_dotenv()
     if not os.environ.get("ANTHROPIC_API_KEY"):
         raise SystemExit(
-            "ANTHROPIC_API_KEY is not set. Export it before running:\n"
-            "  export ANTHROPIC_API_KEY=sk-ant-..."
+            "ANTHROPIC_API_KEY is not set. Either:\n"
+            "  echo 'ANTHROPIC_API_KEY=sk-ant-...' > agent/.env   (recommended; gitignored)\n"
+            "  or: export ANTHROPIC_API_KEY=sk-ant-..."
         )

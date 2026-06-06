@@ -30,3 +30,8 @@ collect_feedback: true
 # with Claude, grounded in your master resume. Lets auto mode submit more without stopping.
 # Set false if you'd rather write every essay yourself.
 auto_answer_questions: true
+
+# Vision pass: screenshot the rendered form and let Claude read it to fill what CSS
+# selectors miss — radio-button questions (work auth, sponsorship), odd widgets, essays.
+# Adds a model call per form (slower, costs more) but handles real-world forms far better.
+vision: true
