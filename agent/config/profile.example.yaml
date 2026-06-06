@@ -44,6 +44,6 @@ veteran_status: "I am not a protected veteran"
 disability: "Decline to self-identify"
 pronouns: ""
 
-# Optional: a short note appended to every cover letter prompt as extra context
-# (e.g. "Open to remote or Minneapolis/Twin Cities. Available immediately.")
-extra_context: ""
+# Optional: a short note appended to every cover letter prompt as extra context.
+# Set to signal a remote preference so tailoring/cover letters emphasize remote fit.
+extra_context: "Seeking fully remote roles (US-based). Comfortable leading distributed, cross-functional teams across time zones — proven in current role aligning 400+ stakeholders remotely."

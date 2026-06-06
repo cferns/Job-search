@@ -130,3 +130,46 @@ https://jobs.ashbyhq.com/meridianlink/b85e5a73-a260-40e8-983b-87ea7342d153
 https://jobs.ashbyhq.com/zapier/c0c2b50c-d184-4b31-bc76-ad3871407c8b
 # Moss — Senior Product Manager, AI Platform (agentic infra / internal enablement)
 https://jobs.ashbyhq.com/moss/fcca2a89-0836-4ec9-b1e5-d7d5f0c90319
+
+# ============================================================
+# Round 4 — REMOTE-focused (explicitly remote / remote-first roles)
+# Tip: also remote from earlier rounds — Correlation One (remote, EST),
+# SingleStore (remote US), Plotly (remote US/Canada), Jobgether, Mixbook.
+# ============================================================
+
+# ---- Greenhouse ----
+# ScienceLogic — AI/ML Platform Manager (remote-first)
+https://boards.greenhouse.io/sciencelogic/jobs/5989402
+# Reltio — Senior Product Manager (data platform / MDM, AI/ML)
+https://boards.greenhouse.io/reltio/jobs/5280971004
+# Verana Health — Product Manager, Data & Informatics (ML/AI) (remote, multi-state)
+https://boards.greenhouse.io/veranahealth/jobs/5227007002
+# Incode Technologies — Senior Product Manager (AI/ML), ML Platform & Tooling
+https://boards.greenhouse.io/incode/jobs/4811611004
+# Unity — Senior Product Manager, Ads Measurement (Remote, CA)
+https://boards.greenhouse.io/unity3d/jobs/7777302
+# ABBYY — Senior Product Manager, AI (Remote, US)
+# NOTE: apply-form embed (limited JD to scrape).
+https://boards.greenhouse.io/embed/job_app?token=4603964101
+
+# ---- Lever ----
+# Jobgether — Senior Product Manager (Remote), AI Data Platform
+https://jobs.lever.co/jobgether/64ebff5f-f034-497e-bced-bafc16f595f2
+# Jobgether — Remote Data Product Manager
+https://jobs.lever.co/jobgether/d7e55e6a-3223-4521-a373-af1041295501
+# Aledade — Senior Technical Product Manager (AI Data Platform), Remote
+https://jobs.lever.co/aledade/946d319e-f8c4-4d11-835d-59db22227213
+# Toptal — Senior Product Manager, AI (remote)
+https://jobs.lever.co/toptal/0bdbb273-e00d-4361-ab8b-a05134d8cb3a
+# 15Five — Senior Product Manager (AI-powered performance / agentic workflows)
+https://jobs.lever.co/15five/3a9d8a84-8895-41c4-bd22-1fc555ba0c27
+
+# ---- Ashby ----
+# WorkOS — Product Manager (fully remote, $175k–$250k)
+https://jobs.ashbyhq.com/workos/5550ddd5-c3eb-459a-aa4d-8b1216346d88
+# Rula — Sr. Product Manager, AI (Remote)
+https://jobs.ashbyhq.com/rula/fd421f6c-8a38-4342-84b1-352ef1388828
+# Hopper — Senior Product Manager, Commerce - AI & Platform (100% Remote, USA East Coast)
+https://jobs.ashbyhq.com/hopper/2bc0143c-3080-45cc-8351-b7983f713bf3
+# Ironclad — Staff Product Manager, Jurist (AI/ML)
+https://jobs.ashbyhq.com/ironcladhq/d012dd76-7a69-4fdc-a289-337e800d6b3b
