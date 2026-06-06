@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Generated, per-application artifacts (may contain personal data)
+resume/tailored/*.pdf
+resume/tailored/*-resume.md
+resume/tailored/*-cover-letter.md
+shortlist.md
+
+# Playwright persistent browser profile (logged-in sessions)
+agent/.browser-profile/
+
+# Local secrets/config (also covered by agent/.gitignore)
+agent/config/profile.yaml
+agent/config/settings.yaml
+.env

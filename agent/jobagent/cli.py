@@ -25,7 +25,10 @@ def _collect_urls(args) -> list[str]:
                  if ln.strip() and not ln.startswith("#")]
     if not urls:
         raise SystemExit("No URLs provided. Pass URLs or --file urls.txt.")
-    return urls
+    # de-duplicate, preserving order
+    seen: set[str] = set()
+    deduped = [u for u in urls if not (u in seen or seen.add(u))]
+    return deduped
 
 
 def main(argv: list[str] | None = None) -> int:

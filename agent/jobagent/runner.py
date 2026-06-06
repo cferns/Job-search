@@ -46,7 +46,19 @@ def _extract_meta(page) -> tuple[str, str]:
     return company, role
 
 
-def _write_materials(settings: config.Settings, app, posting: JobPosting) -> tuple[Path, Path, Path]:
+def _plain(markdown_text: str) -> str:
+    """Strip light Markdown markup so cover-letter text fits plain-text form fields."""
+    import re
+    text = markdown_text
+    text = re.sub(r"^#{1,6}\s*", "", text, flags=re.MULTILINE)   # headings
+    text = re.sub(r"\*\*(.+?)\*\*", r"\1", text)                  # bold
+    text = re.sub(r"(?<!\*)\*(?!\s)(.+?)\*", r"\1", text)         # italics
+    text = re.sub(r"^\s*[-*]\s+", "- ", text, flags=re.MULTILINE) # bullets
+    return text.strip()
+
+
+def _write_materials(settings: config.Settings, app, posting: JobPosting,
+                     pw=None) -> tuple[Path, Path, Path]:
     out_dir = config.resolve(settings.output_dir)
     base = _slug(f"{posting.company}-{posting.role}")
     resume_md = out_dir / f"{base}-resume.md"
@@ -54,7 +66,8 @@ def _write_materials(settings: config.Settings, app, posting: JobPosting) -> tup
     resume_md.parent.mkdir(parents=True, exist_ok=True)
     resume_md.write_text(app.tailored_resume_markdown)
     cover_md.write_text(app.cover_letter_markdown)
-    resume_pdf = render_markdown_to_pdf(app.tailored_resume_markdown, out_dir / f"{base}-resume.pdf")
+    resume_pdf = render_markdown_to_pdf(
+        app.tailored_resume_markdown, out_dir / f"{base}-resume.pdf", pw=pw)
     return resume_md, cover_md, resume_pdf
 
 
@@ -93,7 +106,7 @@ def process_url(url: str, settings: config.Settings, profile: dict[str, Any],
 
     # ---- review / auto mode: drive the browser ----
     profile_dir = config.resolve(settings.browser_profile_dir)
-    with browser_session(profile_dir, headless=settings.headless) as (context, page):
+    with browser_session(profile_dir, headless=settings.headless) as (pw, context, page):
         print(f"\nOpening {url}")
         page.goto(url, wait_until="domcontentloaded", timeout=60000)
         page.wait_for_timeout(2500)
@@ -120,7 +133,7 @@ def process_url(url: str, settings: config.Settings, profile: dict[str, Any],
         if not posting.role:
             posting.role = app.role
 
-        rm, cm, pdf = _write_materials(settings, app, posting)
+        rm, cm, pdf = _write_materials(settings, app, posting, pw=pw)
         _print_summary(posting, app)
         print(f"  Saved: {rm.name}, {cm.name}, {pdf.name}")
 
@@ -128,7 +141,7 @@ def process_url(url: str, settings: config.Settings, profile: dict[str, Any],
         resume_pdf = config.resolve(profile["resume_pdf"]) if profile.get("resume_pdf") else pdf
 
         print("  Filling the application form...")
-        report = adapter.fill(page, profile, resume_pdf, app.cover_letter_markdown, posting)
+        report = adapter.fill(page, profile, resume_pdf, _plain(app.cover_letter_markdown), posting)
         if report.filled:
             print(f"    Filled: {', '.join(report.filled)}")
         if report.skipped:
@@ -163,7 +176,7 @@ def rank(urls: list[str], settings: config.Settings, profile: dict[str, Any],
     """Scrape + score each posting, then write a sorted shortlist.md. No form filling."""
     results: list[JobScore] = []
     profile_dir = config.resolve(settings.browser_profile_dir)
-    with browser_session(profile_dir, headless=settings.headless) as (context, page):
+    with browser_session(profile_dir, headless=settings.headless) as (pw, context, page):
         for i, url in enumerate(urls, 1):
             print(f"[{i}/{len(urls)}] scoring {url}")
             posting = JobPosting(url=url)
@@ -188,7 +201,7 @@ def rank(urls: list[str], settings: config.Settings, profile: dict[str, Any],
                 print(f"    skipped ({e})")
                 continue
 
-    out = config.resolve(settings.output_dir).parent / "shortlist.md"
+    out = config.REPO_ROOT / "shortlist.md"
     _write_shortlist(results, out)
     print(f"\nWrote {out} ({len(results)} scored).")
 

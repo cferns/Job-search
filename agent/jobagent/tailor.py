@@ -65,7 +65,7 @@ def tailor_application(
 
     response = client.messages.parse(
         model=model,
-        max_tokens=8000,
+        max_tokens=16000,  # room for adaptive thinking + full resume + cover letter
         thinking={"type": "adaptive"},
         system=SYSTEM,
         messages=[{"role": "user", "content": user}],

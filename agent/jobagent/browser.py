@@ -5,7 +5,7 @@ from contextlib import contextmanager
 from pathlib import Path
 
 import markdown as md_lib
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import Playwright, sync_playwright
 
 # Minimal print stylesheet so generated resume PDFs look clean.
 _PDF_CSS = """
@@ -25,7 +25,12 @@ em { color: #555; }
 
 @contextmanager
 def browser_session(user_data_dir: Path, headless: bool = False):
-    """Persistent-context browser so the user's logins survive across runs."""
+    """Persistent-context browser so the user's logins survive across runs.
+
+    Yields (playwright, context, page). The playwright handle is exposed so callers
+    can launch an additional headless browser (e.g. for PDF rendering) from the SAME
+    instance — starting a second sync_playwright() in one thread would error.
+    """
     user_data_dir.mkdir(parents=True, exist_ok=True)
     with sync_playwright() as p:
         context = p.chromium.launch_persistent_context(
@@ -36,20 +41,14 @@ def browser_session(user_data_dir: Path, headless: bool = False):
         )
         try:
             page = context.pages[0] if context.pages else context.new_page()
-            yield context, page
+            yield p, context, page
         finally:
             context.close()
 
 
-def render_markdown_to_pdf(markdown_text: str, out_path: Path) -> Path:
-    """Render Markdown to a clean one/two-page PDF using a headless Chromium."""
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    html_body = md_lib.markdown(markdown_text, extensions=["extra"])
-    html = f"<!doctype html><html><head><meta charset='utf-8'>" \
-           f"<style>{_PDF_CSS}</style></head><body>{html_body}</body></html>"
-
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
+def _render(pw: Playwright, html: str, out_path: Path) -> None:
+    browser = pw.chromium.launch(headless=True)
+    try:
         page = browser.new_page()
         page.set_content(html, wait_until="load")
         page.pdf(
@@ -58,5 +57,25 @@ def render_markdown_to_pdf(markdown_text: str, out_path: Path) -> Path:
             margin={"top": "0.5in", "bottom": "0.5in", "left": "0.6in", "right": "0.6in"},
             print_background=True,
         )
+    finally:
         browser.close()
+
+
+def render_markdown_to_pdf(markdown_text: str, out_path: Path, pw: Playwright | None = None) -> Path:
+    """Render Markdown to a clean PDF using a headless Chromium.
+
+    page.pdf() requires headless Chromium, so we always launch a dedicated headless
+    browser. Pass `pw` (the active Playwright from browser_session) to reuse it; if
+    omitted (e.g. draft mode, no browser open) we start our own instance.
+    """
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    html_body = md_lib.markdown(markdown_text, extensions=["extra"])
+    html = f"<!doctype html><html><head><meta charset='utf-8'>" \
+           f"<style>{_PDF_CSS}</style></head><body>{html_body}</body></html>"
+
+    if pw is not None:
+        _render(pw, html, out_path)
+    else:
+        with sync_playwright() as p:
+            _render(p, html, out_path)
     return out_path
