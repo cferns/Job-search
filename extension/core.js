@@ -381,7 +381,7 @@ async function scoreJobs(cfg, items) {
 }
 
 // Scrape (all frames) -> Claude -> fill -> resume. Tries clicking "Apply" once if no form found.
-async function runFillOnTab(tabId, cfg, onStatus) {
+async function runFillOnTab(tabId, cfg, onStatus, meta) {
   const status = onStatus || (() => {});
   const scan = async () => {
     const all = await chrome.scripting.executeScript({ target: { tabId, allFrames: true }, func: scrapeFields });
@@ -410,21 +410,28 @@ async function runFillOnTab(tabId, cfg, onStatus) {
       if (docs && docs.resume_markdown) {
         const items = [{ match: "resume|cv", dataUrl: makePdf(mdToBlocks(docs.resume_markdown)), name: "Resume.pdf", fallbackFirst: true }];
         if (docs.cover_letter) items.push({ match: "cover|letter", dataUrl: makePdf(mdToBlocks(docs.cover_letter)), name: "Cover-Letter.pdf" });
-        // Keep the latest tailored docs so they can be downloaded/reviewed.
+        const ts = new Date().toISOString();
+        const titleStr = (meta && meta.title) || data.url;
+        const companyStr = (meta && meta.company) || "";
+        const slug = (companyStr + "-" + titleStr).toLowerCase().replace(/https?:\/\//, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60) || "job";
+        // Keep latest + archive every tailored set by company / title / timestamp.
         try {
-          await chrome.storage.local.set({ lastTailored: {
+          const entry = {
+            id: Date.now().toString(36), company: companyStr, title: titleStr, url: data.url, ts,
             resumeDataUrl: items[0].dataUrl, coverDataUrl: items[1] ? items[1].dataUrl : "",
             resumeMd: docs.resume_markdown, coverMd: docs.cover_letter || "",
-            url: data.url, date: new Date().toISOString().slice(0, 10),
-          } });
+          };
+          const arch = (await chrome.storage.local.get("tailoredArchive")).tailoredArchive || [];
+          arch.push(entry);
+          while (arch.length > 80) arch.shift();
+          await chrome.storage.local.set({ lastTailored: { ...entry, date: ts.slice(0, 10) }, tailoredArchive: arch });
         } catch (e) { /* ignore quota */ }
         // Save copies into the chosen folder, if one is set.
         try {
-          const base = (new URL(data.url).hostname.replace(/^www\./, "").split(".")[0]) || "job";
-          const d = new Date().toISOString().slice(0, 10);
+          const d = ts.slice(0, 10);
           const rb = await (await fetch(items[0].dataUrl)).blob();
-          savedFolder = await saveToFolder(base + "-resume-" + d + ".pdf", rb);
-          if (items[1]) { const cb = await (await fetch(items[1].dataUrl)).blob(); await saveToFolder(base + "-cover-letter-" + d + ".pdf", cb); }
+          savedFolder = await saveToFolder(slug + "-resume-" + d + ".pdf", rb);
+          if (items[1]) { const cb = await (await fetch(items[1].dataUrl)).blob(); await saveToFolder(slug + "-cover-letter-" + d + ".pdf", cb); }
         } catch (e) { /* ignore */ }
         status("Uploading tailored documents…");
         const ru = await chrome.scripting.executeScript({ target: ft, func: applyNamedFiles, args: [items] });

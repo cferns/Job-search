@@ -50,7 +50,7 @@ async function autoApply(id, btn) {
     msg.textContent = "opening…";
     const tab = await chrome.tabs.create({ url: job.url, active: true });
     await waitTabComplete(tab.id); await sleep(2500);
-    const res = await runFillOnTab(tab.id, cfg, (s) => { msg.textContent = s; });
+    const res = await runFillOnTab(tab.id, cfg, (s) => { msg.textContent = s; }, { title: job.title, company: job.company });
     msg.textContent = res.error ? "no form found — open & fill manually" : ("filled " + res.filled + " — review & submit");
   } catch (e) {
     msg.textContent = "error: " + (e.message || e);
@@ -124,6 +124,24 @@ async function refreshList() {
   }
 }
 
+async function renderArchive() {
+  const arch = (await chrome.storage.local.get("tailoredArchive")).tailoredArchive || [];
+  const div = document.getElementById("archive");
+  if (!arch.length) { div.innerHTML = '<div style="color:#888">None yet — “Tailor &amp; Fill” saves each tailored resume + cover letter here.</div>'; return; }
+  div.innerHTML = arch.slice().reverse().map((a) => {
+    const when = (() => { try { return new Date(a.ts).toLocaleString(); } catch (e) { return a.ts || ""; } })();
+    const label = esc((a.company ? a.company + " · " : "") + (a.title || a.url));
+    let links = `<a href="${a.resumeDataUrl}" download="resume.pdf">⬇ Resume</a>`;
+    if (a.coverDataUrl) links += ` · <a href="${a.coverDataUrl}" download="cover-letter.pdf">⬇ Cover letter</a>`;
+    return `<div style="padding:7px 0;border-bottom:1px solid #eee;font-size:13px;"><b>${label}</b> <span style="color:#aaa">${esc(when)}</span><br>${links} · <a href="#" class="arcdel" data-id="${a.id}" style="color:#c33">✕ remove</a></div>`;
+  }).join("");
+  div.querySelectorAll(".arcdel").forEach((b) => { b.onclick = async (e) => {
+    e.preventDefault();
+    const arch2 = ((await chrome.storage.local.get("tailoredArchive")).tailoredArchive || []).filter((x) => x.id !== b.dataset.id);
+    await chrome.storage.local.set({ tailoredArchive: arch2 }); renderArchive();
+  }; });
+}
+
 async function init() {
   const { jobQuery } = await chrome.storage.local.get("jobQuery");
   const q = ((jobQuery || "Technical Program Manager OR Product Manager data AI ML platform").split("\n")[0]).slice(0, 140);
@@ -135,7 +153,8 @@ async function init() {
   document.getElementById("refresh").onclick = refreshList;
   document.getElementById("searchCompanies").onclick = findByCompanies;
   render();
-  chrome.storage.onChanged.addListener((ch) => { if (ch.jobs) render(); });
+  renderArchive();
+  chrome.storage.onChanged.addListener((ch) => { if (ch.jobs) render(); if (ch.tailoredArchive) renderArchive(); });
 }
 
 init();

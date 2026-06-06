@@ -34,7 +34,9 @@ fillBtn.onclick = async () => {
     const cfg = await getCfg();
     if (!cfg.apiKey) { setStatus("Set your Anthropic API key in Settings first."); return; }
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    const res = await runFillOnTab(tab.id, cfg, setStatus);
+    const title = tab.title || "";
+    const company = title.split(/\s[-|–—]\s| at /)[0].trim();  // best-effort
+    const res = await runFillOnTab(tab.id, cfg, setStatus, { title, company });
     if (res.error) { setStatus("No fillable form found (even in embedded frames). Open the application form — click Apply if needed — then try again."); return; }
     await recordJob(tab, res.jd);
     const rmsg = res.resume
