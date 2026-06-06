@@ -35,3 +35,46 @@ https://jobs.lever.co/mistral/c7a25da7-87e4-4a14-a50e-ef3222550136
 https://jobs.ashbyhq.com/openai/62762da5-4d32-4851-8568-489d3bf14e31
 # Suzy — Senior Product Manager, Data & Intelligence
 https://jobs.ashbyhq.com/suzy/b5ddcb5e-9f35-4582-82a0-8183c1793d6f
+
+# ============================================================
+# Round 2 — widened set (Principal/Group PM, GenAI, data platform,
+# self-service analytics/BI, enterprise AI adoption, legacy migration)
+# ============================================================
+
+# ---- Greenhouse ----
+# Justworks — Group Product Manager, Data Services (Data/ML platform, governance, viz)
+https://boards.greenhouse.io/justworks/jobs/5540674?gh_jid=5540674
+# SingleStore — AI Product Manager (data platform for GenAI apps)
+https://boards.greenhouse.io/singlestore/jobs/5949988
+# RelationalAI — Senior Product Manager, Platform
+https://boards.greenhouse.io/relationalai/jobs/4835414004
+# Spring Health — Senior Product Manager, Data Foundations
+https://boards.greenhouse.io/springhealth66/jobs/4311516005
+# Symend — Senior Product Manager, Data and Analytics
+https://boards.greenhouse.io/symend/jobs/4389615003
+# Arize AI — Product Manager, Generative AI (ML observability — MLOps-adjacent)
+https://boards.greenhouse.io/arizeai/jobs/4498583004
+# Financial Times — Principal Product Manager, Generative AI
+https://boards.greenhouse.io/financialtimes33/jobs/4287762101
+# Okta — Principal Product Manager, AI & Automation (internal AI platform / enterprise adoption)
+# NOTE: this is a direct apply-form embed (limited JD to scrape) — still fills fine.
+https://boards.greenhouse.io/embed/job_app?for=okta&token=7166879
+# DigitalOcean — Senior Product Manager, GenAI Platform
+# NOTE: apply-form embed (limited JD to scrape).
+https://boards.greenhouse.io/embed/job_app?for=digitalocean98&token=6256481
+
+# ---- Lever ----
+# Quest Analytics — Product Manager, Data Platform / Business Intelligence
+https://jobs.lever.co/questanalytics/ef02f5eb-5646-4dc7-8b63-985eb11bc876
+# WorkWave — Product Manager, AI & Data Analytics
+https://jobs.lever.co/workwave/6c519910-759b-4a23-9449-31ee2eb7675b
+
+# ---- Ashby ----
+# EvenUp — Technical Program Manager, Enterprise (retire legacy systems, deploy next-gen platform)
+https://jobs.ashbyhq.com/evenup/694baf04-24e8-46e7-92fd-c5915cb6373e
+# Replit — Staff Technical Program Manager, AI / Agent Systems
+https://jobs.ashbyhq.com/replit/1e1a651f-693d-4f9d-bfd9-280a50d28d13
+# Jerry.ai — Senior Product Manager, AI Agents and Platform
+https://jobs.ashbyhq.com/jerry.ai/94bd4118-3d07-4182-863b-e37a367f8a27
+# Machinify — Product Director, GenAI
+https://jobs.ashbyhq.com/machinify/cfc5ee9c-85bd-467e-8c53-8f4138f605b3
