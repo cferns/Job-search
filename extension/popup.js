@@ -72,14 +72,42 @@ function scrapeFields() {
   return { fields: out, jd: (document.body.innerText || "").slice(0, 6000), url: location.href };
 }
 
-// ---- injected into the page: apply Claude's actions (React-safe) ----
-function applyActions(actions) {
+// ---- injected into the page: apply Claude's actions (React-safe; handles typeaheads) ----
+async function applyActions(actions) {
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   const setNativeValue = (el, value) => {
     const proto = el.tagName === "TEXTAREA" ? HTMLTextAreaElement.prototype : HTMLInputElement.prototype;
     const setter = Object.getOwnPropertyDescriptor(proto, "value").set;
     setter.call(el, value);
     el.dispatchEvent(new Event("input", { bubbles: true }));
     el.dispatchEvent(new Event("change", { bubbles: true }));
+  };
+  // Autocomplete/typeahead (location, school, etc.): set text, let suggestions load, click the match.
+  const isCombo = (el) =>
+    el.getAttribute("role") === "combobox" ||
+    el.getAttribute("aria-autocomplete") ||
+    el.getAttribute("aria-controls") ||
+    el.getAttribute("aria-expanded") !== null ||
+    /select|combobox|typeahead|autocomplete|location/i.test((el.className || "") + (el.id || "") + (el.name || ""));
+  const fillCombo = async (el, value) => {
+    el.focus();
+    setNativeValue(el, value);
+    const k = value.slice(-1);
+    el.dispatchEvent(new KeyboardEvent("keydown", { bubbles: true, key: k }));
+    el.dispatchEvent(new KeyboardEvent("keyup", { bubbles: true, key: k }));
+    for (let wait = 0; wait < 4; wait++) {
+      await sleep(500);
+      const want = value.toLowerCase().split(",")[0].trim();
+      let opts = [...document.querySelectorAll(
+        '[role="option"],ul[role="listbox"] li,.select__option,[class*="option"],[class*="suggestion"],[class*="menu"] li')]
+        .filter((o) => o.offsetParent !== null && o.innerText && o.innerText.trim());
+      let pick = opts.find((o) => o.innerText.toLowerCase().includes(want)) || opts[0];
+      if (pick) { pick.click(); return true; }
+    }
+    // fallback: keyboard arrow-down + enter
+    el.dispatchEvent(new KeyboardEvent("keydown", { bubbles: true, key: "ArrowDown" }));
+    el.dispatchEvent(new KeyboardEvent("keydown", { bubbles: true, key: "Enter" }));
+    return false;
   };
   let n = 0;
   for (const a of actions || []) {
@@ -90,7 +118,10 @@ function applyActions(actions) {
         const opt = [...el.options].find((o) => o.textContent.trim().toLowerCase() === String(a.value).trim().toLowerCase())
           || [...el.options].find((o) => o.textContent.trim().toLowerCase().includes(String(a.value).trim().toLowerCase()));
         if (opt) { el.value = opt.value; el.dispatchEvent(new Event("change", { bubbles: true })); n++; }
-      } else if (a.action === "type" && a.value) { setNativeValue(el, a.value); n++; }
+      } else if (a.action === "type" && a.value) {
+        if (isCombo(el)) { await fillCombo(el, a.value); n++; }
+        else { setNativeValue(el, a.value); n++; }
+      }
     } catch (e) { /* skip */ }
   }
   return n;
