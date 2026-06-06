@@ -32,7 +32,11 @@
 
   <div id="fields"></div>
 
-  <h2>Master resume <span class="hint">(source of truth for tailoring; never trim it)</span></h2>
+  <h2>Resume file <span class="hint">(PDF/DOCX — auto-attached to the upload field)</span></h2>
+  <input id="resumeFile" type="file" accept=".pdf,.doc,.docx" />
+  <div id="resumeFileName" class="hint" style="margin-top:6px;"></div>
+
+  <h2>Master resume text <span class="hint">(source of truth for tailoring; never trim it)</span></h2>
   <textarea id="resume"></textarea>
 
   <div class="bar"><button id="save">Save</button><span id="status"></span></div>

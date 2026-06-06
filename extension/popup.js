@@ -107,8 +107,13 @@ answer. For radio groups emit one click on the correct option's ja. For essays, 
 truthful, tailored answer. Match the candidate's real work-authorization, sponsorship, and location.`;
 
 async function callClaude(cfg, data) {
+  const learnedTxt = cfg.learned && Object.keys(cfg.learned).length
+    ? "\n\n# Saved answers (reuse VERBATIM when a field's question matches one of these)\n" +
+      Object.entries(cfg.learned).map(([q, a]) => "Q: " + q + "\nA: " + a).join("\n")
+    : "";
   const user =
     "# Candidate profile\n" + cfg.profile + "\n\n# Master resume\n" + cfg.resume +
+    learnedTxt +
     "\n\n# Page URL\n" + data.url + "\n\n# Page text (for context)\n" + data.jd +
     "\n\n# Empty form fields\n" + JSON.stringify(data.fields).slice(0, 14000) +
     "\n\nReturn the JSON actions now.";
@@ -133,7 +138,7 @@ async function callClaude(cfg, data) {
 fillBtn.onclick = async () => {
   fillBtn.disabled = true;
   try {
-    const cfg = await chrome.storage.local.get(["apiKey", "model", "resume", "profile"]);
+    const cfg = await chrome.storage.local.get(["apiKey", "model", "resume", "profile", "learned", "resumeFile"]);
     if (!cfg.apiKey) { setStatus("Set your Anthropic API key in Settings first."); return; }
     cfg.model = cfg.model || "claude-sonnet-4-6";
     cfg.resume = cfg.resume || ""; cfg.profile = cfg.profile || "";
@@ -149,10 +154,98 @@ fillBtn.onclick = async () => {
 
     setStatus("Filling…");
     const r2 = await chrome.scripting.executeScript({ target: { tabId: tab.id }, func: applyActions, args: [actions] });
-    setStatus("Filled " + (r2[0].result || 0) + " fields. Review everything, then submit yourself.\n(Some custom widgets/CAPTCHAs may still need you.)");
+
+    let resumeMsg = "";
+    if (cfg.resumeFile && cfg.resumeFile.dataUrl) {
+      setStatus("Attaching resume…");
+      const r3 = await chrome.scripting.executeScript({ target: { tabId: tab.id }, func: applyResume, args: [cfg.resumeFile] });
+      resumeMsg = (r3[0].result ? "\nResume attached." : "\n(No file-upload field found for the resume.)");
+    } else {
+      resumeMsg = "\n(Pick a resume PDF in Settings to auto-attach it.)";
+    }
+    setStatus("Filled " + (r2[0].result || 0) + " fields." + resumeMsg +
+      "\nReview everything, then submit yourself. (CAPTCHAs/odd widgets may still need you.)");
   } catch (e) {
     setStatus("Error: " + (e.message || e));
   } finally {
     fillBtn.disabled = false;
+  }
+};
+
+// ---- injected: attach the stored resume to the best-matching file input ----
+async function applyResume(file) {
+  try {
+    const all = [...document.querySelectorAll('input[type="file"]')];
+    if (!all.length || !file || !file.dataUrl) return 0;
+    let target = all.find((i) => /resume|cv/i.test(
+      (i.name || "") + (i.id || "") + (i.getAttribute("aria-label") || "") +
+      (i.closest("label") ? i.closest("label").innerText : "")));
+    if (!target) target = all[0];
+    const res = await fetch(file.dataUrl);
+    const blob = await res.blob();
+    const f = new File([blob], file.name || "resume.pdf", { type: file.type || "application/pdf" });
+    const dt = new DataTransfer(); dt.items.add(f);
+    target.files = dt.files;
+    target.dispatchEvent(new Event("input", { bubbles: true }));
+    target.dispatchEvent(new Event("change", { bubbles: true }));
+    return 1;
+  } catch (e) { return 0; }
+}
+
+// ---- injected: read what's currently filled, return [{question, answer}] ----
+function scrapeAnswers() {
+  const txt = (el) => (el && el.innerText ? el.innerText.trim() : "");
+  const labelUp = (el) => {
+    const al = el.getAttribute("aria-label"); if (al && al.trim()) return al.trim();
+    if (el.id) { const l = document.querySelector('label[for="' + CSS.escape(el.id) + '"]'); if (txt(l)) return txt(l); }
+    let n = el;
+    for (let i = 0; i < 6 && n; i++) { n = n.parentElement; if (!n) break;
+      const l = n.querySelector('label,.application-label,legend,[class*="label"],[class*="question"]');
+      if (txt(l) && txt(l).length > 2) return txt(l).split("\n")[0].slice(0, 180); }
+    return el.getAttribute("placeholder") || el.getAttribute("name") || "";
+  };
+  const groupQ = (el) => {
+    let n = el;
+    for (let i = 0; i < 8 && n; i++) { n = n.parentElement; if (!n) break;
+      if (n.matches('fieldset,[role="radiogroup"],.application-question,li,[class*="question"]')) {
+        const lab = n.querySelector(".application-label, legend, label");
+        const t = txt(lab) || txt(n).split("\n")[0];
+        if (t && t.length > 3) return t.slice(0, 180); } }
+    return "";
+  };
+  const out = [];
+  document.querySelectorAll("input,textarea,select").forEach((el) => {
+    const tag = el.tagName.toLowerCase(); const type = (el.getAttribute("type") || "").toLowerCase();
+    if (["hidden", "submit", "button", "file", "image", "reset", "password"].includes(type)) return;
+    if (tag === "input" && (type === "radio" || type === "checkbox")) {
+      if (el.checked) { const q = groupQ(el); const wrap = el.closest("label"); const a = txt(wrap) || el.value;
+        if (q && a) out.push({ question: q, answer: a }); }
+    } else {
+      const v = tag === "select" ? (el.options[el.selectedIndex] ? el.options[el.selectedIndex].text : el.value) : el.value;
+      if (v && v.trim()) out.push({ question: labelUp(el), answer: v.trim() });
+    }
+  });
+  return out;
+}
+
+const saveBtn = document.getElementById("saveAns");
+saveBtn.onclick = async () => {
+  saveBtn.disabled = true;
+  try {
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    const r = await chrome.scripting.executeScript({ target: { tabId: tab.id }, func: scrapeAnswers });
+    const pairs = r[0].result || [];
+    const cur = (await chrome.storage.local.get("learned")).learned || {};
+    let n = 0;
+    for (const p of pairs) {
+      const key = (p.question || "").toLowerCase().replace(/\s+/g, " ").trim();
+      if (key && p.answer) { cur[key] = p.answer; n++; }
+    }
+    await chrome.storage.local.set({ learned: cur });
+    setStatus("Saved " + n + " answers. They'll be reused on future forms when the question matches.");
+  } catch (e) {
+    setStatus("Error saving: " + (e.message || e));
+  } finally {
+    saveBtn.disabled = false;
   }
 };

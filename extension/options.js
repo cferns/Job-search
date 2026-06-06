@@ -186,12 +186,26 @@ function render(saved) {
 }
 
 async function load() {
-  const cfg = await chrome.storage.local.get(["apiKey", "model", "resume", "profileData"]);
+  const cfg = await chrome.storage.local.get(["apiKey", "model", "resume", "profileData", "resumeFile"]);
   document.getElementById("apiKey").value = cfg.apiKey || "";
   document.getElementById("model").value = cfg.model || "claude-sonnet-4-6";
   document.getElementById("resume").value = cfg.resume || DEFAULT_RESUME;
+  document.getElementById("resumeFileName").textContent =
+    cfg.resumeFile && cfg.resumeFile.name ? "Stored: " + cfg.resumeFile.name : "No file stored yet.";
   render(cfg.profileData || {});
 }
+
+// Store the picked resume file as a data URL so it can be re-attached on any form.
+document.getElementById("resumeFile").onchange = (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = async () => {
+    await chrome.storage.local.set({ resumeFile: { name: file.name, type: file.type, dataUrl: reader.result } });
+    document.getElementById("resumeFileName").textContent = "Stored: " + file.name + " ✓";
+  };
+  reader.readAsDataURL(file);
+};
 
 document.getElementById("save").onclick = async () => {
   const data = {};
