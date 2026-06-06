@@ -9,8 +9,8 @@ from . import config
 from .adapters import get_adapter
 from .browser import browser_session, render_markdown_to_pdf
 from .detect import detect_ats
-from .models import JobPosting
-from .tailor import tailor_application
+from .models import JobPosting, JobScore
+from .tailor import score_posting, tailor_application
 from .tracker import log_application
 
 
@@ -156,6 +156,68 @@ def process_url(url: str, settings: config.Settings, profile: dict[str, Any],
         log_application(config.resolve(settings.tracker_csv), posting, "Applied",
                         notes=f"Reviewed and submitted by user. Fit {app.fit_score}/100.")
         print("  Logged as Applied.")
+
+
+def rank(urls: list[str], settings: config.Settings, profile: dict[str, Any],
+         master_resume: str) -> None:
+    """Scrape + score each posting, then write a sorted shortlist.md. No form filling."""
+    results: list[JobScore] = []
+    profile_dir = config.resolve(settings.browser_profile_dir)
+    with browser_session(profile_dir, headless=settings.headless) as (context, page):
+        for i, url in enumerate(urls, 1):
+            print(f"[{i}/{len(urls)}] scoring {url}")
+            posting = JobPosting(url=url)
+            try:
+                page.goto(url, wait_until="domcontentloaded", timeout=45000)
+                page.wait_for_timeout(2000)
+                html = ""
+                try:
+                    html = page.content()
+                except Exception:
+                    pass
+                posting.ats = detect_ats(url, html)
+                adapter = get_adapter(posting.ats)
+                posting.company, posting.role = _extract_meta(page)
+                posting.description = adapter.get_job_description(page)
+                score = score_posting(model=settings.model, master_resume=master_resume,
+                                      posting=posting)
+                results.append(score)
+                print(f"    {score.fit_score}/100  remote={score.remote_friendly}  "
+                      f"sponsorship={score.sponsorship}  {score.role} @ {score.company}")
+            except Exception as e:
+                print(f"    skipped ({e})")
+                continue
+
+    out = config.resolve(settings.output_dir).parent / "shortlist.md"
+    _write_shortlist(results, out)
+    print(f"\nWrote {out} ({len(results)} scored).")
+
+
+def _write_shortlist(results: list[JobScore], out_path: Path) -> None:
+    results = sorted(results, key=lambda r: r.fit_score, reverse=True)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    lines = [
+        "# Shortlist — ranked by fit",
+        "",
+        "Sorted by Claude's fit score. `remote`/`sponsorship` are read from each job",
+        "description (sponsorship reflects only what the posting states — verify employers",
+        "on h1bgrader.com regardless). Highest-fit roles first.",
+        "",
+        "| Fit | Remote | Sponsorship | Role | Company | Gaps |",
+        "| ---:| :----- | :---------- | :--- | :------ | :--- |",
+    ]
+    for r in results:
+        gaps = ", ".join(r.missing_keywords[:4]) if r.missing_keywords else "—"
+        lines.append(
+            f"| {r.fit_score} | {r.remote_friendly} | {r.sponsorship} | "
+            f"{r.role or '?'} | {r.company or '?'} | {gaps} |"
+        )
+    lines += ["", "## Notes per role", ""]
+    for r in results:
+        lines.append(f"- **{r.fit_score}/100 — {r.role} @ {r.company}** "
+                     f"(remote: {r.remote_friendly}, sponsorship: {r.sponsorship}). "
+                     f"{r.fit_summary}")
+    out_path.write_text("\n".join(lines) + "\n")
 
 
 def _try_submit(page) -> None:

@@ -17,6 +17,19 @@ class TailoredApplication(BaseModel):
     cover_letter_markdown: str
 
 
+class JobScore(BaseModel):
+    """Lightweight triage output — fit + remote/sponsorship signals, no full materials."""
+
+    company: str
+    role: str
+    location: str
+    fit_score: int  # 0-100
+    fit_summary: str  # one sentence
+    missing_keywords: list[str]
+    remote_friendly: str  # "yes" | "no" | "unclear"  (from the JD)
+    sponsorship: str  # "offers" | "no sponsorship" | "not mentioned"  (from the JD)
+
+
 @dataclass
 class JobPosting:
     url: str

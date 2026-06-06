@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import anthropic
 
-from .models import JobPosting, TailoredApplication
+from .models import JobPosting, JobScore, TailoredApplication
 
 SYSTEM = """You are an expert technical recruiter and resume writer. You tailor a \
 candidate's master resume and write a cover letter for a specific job posting.
@@ -77,4 +77,55 @@ def tailor_application(
             "Tailoring failed: the model did not return a parseable application "
             f"(stop_reason={response.stop_reason})."
         )
+    return response.parsed_output
+
+
+SCORE_SYSTEM = """You triage job postings for a candidate. Given the candidate's master \
+resume and a job posting, you output a concise match assessment — NOT a full application.
+
+- fit_score (0-100): honest match strength of the candidate's real experience vs the JD.
+- fit_summary: ONE sentence on the core reason for the score.
+- missing_keywords: the few most important JD requirements the resume doesn't evidence.
+- remote_friendly: read the JD/location. "yes" if remote is offered, "no" if clearly
+  onsite-only, "unclear" if not stated.
+- sponsorship: read the JD ONLY. "offers" if it says visa/H1B sponsorship is available,
+  "no sponsorship" if it says sponsorship is NOT available, "not mentioned" otherwise.
+  Do not guess from company reputation — report only what the posting states."""
+
+SCORE_USER = """# Candidate master resume
+{master_resume}
+
+# Job posting
+Company: {company}
+Role: {role}
+Location: {location}
+URL: {url}
+
+## Job description
+{description}
+
+Assess the match now."""
+
+
+def score_posting(*, model: str, master_resume: str, posting: JobPosting) -> JobScore:
+    """Cheap triage: fit score + remote/sponsorship signals, no resume/cover generation."""
+    client = anthropic.Anthropic()
+    user = SCORE_USER.format(
+        master_resume=master_resume,
+        company=posting.company or "(unknown)",
+        role=posting.role or "(unknown)",
+        location=posting.location or "(unspecified)",
+        url=posting.url,
+        description=posting.description or "(not captured)",
+    )
+    response = client.messages.parse(
+        model=model,
+        max_tokens=2000,
+        thinking={"type": "adaptive"},
+        system=SCORE_SYSTEM,
+        messages=[{"role": "user", "content": user}],
+        output_format=JobScore,
+    )
+    if response.stop_reason == "refusal" or response.parsed_output is None:
+        raise RuntimeError(f"Scoring failed (stop_reason={response.stop_reason}).")
     return response.parsed_output

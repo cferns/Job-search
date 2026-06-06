@@ -47,7 +47,27 @@ python -m jobagent.cli apply --file urls.txt
 
 # Draft only — generate tailored resume + cover letter, no browser, no form filling
 python -m jobagent.cli draft "https://jobs.lever.co/acme/abc"
+
+# Rank — triage a list: scrape + score fit, detect remote + sponsorship, write shortlist.md
+python -m jobagent.cli rank --file urls.txt
 ```
+
+### Triage first with `rank` (recommended for long lists)
+
+`rank` opens each posting, scrapes the JD, and has Claude score the match **cheaply**
+(no resume/cover-letter generation) while reading the **remote** and **visa sponsorship**
+signals straight from the job description. It writes `shortlist.md` — a table sorted by fit
+score — so you apply to the strongest, remote, sponsor-friendly roles first instead of
+working a raw list top to bottom.
+
+```bash
+python -m jobagent.cli rank --file urls.txt   # -> writes ./shortlist.md
+# then apply to the top matches:
+python -m jobagent.cli apply "<top url from shortlist>"
+```
+
+> `sponsorship` in the shortlist reflects only what the posting states — always confirm the
+> employer's H1B history on h1bgrader.com (see `h1b-sponsorship.md`).
 
 **First run with LinkedIn/Indeed/Workday:** the browser opens with a persistent profile,
 so log into those sites once in that window. Your session is reused on later runs.
