@@ -51,18 +51,31 @@ async function autoApply(id, btn) {
   }
 }
 
-async function addOpenTabs() {
-  const tabs = await chrome.tabs.query({});
-  const jobs = await getJobs(); const have = new Set(jobs.map((j) => j.url));
-  let added = 0;
-  for (const t of tabs) {
-    if (t.url && isJobUrl(t.url) && !have.has(t.url)) {
-      jobs.push({ id: Date.now().toString(36) + added, url: t.url, title: t.title || t.url, desc: "", status: "Pending", date: new Date().toISOString().slice(0, 10) });
-      added++;
+async function findJobs() {
+  const setS = (m) => { document.getElementById("stats").textContent = m; };
+  const cfg = await getCfg();
+  if (!cfg.apiKey) { setS("Set your Anthropic API key in Settings first."); return; }
+  const btn = document.getElementById("findJobs"); btn.disabled = true; const orig = btn.textContent; btn.textContent = "Searching…";
+  try {
+    const { jobQuery } = await chrome.storage.local.get("jobQuery");
+    const q = jobQuery || "Technical Program Manager OR Product Manager, data/AI/ML platforms, remote, H1B sponsorship";
+    setS("Searching the web for jobs… (~20–40s)");
+    const found = await searchJobs(cfg, q);
+    const jobs = await getJobs(); const have = new Set(jobs.map((j) => j.url));
+    let added = 0;
+    for (const f of found) {
+      if (f && f.url && !have.has(f.url)) {
+        jobs.push({ id: Date.now().toString(36) + added, url: f.url, title: f.title || f.url, company: f.company || "", desc: f.description || "", status: "Pending", date: new Date().toISOString().slice(0, 10) });
+        have.add(f.url); added++;
+      }
     }
+    await setJobs(jobs); render();
+    setS("Found " + found.length + " · added " + added + " new job(s).");
+  } catch (e) {
+    setS("Search error: " + (e.message || e));
+  } finally {
+    btn.disabled = false; btn.textContent = orig;
   }
-  await setJobs(jobs); render();
-  document.getElementById("stats").textContent = "Added " + added + " job(s) from open tabs.";
 }
 
 async function init() {
@@ -72,7 +85,7 @@ async function init() {
   SEARCHES.forEach(([label, fn]) => {
     const b = document.createElement("button"); b.textContent = label; b.onclick = () => chrome.tabs.create({ url: fn(q) }); sdiv.appendChild(b);
   });
-  document.getElementById("addTabs").onclick = addOpenTabs;
+  document.getElementById("findJobs").onclick = findJobs;
   render();
   chrome.storage.onChanged.addListener((ch) => { if (ch.jobs) render(); });
 }

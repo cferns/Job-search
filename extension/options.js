@@ -237,6 +237,33 @@ document.getElementById("save").onclick = async () => {
   setTimeout(() => (s.textContent = ""), 2000);
 };
 
+// Backup everything (settings, profile, resume file, learned answers, jobs) to a local file.
+document.getElementById("exportBtn").onclick = async () => {
+  const all = await chrome.storage.local.get(null);
+  const blob = new Blob([JSON.stringify(all, null, 2)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "job-autofill-backup.json";
+  a.click();
+  URL.revokeObjectURL(a.href);
+  const s = document.getElementById("status"); s.textContent = "Backed up ✓"; setTimeout(() => (s.textContent = ""), 2000);
+};
+
+document.getElementById("importBtn").onclick = () => document.getElementById("importFile").click();
+document.getElementById("importFile").onchange = (e) => {
+  const f = e.target.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = async () => {
+    try {
+      const data = JSON.parse(r.result);
+      await chrome.storage.local.set(data);
+      await load();
+      const s = document.getElementById("status"); s.textContent = "Restored ✓"; setTimeout(() => (s.textContent = ""), 2000);
+    } catch (err) { alert("Restore failed: " + err.message); }
+  };
+  r.readAsText(f);
+};
+
 document.getElementById("clearLearned").onclick = async () => {
   await chrome.storage.local.set({ learned: {} });
   const s = document.getElementById("status");

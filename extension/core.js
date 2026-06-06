@@ -187,6 +187,34 @@ async function callClaude(cfg, data) {
   return JSON.parse(t).actions || [];
 }
 
+// Live web search via Claude's web_search tool -> returns [{company,title,url,description}].
+async function searchJobs(cfg, query, count) {
+  count = count || 12;
+  const sys = "You are a job-search assistant. Use web_search to find CURRENT, OPEN job postings " +
+    "matching the candidate's criteria. Strongly prefer direct application pages on Greenhouse " +
+    "(boards.greenhouse.io / job-boards.greenhouse.io), Lever (jobs.lever.co), Ashby " +
+    "(jobs.ashbyhq.com), or the employer's own careers site. Return ONLY a JSON array (no prose, " +
+    "no markdown) of up to " + count + " items: " +
+    '[{"company":"...","title":"...","url":"...","description":"one short sentence"}]. ' +
+    "The url MUST be a direct link to a specific posting, not a search page.";
+  const resp = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: { "content-type": "application/json", "x-api-key": cfg.apiKey, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
+    body: JSON.stringify({
+      model: cfg.model, max_tokens: 4000,
+      tools: [{ type: "web_search_20250305", name: "web_search", max_uses: 6 }],
+      system: sys,
+      messages: [{ role: "user", content: "Find current job postings matching:\n" + query }],
+    }),
+  });
+  if (!resp.ok) throw new Error("API " + resp.status + ": " + (await resp.text()).slice(0, 200));
+  const j = await resp.json();
+  const txt = (j.content || []).filter((b) => b.type === "text").map((b) => b.text).join("\n");
+  const m = txt.match(/\[[\s\S]*\]/);
+  if (!m) return [];
+  try { return JSON.parse(m[0]); } catch (e) { return []; }
+}
+
 // Scrape (all frames) -> Claude -> fill -> resume. Tries clicking "Apply" once if no form found.
 async function runFillOnTab(tabId, cfg, onStatus) {
   const status = onStatus || (() => {});

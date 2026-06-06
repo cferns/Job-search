@@ -43,7 +43,10 @@
   <textarea id="resume"></textarea>
 
   <div class="bar"><button id="save">Save</button>
+    <button id="exportBtn" style="background:#555;margin-left:8px;">⬇ Backup to file</button>
+    <button id="importBtn" style="background:#555;margin-left:8px;">⬆ Restore from file</button>
     <button id="clearLearned" style="background:#aa3333;margin-left:8px;">Clear saved answers</button>
+    <input id="importFile" type="file" accept=".json" style="display:none" />
     <span id="status"></span></div>
   <script src="options.js"></script>
 </body>
