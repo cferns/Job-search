@@ -198,8 +198,27 @@ async function load() {
   document.getElementById("resume").value = cfg.resume || DEFAULT_RESUME;
   document.getElementById("resumeFileName").textContent =
     cfg.resumeFile && cfg.resumeFile.name ? "Stored: " + cfg.resumeFile.name : "No file stored yet.";
+  const fn = (await chrome.storage.local.get("folderName")).folderName;
+  document.getElementById("folderName").textContent = fn
+    ? "Saving to: " + fn
+    : "No folder set (tailored docs are downloadable from the popup).";
   render(cfg.profileData || {});
 }
+
+// Choose a folder to auto-save tailored resume/cover-letter PDFs into.
+document.getElementById("chooseFolder").onclick = async () => {
+  try {
+    const dir = await window.showDirectoryPicker({ mode: "readwrite" });
+    await idbHandle("put", dir);
+    await chrome.storage.local.set({ folderName: dir.name });
+    document.getElementById("folderName").textContent = "Saving to: " + dir.name;
+  } catch (e) { /* cancelled */ }
+};
+document.getElementById("clearFolder").onclick = async () => {
+  try { await idbHandle("clear"); } catch (e) {}
+  await chrome.storage.local.set({ folderName: "" });
+  document.getElementById("folderName").textContent = "No folder set (tailored docs are downloadable from the popup).";
+};
 
 // Store the picked resume file as a data URL so it can be re-attached on any form.
 document.getElementById("resumeFile").onchange = (e) => {

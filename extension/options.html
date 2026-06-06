@@ -40,7 +40,13 @@
 
   <div id="fields"></div>
 
-  <h2>Resume file <span class="hint">(PDF/DOCX — auto-attached to the upload field)</span></h2>
+  <h2>Save tailored docs to a folder <span class="hint">(pick a folder via dialog — browsers can't use a typed path)</span></h2>
+  <button id="chooseFolder" style="background:#555;color:#fff;border:none;border-radius:8px;padding:8px 14px;font-weight:600;cursor:pointer;">📁 Choose folder</button>
+  <button id="clearFolder" style="background:#aa3333;color:#fff;border:none;border-radius:8px;padding:8px 14px;font-weight:600;cursor:pointer;margin-left:8px;">Clear</button>
+  <span id="folderName" class="hint" style="margin-left:8px;"></span>
+  <div class="hint" style="margin-top:4px;">Each "Tailor &amp; Fill" saves the tailored resume + cover letter PDFs here. (Chrome may re-ask permission after a restart.)</div>
+
+  <h2>Resume file <span class="hint">(PDF/DOCX — fallback if tailored upload is off)</span></h2>
   <input id="resumeFile" type="file" accept=".pdf,.doc,.docx" />
   <div id="resumeFileName" class="hint" style="margin-top:6px;"></div>
 
@@ -53,6 +59,7 @@
     <button id="clearLearned" style="background:#aa3333;margin-left:8px;">Clear saved answers</button>
     <input id="importFile" type="file" accept=".json" style="display:none" />
     <span id="status"></span></div>
+  <script src="core.js"></script>
   <script src="options.js"></script>
 </body>
 </html>

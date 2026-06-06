@@ -28,6 +28,37 @@ async function getCfg() {
   return c;
 }
 
+// ---- chosen save folder (File System Access API) ----
+function idbHandle(action, val) {
+  return new Promise((resolve, reject) => {
+    const r = indexedDB.open("ja-fs", 1);
+    r.onupgradeneeded = () => r.result.createObjectStore("h");
+    r.onsuccess = () => {
+      const db = r.result;
+      const tx = db.transaction("h", action === "get" ? "readonly" : "readwrite");
+      const st = tx.objectStore("h");
+      const op = action === "get" ? st.get("dir") : (action === "clear" ? st.delete("dir") : st.put(val, "dir"));
+      op.onsuccess = () => resolve(action === "get" ? op.result : true);
+      op.onerror = () => reject(op.error);
+    };
+    r.onerror = () => reject(r.error);
+  });
+}
+
+async function saveToFolder(filename, blob) {
+  let dir;
+  try { dir = await idbHandle("get"); } catch (e) { return false; }
+  if (!dir) return false;
+  try {
+    if ((await dir.queryPermission({ mode: "readwrite" })) !== "granted") {
+      if ((await dir.requestPermission({ mode: "readwrite" })) !== "granted") return false;
+    }
+    const fh = await dir.getFileHandle(filename, { create: true });
+    const w = await fh.createWritable(); await w.write(blob); await w.close();
+    return true;
+  } catch (e) { return false; }
+}
+
 // ---- in-browser PDF generation (no library): plain text/Markdown -> data URL ----
 function mdToBlocks(md) {
   const blocks = [];
@@ -371,7 +402,7 @@ async function runFillOnTab(tabId, cfg, onStatus) {
   const r2 = await chrome.scripting.executeScript({ target: ft, func: applyActions, args: [actions] });
 
   // Upload a tailored resume + cover letter (generated as PDFs) when enabled.
-  let resume = false, cover = false;
+  let resume = false, cover = false, savedFolder = false;
   if (cfg.tailorUpload && cfg.resume) {
     try {
       status("Tailoring resume + cover letter…");
@@ -387,6 +418,14 @@ async function runFillOnTab(tabId, cfg, onStatus) {
             url: data.url, date: new Date().toISOString().slice(0, 10),
           } });
         } catch (e) { /* ignore quota */ }
+        // Save copies into the chosen folder, if one is set.
+        try {
+          const base = (new URL(data.url).hostname.replace(/^www\./, "").split(".")[0]) || "job";
+          const d = new Date().toISOString().slice(0, 10);
+          const rb = await (await fetch(items[0].dataUrl)).blob();
+          savedFolder = await saveToFolder(base + "-resume-" + d + ".pdf", rb);
+          if (items[1]) { const cb = await (await fetch(items[1].dataUrl)).blob(); await saveToFolder(base + "-cover-letter-" + d + ".pdf", cb); }
+        } catch (e) { /* ignore */ }
         status("Uploading tailored documents…");
         const ru = await chrome.scripting.executeScript({ target: ft, func: applyNamedFiles, args: [items] });
         const cnt = (ru[0] && ru[0].result) || 0; resume = cnt >= 1; cover = cnt >= 2;
@@ -397,5 +436,5 @@ async function runFillOnTab(tabId, cfg, onStatus) {
     const r3 = await chrome.scripting.executeScript({ target: ft, func: applyResume, args: [cfg.resumeFile] });
     resume = !!(r3[0] && r3[0].result);
   }
-  return { filled: (r2[0] && r2[0].result) || 0, fields: data.fields.length, resume, cover, jd: data.jd };
+  return { filled: (r2[0] && r2[0].result) || 0, fields: data.fields.length, resume, cover, savedFolder, jd: data.jd };
 }

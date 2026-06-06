@@ -38,7 +38,7 @@ fillBtn.onclick = async () => {
     if (res.error) { setStatus("No fillable form found (even in embedded frames). Open the application form — click Apply if needed — then try again."); return; }
     await recordJob(tab, res.jd);
     const rmsg = res.resume
-      ? ("\nTailored resume" + (res.cover ? " + cover letter" : "") + " uploaded.")
+      ? ("\nTailored resume" + (res.cover ? " + cover letter" : "") + " uploaded." + (res.savedFolder ? " Saved to your folder." : ""))
       : "\n(No resume upload field found — an Attach/Dropbox button may need a manual click.)";
     setStatus("Filled " + res.filled + " fields." + rmsg + "\nReview & submit yourself. Saved to your Job Search session.");
     renderDownloads();
