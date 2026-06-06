@@ -11,44 +11,63 @@ function scrapeFields() {
     const r = el.getBoundingClientRect(); const s = getComputedStyle(el);
     return r.width > 1 && r.height > 1 && s.visibility !== "hidden" && s.display !== "none";
   };
+  const txt = (el) => (el && el.innerText ? el.innerText.trim() : "");
+  // The QUESTION for a radio/checkbox group: the shared label/legend above the options.
+  const groupQuestion = (el) => {
+    let n = el;
+    for (let i = 0; i < 8 && n; i++) {
+      n = n.parentElement; if (!n) break;
+      if (n.matches('fieldset,[role="radiogroup"],[role="group"],.application-question,li,[class*="question"],[class*="field"]')) {
+        const lab = n.querySelector(".application-label, legend, label, h2, h3, h4");
+        const t = txt(lab) || txt(n).split("\n")[0];
+        if (t && t.length > 3) return t.slice(0, 180);
+      }
+    }
+    return "";
+  };
+  // The label of a single option (Yes / No / a choice).
+  const optionLabel = (el) => {
+    if (el.id) { const l = document.querySelector('label[for="' + CSS.escape(el.id) + '"]'); if (txt(l)) return txt(l); }
+    const wrap = el.closest("label"); if (txt(wrap)) return txt(wrap);
+    const sib = el.nextElementSibling; if (txt(sib)) return txt(sib);
+    return el.value || "option";
+  };
+  // Generic label for text/select fields.
   const labelFor = (el) => {
     const al = el.getAttribute("aria-label"); if (al && al.trim()) return al.trim();
     const lid = el.getAttribute("aria-labelledby");
-    if (lid) { const t = document.getElementById(lid.split(" ")[0]); if (t && t.innerText) return t.innerText.trim(); }
-    if (el.id) { const l = document.querySelector('label[for="' + CSS.escape(el.id) + '"]'); if (l && l.innerText) return l.innerText.trim(); }
+    if (lid) { const t = document.getElementById(lid.split(" ")[0]); if (txt(t)) return txt(t); }
+    if (el.id) { const l = document.querySelector('label[for="' + CSS.escape(el.id) + '"]'); if (txt(l)) return txt(l); }
     let n = el;
     for (let i = 0; i < 6 && n; i++) {
       n = n.parentElement; if (!n) break;
       const l = n.querySelector('label,.application-label,legend,[class*="label"],[class*="question"]');
-      if (l && l.innerText && l.innerText.trim().length > 2) return l.innerText.trim().split("\n")[0].slice(0, 160);
+      if (txt(l) && txt(l).length > 2) return txt(l).split("\n")[0].slice(0, 160);
     }
     return el.getAttribute("placeholder") || el.getAttribute("name") || "";
   };
   let idx = 0; const out = []; const groups = {};
-  document.querySelectorAll("input,textarea,select").forEach((el) => {
+  // Native inputs + common ARIA custom widgets.
+  document.querySelectorAll('input,textarea,select,[role="radio"],[role="checkbox"]').forEach((el) => {
     const tag = el.tagName.toLowerCase(); const type = (el.getAttribute("type") || "").toLowerCase();
+    const role = (el.getAttribute("role") || "").toLowerCase();
     if (["hidden", "submit", "button", "file", "image", "reset"].includes(type)) return;
     if (!isVis(el)) return;
-    if (tag === "input" && (type === "radio" || type === "checkbox")) {
-      const name = el.getAttribute("name") || "grp" + idx;
+    const isChoice = (tag === "input" && (type === "radio" || type === "checkbox")) || role === "radio" || role === "checkbox";
+    if (isChoice) {
+      const name = el.getAttribute("name") || ("grp_" + (groupQuestion(el) || idx));
       el.setAttribute("data-ja", idx);
-      const opt = { label: labelFor(el) || el.value || "opt" + idx, ja: idx };
-      if (groups[name] === undefined) { groups[name] = out.length; out.push({ kind: type, label: "", options: [opt], _first: idx }); }
+      const opt = { label: optionLabel(el) || "opt" + idx, ja: idx };
+      if (groups[name] === undefined) { groups[name] = out.length; out.push({ kind: "radio", label: groupQuestion(el), options: [opt] }); }
       else out[groups[name]].options.push(opt);
       idx++; return;
     }
-    // skip already-filled text/select
     if (tag === "select") { if (el.selectedIndex > 0 && el.value) return; }
     else if (el.value && el.value.trim()) return;
     el.setAttribute("data-ja", idx);
     const f = { ja: idx, kind: tag === "select" ? "select" : (tag === "textarea" ? "textarea" : "text"), label: labelFor(el) };
     if (tag === "select") f.options = [...el.options].map((o) => o.textContent.trim()).filter(Boolean);
     out.push(f); idx++;
-  });
-  out.forEach((f) => {
-    if (f.kind === "radio" || f.kind === "checkbox") {
-      const first = document.querySelector('[data-ja="' + f._first + '"]'); if (first) f.label = labelFor(first); delete f._first;
-    }
   });
   return { fields: out, jd: (document.body.innerText || "").slice(0, 6000), url: location.href };
 }
