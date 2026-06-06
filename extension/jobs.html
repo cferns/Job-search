@@ -17,9 +17,13 @@
   .s-Applied { color: #2a8a4a; font-weight: 600; } .s-Skipped { color: #999; }
   #empty { color: #888; margin-top: 16px; }
   .stats { color: #555; font-size: 13px; margin-top: 6px; }
+  .nav { display: flex; gap: 6px; margin-bottom: 14px; }
+  .nav a { padding: 8px 14px; border-radius: 8px; text-decoration: none; color: #333; background: #eee; font-weight: 600; }
+  .nav a.active { background: #4f8cff; color: #fff; }
 </style>
 </head>
 <body>
+  <div class="nav"><a href="jobs.html" class="active">📋 Job Session</a><a href="options.html">⚙ Settings</a></div>
   <h1>Job Search Session</h1>
   <h2>Launch searches (from your "what jobs" preference)</h2>
   <div id="searches"></div>
@@ -27,6 +31,10 @@
     <button id="findJobs" style="background:#2a8a4a;color:#fff;border:none;border-radius:8px;padding:9px 14px;font-weight:600;cursor:pointer;">🔎 Search the web for new jobs</button>
     <button id="refresh" style="background:#4f8cff;color:#fff;border:none;border-radius:8px;padding:9px 14px;font-weight:600;cursor:pointer;margin-left:8px;">🔄 Refresh &amp; sort by fit</button>
     <span class="hint" style="color:#888;font-size:12px;margin-left:8px;">Search adds postings; Refresh scores any missing Fit and sorts best on top</span>
+  </div>
+  <div style="margin-top:10px;">
+    <input id="companies" placeholder="Search specific companies, comma separated (e.g. Databricks, Snowflake, Anthropic)" style="width:55%;padding:8px;border:1px solid #ccc;border-radius:8px;" />
+    <button id="searchCompanies" style="background:#6f5cff;color:#fff;border:none;border-radius:8px;padding:9px 14px;font-weight:600;cursor:pointer;margin-left:8px;">🏢 Search these companies</button>
   </div>
   <div class="stats" id="stats"></div>
   <table>

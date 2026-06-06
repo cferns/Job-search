@@ -22,9 +22,115 @@ async function waitTabComplete(tabId, timeout = 25000) {
 }
 
 async function getCfg() {
-  const c = await chrome.storage.local.get(["apiKey", "model", "resume", "profile", "learned", "resumeFile"]);
+  const c = await chrome.storage.local.get(["apiKey", "model", "resume", "profile", "learned", "resumeFile", "tailorUpload"]);
   c.model = c.model || "claude-sonnet-4-6"; c.resume = c.resume || ""; c.profile = c.profile || "";
+  c.tailorUpload = c.tailorUpload !== false; // default on
   return c;
+}
+
+// ---- in-browser PDF generation (no library): plain text/Markdown -> data URL ----
+function mdToBlocks(md) {
+  const blocks = [];
+  (md || "").split(/\r?\n/).forEach((raw) => {
+    let line = raw.replace(/\*\*(.+?)\*\*/g, "$1").replace(/\*(.+?)\*/g, "$1");
+    if (/^\s*$/.test(line)) { blocks.push({ text: "" }); return; }
+    let m;
+    if ((m = line.match(/^#\s+(.*)/))) blocks.push({ text: m[1], bold: true, size: 16 });
+    else if ((m = line.match(/^##\s+(.*)/))) blocks.push({ text: m[1], bold: true, size: 12 });
+    else if ((m = line.match(/^###\s+(.*)/))) blocks.push({ text: m[1], bold: true, size: 11 });
+    else if ((m = line.match(/^\s*[-*]\s+(.*)/))) blocks.push({ text: "• " + m[1], size: 10 });
+    else blocks.push({ text: line.replace(/^#+\s*/, ""), size: 10 });
+  });
+  return blocks;
+}
+
+function makePdf(blocks) {
+  const margin = 54, pw = 612, ph = 792, usable = pw - 2 * margin;
+  const pages = []; let cur = []; let y = ph - margin;
+  const wrap = (text, size) => {
+    const max = Math.max(8, Math.floor(usable / (size * 0.5)));
+    const words = text.split(/\s+/); const out = []; let line = "";
+    for (const w of words) { if ((line + " " + w).trim().length > max) { if (line) out.push(line); line = w; } else line = (line ? line + " " : "") + w; }
+    if (line) out.push(line); return out.length ? out : [""];
+  };
+  for (const b of blocks) {
+    const size = b.size || 10; const font = b.bold ? "F2" : "F1"; const leading = size * 1.35;
+    if (b.text === "") { y -= leading * 0.6; if (y < margin) { pages.push(cur); cur = []; y = ph - margin; } continue; }
+    for (const ln of wrap(b.text, size)) {
+      if (y - leading < margin) { pages.push(cur); cur = []; y = ph - margin; }
+      y -= leading; cur.push({ text: ln, font, size, x: margin, y });
+    }
+  }
+  if (cur.length) pages.push(cur);
+  if (!pages.length) pages.push([]);
+  const esc = (s) => s.replace(/\\/g, "\\\\").replace(/\(/g, "\\(").replace(/\)/g, "\\)").replace(/[^\x20-\x7e]/g, "");
+  const fontHelv = 3, fontBold = 4;
+  const pageObjNum = (i) => 5 + 2 * i, contentObjNum = (i) => 6 + 2 * i;
+  const objText = [];
+  objText[1] = "<< /Type /Catalog /Pages 2 0 R >>";
+  objText[2] = "<< /Type /Pages /Count " + pages.length + " /Kids [" + pages.map((_, i) => pageObjNum(i) + " 0 R").join(" ") + "] >>";
+  objText[fontHelv] = "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>";
+  objText[fontBold] = "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>";
+  pages.forEach((lines, i) => {
+    let stream = "";
+    for (const l of lines) stream += "BT /" + l.font + " " + l.size + " Tf " + l.x + " " + l.y.toFixed(1) + " Td (" + esc(l.text) + ") Tj ET\n";
+    objText[pageObjNum(i)] = "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 " + pw + " " + ph + "] /Resources << /Font << /F1 " + fontHelv + " 0 R /F2 " + fontBold + " 0 R >> >> /Contents " + contentObjNum(i) + " 0 R >>";
+    objText[contentObjNum(i)] = "<< /Length " + stream.length + " >>\nstream\n" + stream + "endstream";
+  });
+  const maxObj = contentObjNum(pages.length - 1);
+  let pdf = "%PDF-1.4\n"; const offsets = [];
+  for (let n = 1; n <= maxObj; n++) { offsets[n] = pdf.length; pdf += n + " 0 obj\n" + (objText[n] || "<< >>") + "\nendobj\n"; }
+  const xref = pdf.length;
+  pdf += "xref\n0 " + (maxObj + 1) + "\n0000000000 65535 f \n";
+  for (let n = 1; n <= maxObj; n++) pdf += String(offsets[n]).padStart(10, "0") + " 00000 n \n";
+  pdf += "trailer\n<< /Size " + (maxObj + 1) + " /Root 1 0 R >>\nstartxref\n" + xref + "\n%%EOF";
+  return "data:application/pdf;base64," + btoa(pdf);
+}
+
+// Tailor a resume + cover letter to this JD -> {resume_markdown, cover_letter}.
+async function tailorDocs(cfg, data) {
+  const sys = "You tailor a candidate's resume and write a cover letter for a specific job, using " +
+    "ONLY facts from their master resume — never invent employers, titles, dates, metrics, or skills. " +
+    'Return ONLY JSON: {"resume_markdown":"...","cover_letter":"..."}. ' +
+    "resume_markdown: a COMPLETE tailored resume in Markdown (name, contact line, summary, experience " +
+    "with bullets, education, skills), reordered/reworded to match the job, ~1-2 pages. " +
+    "cover_letter: 250-320 words, plain text, addressed to the hiring team, specific to this role.";
+  const user = "# Master resume\n" + cfg.resume + "\n\n# Candidate profile\n" + cfg.profile +
+    "\n\n# Job (URL " + data.url + ")\n" + (data.jd || "").slice(0, 4500) + "\n\nProduce the JSON now.";
+  const resp = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: { "content-type": "application/json", "x-api-key": cfg.apiKey, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
+    body: JSON.stringify({ model: cfg.model, max_tokens: 6000, system: sys, messages: [{ role: "user", content: user }] }),
+  });
+  if (!resp.ok) throw new Error("API " + resp.status + ": " + (await resp.text()).slice(0, 200));
+  const j = await resp.json();
+  let t = (j.content || []).filter((b) => b.type === "text").map((b) => b.text).join("").trim();
+  if (t.startsWith("```")) t = t.replace(/^```[a-z]*\n?/, "").replace(/```$/, "").trim();
+  try { return JSON.parse(t); } catch (e) {
+    const m = t.match(/\{[\s\S]*\}/); if (m) { try { return JSON.parse(m[0]); } catch (e2) {} }
+    return null;
+  }
+}
+
+// Upload specific files to file inputs matched by a keyword regex on their label/name.
+async function applyNamedFiles(items) {
+  const all = [...document.querySelectorAll('input[type="file"]')];
+  if (!all.length) return 0;
+  let n = 0;
+  for (const it of items) {
+    if (!it || !it.dataUrl) continue;
+    const re = new RegExp(it.match, "i");
+    let target = all.find((i) => re.test((i.name || "") + " " + (i.id || "") + " " + (i.getAttribute("aria-label") || "") + " " + (i.closest("label") ? i.closest("label").innerText : "")));
+    if (!target && it.fallbackFirst) target = all[0];
+    if (!target) continue;
+    try {
+      const res = await fetch(it.dataUrl); const blob = await res.blob();
+      const f = new File([blob], it.name, { type: "application/pdf" });
+      const dt = new DataTransfer(); dt.items.add(f); target.files = dt.files;
+      target.dispatchEvent(new Event("input", { bubbles: true })); target.dispatchEvent(new Event("change", { bubbles: true })); n++;
+    } catch (e) { /* skip */ }
+  }
+  return n;
 }
 
 // ---------- injected page functions (must be self-contained) ----------
@@ -263,7 +369,25 @@ async function runFillOnTab(tabId, cfg, onStatus) {
   const actions = await callClaude(cfg, data);
   status("Filling…");
   const r2 = await chrome.scripting.executeScript({ target: ft, func: applyActions, args: [actions] });
-  let resume = false;
-  if (cfg.resumeFile && cfg.resumeFile.dataUrl) { const r3 = await chrome.scripting.executeScript({ target: ft, func: applyResume, args: [cfg.resumeFile] }); resume = !!(r3[0] && r3[0].result); }
-  return { filled: (r2[0] && r2[0].result) || 0, fields: data.fields.length, resume, jd: data.jd };
+
+  // Upload a tailored resume + cover letter (generated as PDFs) when enabled.
+  let resume = false, cover = false;
+  if (cfg.tailorUpload && cfg.resume) {
+    try {
+      status("Tailoring resume + cover letter…");
+      const docs = await tailorDocs(cfg, data);
+      if (docs && docs.resume_markdown) {
+        const items = [{ match: "resume|cv", dataUrl: makePdf(mdToBlocks(docs.resume_markdown)), name: "Resume.pdf", fallbackFirst: true }];
+        if (docs.cover_letter) items.push({ match: "cover|letter", dataUrl: makePdf(mdToBlocks(docs.cover_letter)), name: "Cover-Letter.pdf" });
+        status("Uploading tailored documents…");
+        const ru = await chrome.scripting.executeScript({ target: ft, func: applyNamedFiles, args: [items] });
+        const cnt = (ru[0] && ru[0].result) || 0; resume = cnt >= 1; cover = cnt >= 2;
+      }
+    } catch (e) { /* fall back to static resume below */ }
+  }
+  if (!resume && cfg.resumeFile && cfg.resumeFile.dataUrl) {
+    const r3 = await chrome.scripting.executeScript({ target: ft, func: applyResume, args: [cfg.resumeFile] });
+    resume = !!(r3[0] && r3[0].result);
+  }
+  return { filled: (r2[0] && r2[0].result) || 0, fields: data.fields.length, resume, cover, jd: data.jd };
 }

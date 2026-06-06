@@ -25,9 +25,9 @@ fillBtn.onclick = async () => {
     const res = await runFillOnTab(tab.id, cfg, setStatus);
     if (res.error) { setStatus("No fillable form found (even in embedded frames). Open the application form — click Apply if needed — then try again."); return; }
     await recordJob(tab, res.jd);
-    const rmsg = cfg.resumeFile && cfg.resumeFile.dataUrl
-      ? (res.resume ? "\nResume attached." : "\n(No file field found — Attach/Dropbox buttons may need a manual click.)")
-      : "\n(Pick a resume PDF in Settings to auto-attach.)";
+    const rmsg = res.resume
+      ? ("\nTailored resume" + (res.cover ? " + cover letter" : "") + " uploaded.")
+      : "\n(No resume upload field found — an Attach/Dropbox button may need a manual click.)";
     setStatus("Filled " + res.filled + " fields." + rmsg + "\nReview & submit yourself. Saved to your Job Search session.");
   } catch (e) {
     setStatus("Error: " + (e.message || e));

@@ -190,10 +190,11 @@ const DEFAULT_JOBQUERY =
   "Remote (US-based). Open to roles offering H1B visa sponsorship. 8+ years; enterprise platform + adoption focus.";
 
 async function load() {
-  const cfg = await chrome.storage.local.get(["apiKey", "model", "resume", "profileData", "resumeFile", "jobQuery"]);
+  const cfg = await chrome.storage.local.get(["apiKey", "model", "resume", "profileData", "resumeFile", "jobQuery", "tailorUpload"]);
   document.getElementById("jobQuery").value = cfg.jobQuery || DEFAULT_JOBQUERY;
   document.getElementById("apiKey").value = cfg.apiKey || "";
   document.getElementById("model").value = cfg.model || "claude-sonnet-4-6";
+  document.getElementById("tailorUpload").checked = cfg.tailorUpload !== false;
   document.getElementById("resume").value = cfg.resume || DEFAULT_RESUME;
   document.getElementById("resumeFileName").textContent =
     cfg.resumeFile && cfg.resumeFile.name ? "Stored: " + cfg.resumeFile.name : "No file stored yet.";
@@ -227,6 +228,7 @@ document.getElementById("save").onclick = async () => {
   await chrome.storage.local.set({
     apiKey: document.getElementById("apiKey").value.trim(),
     model: document.getElementById("model").value,
+    tailorUpload: document.getElementById("tailorUpload").checked,
     resume: document.getElementById("resume").value,
     jobQuery,
     profileData: data,

@@ -15,9 +15,13 @@
   button { margin-top: 18px; padding: 10px 20px; font-weight: 600; color: #fff; background: #4f8cff; border: none; border-radius: 8px; cursor: pointer; }
   #status { margin-left: 12px; color: #2a8a4a; font-weight: 600; }
   .bar { position: sticky; bottom: 0; background: #fff; padding: 10px 0; border-top: 1px solid #eee; }
+  .nav { display: flex; gap: 6px; margin-bottom: 14px; }
+  .nav a { padding: 8px 14px; border-radius: 8px; text-decoration: none; color: #333; background: #eee; font-weight: 600; }
+  .nav a.active { background: #4f8cff; color: #fff; }
 </style>
 </head>
 <body>
+  <div class="nav"><a href="jobs.html">📋 Job Session</a><a href="options.html" class="active">⚙ Settings</a></div>
   <h1>Job Application Autofill — Settings</h1>
 
   <h2>What jobs are you looking for? <span class="hint">(powers "Job searches" and tailors your answers — keep the first line search-friendly)</span></h2>
@@ -31,6 +35,7 @@
         <option value="claude-sonnet-4-6">claude-sonnet-4-6 (faster, cheaper — recommended)</option>
         <option value="claude-opus-4-8">claude-opus-4-8 (highest quality, slower)</option>
       </select></div>
+    <div class="f wide"><label style="font-weight:600"><input type="checkbox" id="tailorUpload" /> On "Tailor &amp; Fill", generate &amp; upload a tailored resume + cover letter (slower, costs more)</label></div>
   </div>
 
   <div id="fields"></div>

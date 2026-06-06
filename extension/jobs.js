@@ -59,14 +59,12 @@ async function autoApply(id, btn) {
   }
 }
 
-async function findJobs() {
+async function runSearch(q, btn) {
   const setS = (m) => { document.getElementById("stats").textContent = m; };
   const cfg = await getCfg();
   if (!cfg.apiKey) { setS("Set your Anthropic API key in Settings first."); return; }
-  const btn = document.getElementById("findJobs"); btn.disabled = true; const orig = btn.textContent; btn.textContent = "Searching…";
+  btn.disabled = true; const orig = btn.textContent; btn.textContent = "Searching…";
   try {
-    const { jobQuery } = await chrome.storage.local.get("jobQuery");
-    const q = jobQuery || "Technical Program Manager OR Product Manager, data/AI/ML platforms, remote, H1B sponsorship";
     setS("Searching the web for jobs… (~20–40s)");
     const found = await searchJobs(cfg, q);
     const jobs = await getJobs(); const have = new Set(jobs.map((j) => j.url));
@@ -84,6 +82,21 @@ async function findJobs() {
   } finally {
     btn.disabled = false; btn.textContent = orig;
   }
+}
+
+async function findJobs() {
+  const { jobQuery } = await chrome.storage.local.get("jobQuery");
+  const q = jobQuery || "Technical Program Manager OR Product Manager, data/AI/ML platforms, remote, H1B sponsorship";
+  runSearch(q, document.getElementById("findJobs"));
+}
+
+async function findByCompanies() {
+  const c = document.getElementById("companies").value.trim();
+  if (!c) { document.getElementById("stats").textContent = "Enter company names (comma separated)."; return; }
+  const { jobQuery } = await chrome.storage.local.get("jobQuery");
+  const role = (jobQuery || "Technical Program Manager OR Product Manager, data/AI/ML").split("\n")[0];
+  const q = role + "\nONLY at these companies — check each company's careers page / Greenhouse-Lever-Ashby board: " + c;
+  runSearch(q, document.getElementById("searchCompanies"));
 }
 
 async function refreshList() {
@@ -120,6 +133,7 @@ async function init() {
   });
   document.getElementById("findJobs").onclick = findJobs;
   document.getElementById("refresh").onclick = refreshList;
+  document.getElementById("searchCompanies").onclick = findByCompanies;
   render();
   chrome.storage.onChanged.addListener((ch) => { if (ch.jobs) render(); });
 }
