@@ -175,27 +175,33 @@ fillBtn.onclick = async () => {
     cfg.resume = cfg.resume || ""; cfg.profile = cfg.profile || "";
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
-    setStatus("Reading the form…");
-    const r1 = await chrome.scripting.executeScript({ target: { tabId: tab.id }, func: scrapeFields });
-    const data = r1[0].result;
-    if (!data.fields.length) { setStatus("No empty fields found on this page. Are you on the application form (not the job description)?"); return; }
+    setStatus("Reading the form (incl. embedded frames)…");
+    // Run in EVERY frame — application forms are often inside an iframe (e.g. Greenhouse).
+    const all = await chrome.scripting.executeScript({ target: { tabId: tab.id, allFrames: true }, func: scrapeFields });
+    const candidates = all.filter((r) => r.result && r.result.fields && r.result.fields.length)
+      .sort((a, b) => b.result.fields.length - a.result.fields.length);
+    if (!candidates.length) { setStatus("No empty fields found in any frame. Are you on the application form (not the job description)? If it's an embedded form, click into it first."); return; }
+    const best = candidates[0];
+    const data = best.result;
+    const frameTarget = { tabId: tab.id, frameIds: [best.frameId] };
 
     setStatus("Asking Claude to answer " + data.fields.length + " fields… (~10–30s)");
     const actions = await callClaude(cfg, data);
 
     setStatus("Filling…");
-    const r2 = await chrome.scripting.executeScript({ target: { tabId: tab.id }, func: applyActions, args: [actions] });
+    const r2 = await chrome.scripting.executeScript({ target: frameTarget, func: applyActions, args: [actions] });
 
     let resumeMsg = "";
     if (cfg.resumeFile && cfg.resumeFile.dataUrl) {
       setStatus("Attaching resume…");
-      const r3 = await chrome.scripting.executeScript({ target: { tabId: tab.id }, func: applyResume, args: [cfg.resumeFile] });
-      resumeMsg = (r3[0].result ? "\nResume attached." : "\n(No file-upload field found for the resume.)");
+      const r3 = await chrome.scripting.executeScript({ target: frameTarget, func: applyResume, args: [cfg.resumeFile] });
+      resumeMsg = (r3[0].result ? "\nResume attached." : "\n(No file-upload field found — some sites use Attach/Dropbox buttons that need a manual click.)");
     } else {
       resumeMsg = "\n(Pick a resume PDF in Settings to auto-attach it.)";
     }
+    await recordJob(tab, data.jd);
     setStatus("Filled " + (r2[0].result || 0) + " fields." + resumeMsg +
-      "\nReview everything, then submit yourself. (CAPTCHAs/odd widgets may still need you.)");
+      "\nReview everything, then submit yourself. Saved to your Job Search session.");
   } catch (e) {
     setStatus("Error: " + (e.message || e));
   } finally {
@@ -259,29 +265,31 @@ function scrapeAnswers() {
   return out;
 }
 
-// ---- Job searches: open prebuilt search pages from the "what jobs" preference ----
-document.getElementById("search").onclick = async () => {
-  const cfg = await chrome.storage.local.get(["jobQuery"]);
-  const q = ((cfg.jobQuery || "Technical Program Manager OR Product Manager data AI ML platform")
-    .split("\n")[0]).slice(0, 140);
-  const e = encodeURIComponent(q);
-  const urls = [
-    "https://www.linkedin.com/jobs/search/?keywords=" + e + "&f_WT=2",            // remote
-    "https://www.indeed.com/jobs?q=" + e + "&l=Remote",
-    "https://www.google.com/search?q=" + encodeURIComponent(q + " (site:boards.greenhouse.io OR site:jobs.lever.co OR site:jobs.ashbyhq.com)"),
-    "https://www.google.com/search?q=" + encodeURIComponent(q + " remote H1B visa sponsorship jobs"),
-  ];
-  urls.forEach((u) => chrome.tabs.create({ url: u }));
-  setStatus("Opened job searches for: " + q + "\nBrowse results, open a posting's apply form, then Tailor & Fill.");
+// ---- Job searches: open the in-extension session dashboard ----
+document.getElementById("search").onclick = () => {
+  chrome.tabs.create({ url: chrome.runtime.getURL("jobs.html") });
 };
+
+async function recordJob(tab, desc) {
+  try {
+    const { jobs = [] } = await chrome.storage.local.get("jobs");
+    if (jobs.some((j) => j.url === tab.url)) return;
+    jobs.push({
+      id: Date.now().toString(36), url: tab.url, title: tab.title || tab.url,
+      desc: (desc || "").slice(0, 220), status: "Pending",
+      date: new Date().toISOString().slice(0, 10),
+    });
+    await chrome.storage.local.set({ jobs });
+  } catch (e) { /* ignore */ }
+}
 
 const saveBtn = document.getElementById("saveAns");
 saveBtn.onclick = async () => {
   saveBtn.disabled = true;
   try {
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    const r = await chrome.scripting.executeScript({ target: { tabId: tab.id }, func: scrapeAnswers });
-    const pairs = r[0].result || [];
+    const r = await chrome.scripting.executeScript({ target: { tabId: tab.id, allFrames: true }, func: scrapeAnswers });
+    const pairs = r.flatMap((x) => x.result || []);
     const cur = (await chrome.storage.local.get("learned")).learned || {};
     let n = 0;
     for (const p of pairs) {

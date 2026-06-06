@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<style>
+  body { font: 14px -apple-system, system-ui, sans-serif; max-width: 1100px; margin: 24px auto; padding: 0 16px 60px; color: #1a1a1a; }
+  h1 { font-size: 20px; } h2 { font-size: 14px; color: #555; margin: 20px 0 8px; }
+  #searches { display: flex; gap: 8px; flex-wrap: wrap; }
+  #searches button { padding: 8px 12px; font-weight: 600; color: #fff; background: #6f5cff; border: none; border-radius: 8px; cursor: pointer; }
+  table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+  th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid #eee; font-size: 13px; vertical-align: top; }
+  th { color: #888; font-size: 11px; text-transform: uppercase; letter-spacing: .5px; }
+  td.desc { color: #555; max-width: 420px; }
+  a { color: #4f8cff; text-decoration: none; } a:hover { text-decoration: underline; }
+  select { padding: 5px; border: 1px solid #ccc; border-radius: 6px; }
+  .del { background: none; border: none; color: #c33; cursor: pointer; font-size: 14px; }
+  .s-Applied { color: #2a8a4a; font-weight: 600; } .s-Skipped { color: #999; }
+  #empty { color: #888; margin-top: 16px; }
+  .stats { color: #555; font-size: 13px; margin-top: 6px; }
+</style>
+</head>
+<body>
+  <h1>Job Search Session</h1>
+  <h2>Launch searches (from your "what jobs" preference)</h2>
+  <div id="searches"></div>
+  <div class="stats" id="stats"></div>
+  <table>
+    <thead><tr><th>Company</th><th>Role / Link</th><th>Description</th><th>Status</th><th></th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <div id="empty">No jobs yet. Open a posting and click <b>Tailor &amp; Fill</b> — it'll show up here.</div>
+  <script src="jobs.js"></script>
+</body>
+</html>
