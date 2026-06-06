@@ -212,14 +212,25 @@ def process_url(url: str, settings: config.Settings, profile: dict[str, Any],
                               "feedback": feedback or {}})
             store.save()
 
+        pending = adapter.pending_required(page)  # required fields still needing you
+
         if mode == "auto":
+            if pending:
+                print(f"  Not submitting — required fields still need you: {', '.join(pending)}")
+                _finish("Saved",
+                        f"Auto: {len(pending)} required field(s) unfilled ({', '.join(pending)}). "
+                        f"Fit {app.fit_score}/100.")
+                return
             _try_submit(page)
-            _finish("Applied", f"Auto-submitted. Fit {app.fit_score}/100.")
+            _finish("Applied", f"Auto-submitted (all required fields filled). Fit {app.fit_score}/100.")
             print("  Submitted (auto mode).")
             return
 
-        # review mode: hand control to the human
-        print("\n  >>> Review the form in the browser window. <<<")
+        # review mode: hand control to the human, pointing at exactly what's left
+        if pending:
+            print(f"\n  >>> {len(pending)} field(s) need you: {', '.join(pending)}")
+        else:
+            print("\n  >>> All required fields filled — just review and submit. <<<")
         choice = input("  [Enter]=I submitted it / s=skip / q=quit: ").strip().lower()
         if choice == "q":
             raise KeyboardInterrupt

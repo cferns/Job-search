@@ -1,0 +1,13 @@
+# Top 5 picks — best fit + most likely to sponsor H1B (verify each on h1bgrader.com).
+# Run:  python -m jobagent.cli apply --file top5.txt
+#
+# 1. Databricks — Sr. Product Manager, Technical   (CONFIRMED H1B sponsor; data+AI domain)
+https://boards.greenhouse.io/databricks/jobs/8049577002
+# 2. Anthropic — Technical Program Manager, Model Development   (sponsor; frontier AI)
+https://boards.greenhouse.io/anthropic/jobs/4056094008
+# 3. OpenAI — Product Manager, Data Platform   (sponsor)
+https://jobs.ashbyhq.com/openai/62762da5-4d32-4851-8568-489d3bf14e31
+# 4. Justworks — Group Product Manager, Data Services   (data/ML platform + governance)
+https://boards.greenhouse.io/justworks/jobs/5540674?gh_jid=5540674
+# 5. Aledade — Senior Technical PM, AI Data Platform   (REMOTE)
+https://jobs.lever.co/aledade/946d319e-f8c4-4d11-835d-59db22227213

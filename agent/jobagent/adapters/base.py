@@ -53,6 +53,35 @@ class BaseAdapter:
 
     name = "generic"
 
+    def pending_required(self, page: Page) -> list[str]:
+        """Labels of visible *required* fields that are still empty — what truly needs you.
+
+        Lets the agent ask only when needed: auto-submit when this is empty, otherwise
+        surface exactly these fields instead of pausing blindly on every application.
+        """
+        out: list[str] = []
+        loc = page.locator("[required], [aria-required='true']")
+        for i in range(min(loc.count(), 100)):
+            el = loc.nth(i)
+            try:
+                if not el.is_visible():
+                    continue
+                tag = el.evaluate("e => e.tagName.toLowerCase()")
+                if tag not in ("input", "textarea", "select"):
+                    continue
+                etype = (el.get_attribute("type") or "").lower()
+                if etype in ("checkbox", "radio"):
+                    if el.is_checked():
+                        continue
+                elif (el.input_value() or "").strip():
+                    continue
+                label = self._label_for(page, el) or f"<{tag}>"
+                if label not in out:
+                    out.append(label.strip()[:50])
+            except Exception:
+                continue
+        return out
+
     def _label_for(self, page: Page, el) -> str:
         """Best-effort human label for a field, for matching against the answer bank."""
         for attr in ("aria-label", "placeholder", "name", "id"):
