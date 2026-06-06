@@ -379,6 +379,14 @@ async function runFillOnTab(tabId, cfg, onStatus) {
       if (docs && docs.resume_markdown) {
         const items = [{ match: "resume|cv", dataUrl: makePdf(mdToBlocks(docs.resume_markdown)), name: "Resume.pdf", fallbackFirst: true }];
         if (docs.cover_letter) items.push({ match: "cover|letter", dataUrl: makePdf(mdToBlocks(docs.cover_letter)), name: "Cover-Letter.pdf" });
+        // Keep the latest tailored docs so they can be downloaded/reviewed.
+        try {
+          await chrome.storage.local.set({ lastTailored: {
+            resumeDataUrl: items[0].dataUrl, coverDataUrl: items[1] ? items[1].dataUrl : "",
+            resumeMd: docs.resume_markdown, coverMd: docs.cover_letter || "",
+            url: data.url, date: new Date().toISOString().slice(0, 10),
+          } });
+        } catch (e) { /* ignore quota */ }
         status("Uploading tailored documents…");
         const ru = await chrome.scripting.executeScript({ target: ft, func: applyNamedFiles, args: [items] });
         const cnt = (ru[0] && ru[0].result) || 0; resume = cnt >= 1; cover = cnt >= 2;

@@ -6,6 +6,18 @@ function setStatus(msg) { statusEl.textContent = msg; }
 document.getElementById("opts").onclick = () => chrome.runtime.openOptionsPage();
 document.getElementById("search").onclick = () => chrome.tabs.create({ url: chrome.runtime.getURL("jobs.html") });
 
+// Show download links for the most recently generated tailored resume + cover letter.
+async function renderDownloads() {
+  const { lastTailored } = await chrome.storage.local.get("lastTailored");
+  const div = document.getElementById("downloads");
+  if (!lastTailored || !lastTailored.resumeDataUrl) { div.innerHTML = ""; return; }
+  let html = "Last tailored (" + (lastTailored.date || "") + "): ";
+  html += `<a href="${lastTailored.resumeDataUrl}" download="Tailored-Resume.pdf">⬇ Resume</a>`;
+  if (lastTailored.coverDataUrl) html += ` · <a href="${lastTailored.coverDataUrl}" download="Tailored-Cover-Letter.pdf">⬇ Cover letter</a>`;
+  div.innerHTML = html;
+}
+renderDownloads();
+
 async function recordJob(tab, desc) {
   try {
     const { jobs = [] } = await chrome.storage.local.get("jobs");
@@ -29,6 +41,7 @@ fillBtn.onclick = async () => {
       ? ("\nTailored resume" + (res.cover ? " + cover letter" : "") + " uploaded.")
       : "\n(No resume upload field found — an Attach/Dropbox button may need a manual click.)";
     setStatus("Filled " + res.filled + " fields." + rmsg + "\nReview & submit yourself. Saved to your Job Search session.");
+    renderDownloads();
   } catch (e) {
     setStatus("Error: " + (e.message || e));
   } finally {
