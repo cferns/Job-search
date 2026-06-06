@@ -19,6 +19,10 @@ from .base import BaseAdapter
 class LinkedInAdapter(BaseAdapter):
     name = "linkedin"
 
+    def open_application_form(self, page: Page) -> None:
+        """Do NOT auto-click Easy Apply — automating it risks an account ban."""
+        return
+
     def get_job_description(self, page: Page) -> str:
         for sel in [".jobs-description__content", ".jobs-description",
                     "[class*='description']", "main"]:

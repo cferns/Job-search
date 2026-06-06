@@ -13,6 +13,16 @@ from .base import BaseAdapter, safe_fill, safe_set_file
 class LeverAdapter(BaseAdapter):
     name = "lever"
 
+    def open_application_form(self, page: Page) -> None:
+        """Lever's form lives at <posting-url>/apply."""
+        url = page.url.split("?")[0].rstrip("/")
+        if not url.endswith("/apply"):
+            try:
+                page.goto(url + "/apply", wait_until="domcontentloaded", timeout=30000)
+                page.wait_for_timeout(1500)
+            except Exception:
+                pass
+
     def get_job_description(self, page: Page) -> str:
         for sel in [".posting-page", ".section-wrapper.page-full-width", ".content", "main"]:
             try:

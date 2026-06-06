@@ -52,6 +52,26 @@ class BaseAdapter:
 
     name = "generic"
 
+    def open_application_form(self, page: Page) -> None:
+        """Navigate from the JD to the actual application form, if needed.
+
+        Default: click a visible "Apply" button/link if one exists (Greenhouse/Ashby
+        often gate the form behind it). Adapters with a known form URL override this.
+        """
+        for sel in [
+            "a:has-text('Apply for this')", "button:has-text('Apply for this')",
+            "button:has-text('Apply now')", "a:has-text('Apply now')",
+            "button:has-text('Apply')", "a:has-text('Apply')",
+        ]:
+            try:
+                loc = page.locator(sel).first
+                if loc.count() and loc.is_visible():
+                    loc.click(timeout=4000)
+                    page.wait_for_timeout(1500)
+                    return
+            except Exception:
+                continue
+
     def get_job_description(self, page: Page) -> str:
         """Best-effort scrape of the visible job text."""
         for sel in ["main", "article", "[class*='description']", "body"]:

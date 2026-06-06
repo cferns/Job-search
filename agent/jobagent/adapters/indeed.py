@@ -18,6 +18,11 @@ from .base import BaseAdapter, safe_fill, safe_set_file
 class IndeedAdapter(BaseAdapter):
     name = "indeed"
 
+    def open_application_form(self, page: Page) -> None:
+        """Indeed apply often redirects to the employer ATS and has anti-bot checks;
+        don't auto-navigate — let the human drive from the JD page."""
+        return
+
     def get_job_description(self, page: Page) -> str:
         for sel in ["#jobDescriptionText", ".jobsearch-JobComponent-description", "main"]:
             try:

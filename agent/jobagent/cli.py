@@ -13,6 +13,7 @@ from pathlib import Path
 
 from . import config
 from .runner import process_url, rank
+from .tracker import applied_urls
 
 
 def _collect_urls(args) -> list[str]:
@@ -42,6 +43,8 @@ def main(argv: list[str] | None = None) -> int:
         if cmd != "rank":
             p.add_argument("--mode", choices=["review", "auto", "draft"],
                            help="Override submit_mode from settings")
+            p.add_argument("--force", action="store_true",
+                           help="Process even URLs already logged as Applied")
 
     args = parser.parse_args(argv)
 
@@ -67,6 +70,19 @@ def main(argv: list[str] | None = None) -> int:
         settings.submit_mode = "draft"
     elif mode:
         settings.submit_mode = mode
+
+    # Skip roles already submitted (unless --force), so re-running a list is safe.
+    if settings.submit_mode != "draft" and not getattr(args, "force", False):
+        done = applied_urls(config.resolve(settings.tracker_csv))
+        before = len(urls)
+        urls = [u for u in urls if u not in done]
+        if before != len(urls):
+            print(f"Skipping {before - len(urls)} already-applied URL(s). "
+                  f"Use --force to include them.")
+
+    if not urls:
+        print("Nothing to do — all URLs already applied.")
+        return 0
 
     print(f"Job agent: {len(urls)} posting(s), mode={settings.submit_mode}, "
           f"model={settings.model}")

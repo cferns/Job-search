@@ -99,6 +99,23 @@ Drop a `jobagent/adapters/<name>.py` subclassing `BaseAdapter` (implement
 `get_job_description` and `fill`), then register it in `jobagent/adapters/__init__.py`
 and add a host match in `jobagent/detect.py`.
 
+## Safe re-runs
+
+`apply` automatically **skips URLs already logged as `Applied`** in `applications.csv`, so
+re-running a list won't double-apply (and a failed batch resumes where it left off). Pass
+`--force` to include them anyway. `draft` always regenerates.
+
+The agent also navigates to the real **application form** before filling (Lever `/apply`,
+Greenhouse/Ashby "Apply" button) — except LinkedIn/Indeed, which it never auto-advances.
+
+## Tests
+
+```bash
+cd agent
+python tests/test_helpers.py     # stdlib runner, no extra deps
+# or: python -m pytest tests/
+```
+
 ## Limitations & cautions
 
 - CAPTCHAs, SSO/login walls, and unusual custom questions always need you. That's expected

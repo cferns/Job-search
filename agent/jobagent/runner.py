@@ -1,7 +1,6 @@
 """Orchestrates one application: detect -> scrape -> tailor -> fill -> review -> log."""
 from __future__ import annotations
 
-import re
 from pathlib import Path
 from typing import Any
 
@@ -11,28 +10,32 @@ from .browser import browser_session, render_markdown_to_pdf
 from .detect import detect_ats
 from .models import JobPosting, JobScore
 from .tailor import score_posting, tailor_application
+from .textutil import markdown_to_text, slugify, split_role_company
 from .tracker import log_application
 
 
 def _slug(text: str) -> str:
-    return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")[:60] or "job"
+    return slugify(text)
+
+
+def _settle(page, timeout: int = 8000) -> None:
+    """Give SPA ATS pages (Ashby, new Greenhouse) a chance to render before scraping."""
+    try:
+        page.wait_for_load_state("networkidle", timeout=timeout)
+    except Exception:
+        page.wait_for_timeout(2500)
 
 
 def _extract_meta(page) -> tuple[str, str]:
-    """Best-effort (company, role) from page metadata."""
+    """Best-effort (company, role) from page metadata. Returns (company, role)."""
     company = role = ""
     try:
         title = (page.title() or "").strip()
     except Exception:
         title = ""
-    # Common patterns: "Role - Company", "Role at Company", "Company - Role"
-    for sep in [" - ", " | ", " at ", " @ "]:
-        if sep in title:
-            a, b = [s.strip() for s in title.split(sep, 1)]
-            role, company = a, b
-            break
-    else:
-        role = title
+    if title:
+        role, company = split_role_company(title)
+    # Prefer an explicit site name for company when available.
     for prop in ["meta[property='og:site_name']", "meta[name='author']"]:
         try:
             loc = page.locator(prop).first
@@ -47,14 +50,7 @@ def _extract_meta(page) -> tuple[str, str]:
 
 
 def _plain(markdown_text: str) -> str:
-    """Strip light Markdown markup so cover-letter text fits plain-text form fields."""
-    import re
-    text = markdown_text
-    text = re.sub(r"^#{1,6}\s*", "", text, flags=re.MULTILINE)   # headings
-    text = re.sub(r"\*\*(.+?)\*\*", r"\1", text)                  # bold
-    text = re.sub(r"(?<!\*)\*(?!\s)(.+?)\*", r"\1", text)         # italics
-    text = re.sub(r"^\s*[-*]\s+", "- ", text, flags=re.MULTILINE) # bullets
-    return text.strip()
+    return markdown_to_text(markdown_text)
 
 
 def _write_materials(settings: config.Settings, app, posting: JobPosting,
@@ -109,7 +105,7 @@ def process_url(url: str, settings: config.Settings, profile: dict[str, Any],
     with browser_session(profile_dir, headless=settings.headless) as (pw, context, page):
         print(f"\nOpening {url}")
         page.goto(url, wait_until="domcontentloaded", timeout=60000)
-        page.wait_for_timeout(2500)
+        _settle(page)
 
         html = ""
         try:
@@ -139,6 +135,10 @@ def process_url(url: str, settings: config.Settings, profile: dict[str, Any],
 
         # choose resume to upload: explicit profile override, else tailored PDF
         resume_pdf = config.resolve(profile["resume_pdf"]) if profile.get("resume_pdf") else pdf
+
+        # Navigate to the actual application form (Lever /apply, Greenhouse/Ashby
+        # "Apply" button) before filling — the JD page often has no form fields.
+        adapter.open_application_form(page)
 
         print("  Filling the application form...")
         report = adapter.fill(page, profile, resume_pdf, _plain(app.cover_letter_markdown), posting)
@@ -182,7 +182,7 @@ def rank(urls: list[str], settings: config.Settings, profile: dict[str, Any],
             posting = JobPosting(url=url)
             try:
                 page.goto(url, wait_until="domcontentloaded", timeout=45000)
-                page.wait_for_timeout(2000)
+                _settle(page)
                 html = ""
                 try:
                     html = page.content()

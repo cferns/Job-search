@@ -4,8 +4,10 @@ from __future__ import annotations
 import csv
 from datetime import date
 from pathlib import Path
+from typing import TYPE_CHECKING
 
-from .models import JobPosting
+if TYPE_CHECKING:  # avoid a runtime pydantic dependency just for a type hint
+    from .models import JobPosting
 
 CSV_COLS = [
     "company", "role", "location", "status", "dateApplied",
@@ -13,7 +15,19 @@ CSV_COLS = [
 ]
 
 
-def log_application(csv_path: Path, posting: JobPosting, status: str, notes: str = "") -> None:
+def applied_urls(csv_path: Path) -> set[str]:
+    """URLs already logged with status 'Applied' — used to avoid double-applying."""
+    if not csv_path.exists():
+        return set()
+    out: set[str] = set()
+    with csv_path.open(newline="") as f:
+        for row in csv.DictReader(f):
+            if (row.get("status") or "").strip() == "Applied" and row.get("url"):
+                out.add(row["url"].strip())
+    return out
+
+
+def log_application(csv_path: Path, posting: "JobPosting", status: str, notes: str = "") -> None:
     """Append one row. Creates the file with a header if it doesn't exist."""
     csv_path.parent.mkdir(parents=True, exist_ok=True)
     new_file = not csv_path.exists() or csv_path.stat().st_size == 0
