@@ -37,7 +37,13 @@ fillBtn.onclick = async () => {
     const title = tab.title || "";
     const company = title.split(/\s[-|–—]\s| at /)[0].trim();  // best-effort
     const res = await runFillOnTab(tab.id, cfg, setStatus, { title, company });
-    if (res.error) { setStatus("No fillable form found (even in embedded frames). Open the application form — click Apply if needed — then try again."); return; }
+    if (res.error) {
+      setStatus("No fillable form found (scanned " + (res.frames || 0) + " frames, " + (res.totalInputs || 0) + " inputs).\n"
+        + (res.frames <= 1
+          ? "Only the top page was readable — the form is in a blocked cross-origin frame. Fix: chrome://extensions → this extension → Details → Site access → 'On all sites', then retry."
+          : "Inputs exist but weren't fillable here — the form may be in a closed shadow DOM or needs the Apply panel opened. Click into the form and retry."));
+      return;
+    }
     await recordJob(tab, res.jd);
     const rmsg = res.resume
       ? ("\nTailored resume" + (res.cover ? " + cover letter" : "") + " uploaded." + (res.savedFolder ? " Saved to your folder." : ""))

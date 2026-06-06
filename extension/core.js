@@ -214,7 +214,7 @@ function scrapeFields() {
     if (tag === "select") f.options = [...el.options].map((o) => o.textContent.trim()).filter(Boolean);
     out.push(f); idx++;
   });
-  return { fields: out, jd: (document.body.innerText || "").slice(0, 6000), url: location.href };
+  return { fields: out, total: deepAll("input,textarea,select").length, jd: (document.body.innerText || "").slice(0, 6000), url: location.href };
 }
 
 async function applyActions(actions) {
@@ -390,18 +390,20 @@ async function scoreJobs(cfg, items) {
 // Scrape (all frames) -> Claude -> fill -> resume. Tries clicking "Apply" once if no form found.
 async function runFillOnTab(tabId, cfg, onStatus, meta) {
   const status = onStatus || (() => {});
-  const scan = async () => {
-    const all = await chrome.scripting.executeScript({ target: { tabId, allFrames: true }, func: scrapeFields });
-    return all.filter((r) => r.result && r.result.fields && r.result.fields.length).sort((a, b) => b.result.fields.length - a.result.fields.length);
-  };
+  const scanRaw = async () => await chrome.scripting.executeScript({ target: { tabId, allFrames: true }, func: scrapeFields });
+  const pick = (raw) => raw.filter((r) => r.result && r.result.fields && r.result.fields.length).sort((a, b) => b.result.fields.length - a.result.fields.length);
   status("Reading the form…");
-  let cands = await scan();
+  let raw = await scanRaw(); let cands = pick(raw);
   if (!cands.length) {
     status("Opening the application form…");
     await chrome.scripting.executeScript({ target: { tabId, allFrames: true }, func: clickApply });
-    await sleep(2500); cands = await scan();
+    await sleep(2500); raw = await scanRaw(); cands = pick(raw);
   }
-  if (!cands.length) return { error: "no form found", filled: 0 };
+  if (!cands.length) {
+    const frames = raw.length;
+    const totalInputs = raw.reduce((a, r) => a + ((r.result && r.result.total) || 0), 0);
+    return { error: "no form found", filled: 0, frames, totalInputs };
+  }
   const best = cands[0]; const data = best.result; const ft = { tabId, frameIds: [best.frameId] };
   status("Asking Claude to answer " + data.fields.length + " fields…");
   const actions = await callClaude(cfg, data);
