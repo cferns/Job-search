@@ -38,10 +38,8 @@ fillBtn.onclick = async () => {
     const company = title.split(/\s[-|–—]\s| at /)[0].trim();  // best-effort
     const res = await runFillOnTab(tab.id, cfg, setStatus, { title, company });
     if (res.error) {
-      setStatus("No fillable form found (scanned " + (res.frames || 0) + " frames, " + (res.totalInputs || 0) + " inputs).\n"
-        + (res.frames <= 1
-          ? "Only the top page was readable — the form is in a blocked cross-origin frame. Fix: chrome://extensions → this extension → Details → Site access → 'On all sites', then retry."
-          : "Inputs exist but weren't fillable here — the form may be in a closed shadow DOM or needs the Apply panel opened. Click into the form and retry."));
+      setStatus("No fillable form found.\nFrames (host fillable/total):\n" + (res.perFrame || []).join("\n")
+        + "\n\nIf you don't see the form's host here, it's in a blocked/nested frame — open that frame directly (right-click the form → This Frame → Open in new tab) and retry.");
       return;
     }
     await recordJob(tab, res.jd);

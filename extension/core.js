@@ -402,7 +402,12 @@ async function runFillOnTab(tabId, cfg, onStatus, meta) {
   if (!cands.length) {
     const frames = raw.length;
     const totalInputs = raw.reduce((a, r) => a + ((r.result && r.result.total) || 0), 0);
-    return { error: "no form found", filled: 0, frames, totalInputs };
+    const perFrame = raw.map((r) => {
+      const x = r.result || {};
+      let host = "?"; try { host = new URL(x.url).hostname.replace(/^www\./, ""); } catch (e) {}
+      return host + " " + ((x.fields && x.fields.length) || 0) + "/" + (x.total || 0);
+    });
+    return { error: "no form found", filled: 0, frames, totalInputs, perFrame };
   }
   const best = cands[0]; const data = best.result; const ft = { tabId, frameIds: [best.frameId] };
   status("Asking Claude to answer " + data.fields.length + " fields…");
