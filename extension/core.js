@@ -145,7 +145,8 @@ async function tailorDocs(cfg, data) {
 
 // Upload specific files to file inputs matched by a keyword regex on their label/name.
 async function applyNamedFiles(items) {
-  const all = [...document.querySelectorAll('input[type="file"]')];
+  const deepAll = (sel) => { const r = []; const w = (n) => { try { n.querySelectorAll(sel).forEach((e) => r.push(e)); } catch (e) {} try { n.querySelectorAll("*").forEach((e) => { if (e.shadowRoot) w(e.shadowRoot); }); } catch (e) {} }; w(document); return r; };
+  const all = deepAll('input[type="file"]');
   if (!all.length) return 0;
   let n = 0;
   for (const it of items) {
@@ -166,6 +167,7 @@ async function applyNamedFiles(items) {
 
 // ---------- injected page functions (must be self-contained) ----------
 function scrapeFields() {
+  const deepAll = (sel) => { const r = []; const w = (n) => { try { n.querySelectorAll(sel).forEach((e) => r.push(e)); } catch (e) {} try { n.querySelectorAll("*").forEach((e) => { if (e.shadowRoot) w(e.shadowRoot); }); } catch (e) {} }; w(document); return r; };
   const isVis = (el) => { const r = el.getBoundingClientRect(); const s = getComputedStyle(el); return r.width > 1 && r.height > 1 && s.visibility !== "hidden" && s.display !== "none"; };
   const txt = (el) => (el && el.innerText ? el.innerText.trim() : "");
   const groupQuestion = (el) => {
@@ -193,7 +195,7 @@ function scrapeFields() {
     return el.getAttribute("placeholder") || el.getAttribute("name") || "";
   };
   let idx = 0; const out = []; const groups = {};
-  document.querySelectorAll('input,textarea,select,[role="radio"],[role="checkbox"]').forEach((el) => {
+  deepAll('input,textarea,select,[role="radio"],[role="checkbox"]').forEach((el) => {
     const tag = el.tagName.toLowerCase(); const type = (el.getAttribute("type") || "").toLowerCase(); const role = (el.getAttribute("role") || "").toLowerCase();
     if (["hidden", "submit", "button", "file", "image", "reset"].includes(type)) return;
     if (!isVis(el)) return;
@@ -216,6 +218,8 @@ function scrapeFields() {
 }
 
 async function applyActions(actions) {
+  const deepAll = (sel) => { const r = []; const w = (n) => { try { n.querySelectorAll(sel).forEach((e) => r.push(e)); } catch (e) {} try { n.querySelectorAll("*").forEach((e) => { if (e.shadowRoot) w(e.shadowRoot); }); } catch (e) {} }; w(document); return r; };
+  const deepOne = (sel) => deepAll(sel)[0];
   const sleep2 = (ms) => new Promise((r) => setTimeout(r, ms));
   const setNativeValue = (el, value) => {
     const proto = el.tagName === "TEXTAREA" ? HTMLTextAreaElement.prototype : HTMLInputElement.prototype;
@@ -230,7 +234,7 @@ async function applyActions(actions) {
     for (let w = 0; w < 4; w++) {
       await sleep2(500);
       const want = value.toLowerCase().split(",")[0].trim();
-      const opts = [...document.querySelectorAll('[role="option"],ul[role="listbox"] li,.select__option,[class*="option"],[class*="suggestion"],[class*="menu"] li')].filter((o) => o.offsetParent !== null && o.innerText && o.innerText.trim());
+      const opts = deepAll('[role="option"],ul[role="listbox"] li,.select__option,[class*="option"],[class*="suggestion"],[class*="menu"] li').filter((o) => o.offsetParent !== null && o.innerText && o.innerText.trim());
       const pick = opts.find((o) => o.innerText.toLowerCase().includes(want)) || opts[0];
       if (pick) { pick.click(); return true; }
     }
@@ -239,7 +243,7 @@ async function applyActions(actions) {
   let n = 0;
   for (const a of actions || []) {
     try {
-      const el = document.querySelector('[data-ja="' + a.ja + '"]'); if (!el) continue;
+      const el = deepOne('[data-ja="' + a.ja + '"]'); if (!el) continue;
       if (a.action === "click") { el.click(); n++; }
       else if (a.action === "select") {
         const opt = [...el.options].find((o) => o.textContent.trim().toLowerCase() === String(a.value).trim().toLowerCase()) || [...el.options].find((o) => o.textContent.trim().toLowerCase().includes(String(a.value).trim().toLowerCase()));
@@ -253,8 +257,9 @@ async function applyActions(actions) {
 }
 
 async function applyResume(file) {
+  const deepAll = (sel) => { const r = []; const w = (n) => { try { n.querySelectorAll(sel).forEach((e) => r.push(e)); } catch (e) {} try { n.querySelectorAll("*").forEach((e) => { if (e.shadowRoot) w(e.shadowRoot); }); } catch (e) {} }; w(document); return r; };
   try {
-    const all = [...document.querySelectorAll('input[type="file"]')];
+    const all = deepAll('input[type="file"]');
     if (!all.length || !file || !file.dataUrl) return 0;
     let target = all.find((i) => /resume|cv/i.test((i.name || "") + (i.id || "") + (i.getAttribute("aria-label") || "") + (i.closest("label") ? i.closest("label").innerText : "")));
     if (!target) target = all[0];
@@ -267,12 +272,14 @@ async function applyResume(file) {
 }
 
 function clickApply() {
-  const cands = [...document.querySelectorAll("a,button")].filter((e) => e.offsetParent !== null && /^apply\b|apply for|apply now|submit application/i.test((e.innerText || "").trim()));
+  const deepAll = (sel) => { const r = []; const w = (n) => { try { n.querySelectorAll(sel).forEach((e) => r.push(e)); } catch (e) {} try { n.querySelectorAll("*").forEach((e) => { if (e.shadowRoot) w(e.shadowRoot); }); } catch (e) {} }; w(document); return r; };
+  const cands = deepAll("a,button").filter((e) => e.offsetParent !== null && /^apply\b|apply for|apply now|submit application/i.test((e.innerText || "").trim()));
   if (cands[0]) { cands[0].click(); return true; }
   return false;
 }
 
 function scrapeAnswers() {
+  const deepAll = (sel) => { const r = []; const w = (n) => { try { n.querySelectorAll(sel).forEach((e) => r.push(e)); } catch (e) {} try { n.querySelectorAll("*").forEach((e) => { if (e.shadowRoot) w(e.shadowRoot); }); } catch (e) {} }; w(document); return r; };
   const txt = (el) => (el && el.innerText ? el.innerText.trim() : "");
   const labelUp = (el) => {
     const al = el.getAttribute("aria-label"); if (al && al.trim()) return al.trim();
@@ -285,7 +292,7 @@ function scrapeAnswers() {
   const groupQ = (el) => { let n = el; for (let i = 0; i < 8 && n; i++) { n = n.parentElement; if (!n) break;
     if (n.matches('fieldset,[role="radiogroup"],.application-question,li,[class*="question"]')) { const lab = n.querySelector(".application-label, legend, label"); const t = txt(lab) || txt(n).split("\n")[0]; if (t && t.length > 3) return t.slice(0, 180); } } return ""; };
   const out = [];
-  document.querySelectorAll("input,textarea,select").forEach((el) => {
+  deepAll("input,textarea,select").forEach((el) => {
     const tag = el.tagName.toLowerCase(); const type = (el.getAttribute("type") || "").toLowerCase();
     if (["hidden", "submit", "button", "file", "image", "reset", "password"].includes(type)) return;
     if (tag === "input" && (type === "radio" || type === "checkbox")) {
