@@ -35,7 +35,8 @@ async function render() {
     const company = j.company || (j.title || "").split(/ [-|@] | at /)[1] || "";
     tr.innerHTML =
       `<td>${esc(company)}</td>` +
-      `<td><a href="${esc(j.url)}" target="_blank">${esc(j.title || j.url)}</a><div style="color:#aaa;font-size:11px">${esc(j.date || "")}</div></td>` +
+      `<td><a href="${esc(j.url)}" target="_blank">${esc(j.title || j.url)}</a></td>` +
+      `<td style="white-space:nowrap;color:#666;">${esc(j.date || "")}</td>` +
       `<td class="desc">${esc(j.desc || "")}</td>` +
       fitCell(j) +
       `<td><select data-id="${j.id}" class="st">` + ["Pending", "Applied", "Skipped"].map((s) => `<option ${j.status === s ? "selected" : ""}>${s}</option>`).join("") + `</select></td>` +
