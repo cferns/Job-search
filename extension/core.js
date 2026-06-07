@@ -445,17 +445,17 @@ async function runFillOnTab(tabId, cfg, onStatus, meta) {
     });
     return { error: "no form found", filled: 0, frames, totalInputs, perFrame };
   }
-  const best = cands[0]; const data = best.result; const ft = { tabId, frameIds: [best.frameId] };
-  status("Asking Claude to answer " + data.fields.length + " fields…");
-  const actions = await callClaude(cfg, data);
-  status("Filling…");
-  const r2 = await chrome.scripting.executeScript({ target: ft, func: applyActions, args: [actions] });
+  const primary = cands[0];
+  const data = primary.result;
+  // Fill every frame that holds a real form (>=2 fields), not just the top one — handles
+  // forms that aren't in the frame with the most inputs.
+  const toFill = cands.filter((c) => c.result.fields.length >= 2);
+  if (!toFill.length) toFill.push(primary);
 
-  // Upload a tailored resume + cover letter (generated as PDFs) when enabled.
-  let resume = false, cover = false, savedFolder = false;
+  // Build the tailored resume + cover letter (PDF items) once, from the primary JD.
+  let items = null, savedFolder = false;
   if (cfg.tailorUpload && cfg.resume) {
     try {
-      let items = null;
       const arch = (await chrome.storage.local.get("tailoredArchive")).tailoredArchive || [];
       const prior = [...arch].reverse().find((e) => e.url === data.url && e.resumeDataUrl);
       if (prior) {
@@ -485,18 +485,26 @@ async function runFillOnTab(tabId, cfg, onStatus, meta) {
           } catch (e) {}
         }
       }
-      if (items) {
-        status("Uploading tailored documents…");
-        const ru = await chrome.scripting.executeScript({ target: ft, func: applyNamedFiles, args: [items] });
-        const cnt = (ru[0] && ru[0].result) || 0; resume = cnt >= 1; cover = cnt >= 2;
-      }
-    } catch (e) { /* fall back to static resume below */ }
+    } catch (e) { /* fall back to static resume per-frame */ }
   }
-  if (!resume && cfg.resumeFile && cfg.resumeFile.dataUrl) {
-    const r3 = await chrome.scripting.executeScript({ target: ft, func: applyResume, args: [cfg.resumeFile] });
-    resume = !!(r3[0] && r3[0].result);
+
+  let totalFilled = 0, resume = false, cover = false, pending = []; const seen = new Set();
+  for (const c of toFill) {
+    const ftc = { tabId, frameIds: [c.frameId] };
+    status("Filling…");
+    try {
+      const actions = await callClaude(cfg, c.result);
+      const rr = await chrome.scripting.executeScript({ target: ftc, func: applyActions, args: [actions] });
+      totalFilled += (rr[0] && rr[0].result) || 0;
+    } catch (e) {}
+    if (items) {
+      const ru = await chrome.scripting.executeScript({ target: ftc, func: applyNamedFiles, args: [items] });
+      const cnt = (ru[0] && ru[0].result) || 0; if (cnt >= 1) resume = true; if (cnt >= 2) cover = true;
+    } else if (cfg.resumeFile && cfg.resumeFile.dataUrl) {
+      const r3 = await chrome.scripting.executeScript({ target: ftc, func: applyResume, args: [cfg.resumeFile] });
+      if (r3[0] && r3[0].result) resume = true;
+    }
+    try { const pr = await chrome.scripting.executeScript({ target: ftc, func: pendingRequired }); (pr[0] && pr[0].result || []).forEach((x) => { if (!seen.has(x)) { seen.add(x); pending.push(x); } }); } catch (e) {}
   }
-  let pending = [];
-  try { const pr = await chrome.scripting.executeScript({ target: ft, func: pendingRequired }); pending = (pr[0] && pr[0].result) || []; } catch (e) {}
-  return { filled: (r2[0] && r2[0].result) || 0, fields: data.fields.length, resume, cover, savedFolder, pending, jd: data.jd };
+  return { filled: totalFilled, fields: data.fields.length, resume, cover, savedFolder, pending, jd: data.jd };
 }
