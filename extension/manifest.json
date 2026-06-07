@@ -4,7 +4,8 @@
   "version": "0.1.0",
   "description": "Reads the job application form you're viewing and fills it from your resume using Claude. You review and submit.",
   "permissions": ["activeTab", "scripting", "storage", "tabs", "unlimitedStorage"],
-  "host_permissions": ["<all_urls>"],
+  "host_permissions": ["https://api.anthropic.com/*"],
+  "optional_host_permissions": ["*://*/*"],
   "action": { "default_popup": "popup.html" },
   "options_page": "options.html"
 }

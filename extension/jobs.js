@@ -57,6 +57,7 @@ async function autoApply(id, btn) {
   if (!cfg.apiKey) { msg.textContent = "Set API key in Settings"; return; }
   const job = (await getJobs()).find((x) => x.id === id);
   if (!job) return;
+  await ensureAccess();
   btn.disabled = true; dspin(true);
   try {
     msg.textContent = "opening…";

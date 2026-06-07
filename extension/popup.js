@@ -33,6 +33,7 @@ fillBtn.onclick = async () => {
   try {
     const cfg = await getCfg();
     if (!cfg.apiKey) { setStatus("Set your Anthropic API key in Settings first."); return; }
+    await ensureAccess();
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     const title = tab.title || "";
     const company = title.split(/\s[-|–—]\s| at /)[0].trim();  // best-effort

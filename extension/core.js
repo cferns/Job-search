@@ -21,6 +21,15 @@ async function waitTabComplete(tabId, timeout = 25000) {
   }
 }
 
+// Ensure access to all sites so we can read embedded (cross-origin) application iframes.
+// Prompts once ("Allow on all sites"); silent thereafter.
+async function ensureAccess() {
+  try {
+    if (await chrome.permissions.contains({ origins: ["*://*/*"] })) return true;
+    return await chrome.permissions.request({ origins: ["*://*/*"] });
+  } catch (e) { return true; }
+}
+
 async function getCfg() {
   const c = await chrome.storage.local.get(["apiKey", "model", "resume", "profile", "learned", "resumeFile", "tailorUpload"]);
   c.model = c.model || "claude-sonnet-4-6"; c.resume = c.resume || ""; c.profile = c.profile || "";
