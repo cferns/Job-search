@@ -154,12 +154,6 @@ async function renderArchive() {
 }
 
 async function init() {
-  const { jobQuery } = await chrome.storage.local.get("jobQuery");
-  const q = ((jobQuery || "Technical Program Manager OR Product Manager data AI ML platform").split("\n")[0]).slice(0, 140);
-  const sdiv = document.getElementById("searches");
-  SEARCHES.forEach(([label, fn]) => {
-    const b = document.createElement("button"); b.textContent = label; b.onclick = () => chrome.tabs.create({ url: fn(q) }); sdiv.appendChild(b);
-  });
   document.getElementById("findJobs").onclick = findJobs;
   document.getElementById("refresh").onclick = refreshList;
   document.getElementById("searchCompanies").onclick = findByCompanies;
