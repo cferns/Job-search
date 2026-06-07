@@ -46,7 +46,8 @@ fillBtn.onclick = async () => {
     const rmsg = res.resume
       ? ("\nTailored resume" + (res.cover ? " + cover letter" : "") + " uploaded." + (res.savedFolder ? " Saved to your folder." : ""))
       : "\n(No resume upload field found — an Attach/Dropbox button may need a manual click.)";
-    setStatus("Filled " + res.filled + " fields." + rmsg + "\nReview & submit yourself. Saved to your Job Search session.");
+    const pend = (res.pending && res.pending.length) ? "\n⚠ Still needs you: " + res.pending.join(", ") : "\n✓ No required fields left empty.";
+    setStatus("Filled " + res.filled + " fields." + rmsg + pend + "\nReview & submit yourself. Saved to your Job Search session.");
     renderDownloads();
   } catch (e) {
     setStatus("Error: " + (e.message || e));

@@ -312,6 +312,32 @@ function scrapeAnswers() {
   return out;
 }
 
+function pendingRequired() {
+  const deepAll = (sel) => { const r = []; const w = (n) => { try { n.querySelectorAll(sel).forEach((e) => r.push(e)); } catch (e) {} try { n.querySelectorAll("*").forEach((e) => { if (e.shadowRoot) w(e.shadowRoot); }); } catch (e) {} }; w(document); return r; };
+  const txt = (el) => (el && el.innerText ? el.innerText.trim() : "");
+  const labelOf = (el) => {
+    const al = el.getAttribute("aria-label"); if (al && al.trim()) return al.trim();
+    if (el.id) { const l = document.querySelector('label[for="' + CSS.escape(el.id) + '"]'); if (txt(l)) return txt(l); }
+    let n = el; for (let i = 0; i < 6 && n; i++) { n = n.parentElement; if (!n) break;
+      const l = n.querySelector('label,.application-label,legend,[class*="label"],[class*="question"]');
+      if (txt(l) && txt(l).length > 2) return txt(l).split("\n")[0].slice(0, 60); }
+    return el.getAttribute("placeholder") || el.getAttribute("name") || "";
+  };
+  const out = []; const seen = new Set();
+  deepAll('[required],[aria-required="true"]').forEach((el) => {
+    const tag = el.tagName.toLowerCase(); const type = (el.getAttribute("type") || "").toLowerCase();
+    if (!["input", "textarea", "select"].includes(tag)) return;
+    let empty;
+    if (type === "checkbox" || type === "radio") { const name = el.getAttribute("name"); empty = name ? !deepAll('input[name="' + name + '"]').some((x) => x.checked) : !el.checked; }
+    else if (tag === "select") empty = !el.value;
+    else empty = !(el.value && el.value.trim());
+    if (!empty) return;
+    const lab = (labelOf(el) || "").trim().slice(0, 50);
+    if (!lab || seen.has(lab)) return; seen.add(lab); out.push(lab);
+  });
+  return out.slice(0, 12);
+}
+
 // ---------- extension-context functions ----------
 const SYSTEM = `You fill a job-application form for a candidate. You get a JSON list of empty fields \
 (each: numeric id "ja", "kind", its "label"/question, and "options" for selects/radios). \
@@ -429,34 +455,37 @@ async function runFillOnTab(tabId, cfg, onStatus, meta) {
   let resume = false, cover = false, savedFolder = false;
   if (cfg.tailorUpload && cfg.resume) {
     try {
-      status("Tailoring resume + cover letter…");
-      const docs = await tailorDocs(cfg, data);
-      if (docs && docs.resume_markdown) {
-        const items = [{ match: "resume|cv", dataUrl: makePdf(mdToBlocks(docs.resume_markdown)), name: "Resume.pdf", fallbackFirst: true }];
-        if (docs.cover_letter) items.push({ match: "cover|letter", dataUrl: makePdf(mdToBlocks(docs.cover_letter)), name: "Cover-Letter.pdf" });
-        const ts = new Date().toISOString();
-        const titleStr = (meta && meta.title) || data.url;
-        const companyStr = (meta && meta.company) || "";
-        const slug = (companyStr + "-" + titleStr).toLowerCase().replace(/https?:\/\//, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60) || "job";
-        // Keep latest + archive every tailored set by company / title / timestamp.
-        try {
-          const entry = {
-            id: Date.now().toString(36), company: companyStr, title: titleStr, url: data.url, ts,
-            resumeDataUrl: items[0].dataUrl, coverDataUrl: items[1] ? items[1].dataUrl : "",
-            resumeMd: docs.resume_markdown, coverMd: docs.cover_letter || "",
-          };
-          const arch = (await chrome.storage.local.get("tailoredArchive")).tailoredArchive || [];
-          arch.push(entry);
-          while (arch.length > 80) arch.shift();
-          await chrome.storage.local.set({ lastTailored: { ...entry, date: ts.slice(0, 10) }, tailoredArchive: arch });
-        } catch (e) { /* ignore quota */ }
-        // Save copies into the chosen folder, if one is set.
-        try {
-          const d = ts.slice(0, 10);
-          const rb = await (await fetch(items[0].dataUrl)).blob();
-          savedFolder = await saveToFolder(slug + "-resume-" + d + ".pdf", rb);
-          if (items[1]) { const cb = await (await fetch(items[1].dataUrl)).blob(); await saveToFolder(slug + "-cover-letter-" + d + ".pdf", cb); }
-        } catch (e) { /* ignore */ }
+      let items = null;
+      const arch = (await chrome.storage.local.get("tailoredArchive")).tailoredArchive || [];
+      const prior = [...arch].reverse().find((e) => e.url === data.url && e.resumeDataUrl);
+      if (prior) {
+        status("Reusing tailored documents for this posting…");
+        items = [{ match: "resume|cv", dataUrl: prior.resumeDataUrl, name: "Resume.pdf", fallbackFirst: true }];
+        if (prior.coverDataUrl) items.push({ match: "cover|letter", dataUrl: prior.coverDataUrl, name: "Cover-Letter.pdf" });
+      } else {
+        status("Tailoring resume + cover letter…");
+        const docs = await tailorDocs(cfg, data);
+        if (docs && docs.resume_markdown) {
+          items = [{ match: "resume|cv", dataUrl: makePdf(mdToBlocks(docs.resume_markdown)), name: "Resume.pdf", fallbackFirst: true }];
+          if (docs.cover_letter) items.push({ match: "cover|letter", dataUrl: makePdf(mdToBlocks(docs.cover_letter)), name: "Cover-Letter.pdf" });
+          const ts = new Date().toISOString();
+          const titleStr = (meta && meta.title) || data.url;
+          const companyStr = (meta && meta.company) || "";
+          const slug = (companyStr + "-" + titleStr).toLowerCase().replace(/https?:\/\//, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60) || "job";
+          try {
+            const entry = { id: Date.now().toString(36), company: companyStr, title: titleStr, url: data.url, ts, resumeDataUrl: items[0].dataUrl, coverDataUrl: items[1] ? items[1].dataUrl : "", resumeMd: docs.resume_markdown, coverMd: docs.cover_letter || "" };
+            arch.push(entry); while (arch.length > 80) arch.shift();
+            await chrome.storage.local.set({ lastTailored: { ...entry, date: ts.slice(0, 10) }, tailoredArchive: arch });
+          } catch (e) {}
+          try {
+            const d = ts.slice(0, 10);
+            const rb = await (await fetch(items[0].dataUrl)).blob();
+            savedFolder = await saveToFolder(slug + "-resume-" + d + ".pdf", rb);
+            if (items[1]) { const cb = await (await fetch(items[1].dataUrl)).blob(); await saveToFolder(slug + "-cover-letter-" + d + ".pdf", cb); }
+          } catch (e) {}
+        }
+      }
+      if (items) {
         status("Uploading tailored documents…");
         const ru = await chrome.scripting.executeScript({ target: ft, func: applyNamedFiles, args: [items] });
         const cnt = (ru[0] && ru[0].result) || 0; resume = cnt >= 1; cover = cnt >= 2;
@@ -467,5 +496,7 @@ async function runFillOnTab(tabId, cfg, onStatus, meta) {
     const r3 = await chrome.scripting.executeScript({ target: ft, func: applyResume, args: [cfg.resumeFile] });
     resume = !!(r3[0] && r3[0].result);
   }
-  return { filled: (r2[0] && r2[0].result) || 0, fields: data.fields.length, resume, cover, savedFolder, jd: data.jd };
+  let pending = [];
+  try { const pr = await chrome.scripting.executeScript({ target: ft, func: pendingRequired }); pending = (pr[0] && pr[0].result) || []; } catch (e) {}
+  return { filled: (r2[0] && r2[0].result) || 0, fields: data.fields.length, resume, cover, savedFolder, pending, jd: data.jd };
 }

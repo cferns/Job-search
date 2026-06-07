@@ -19,7 +19,17 @@ async function render() {
     ? `${jobs.length} jobs · ${counts.Applied || 0} applied · ${counts.Pending || 0} pending · ${counts.Skipped || 0} skipped`
     : "";
   tb.innerHTML = "";
-  const sorted = jobs.slice().sort((a, b) => Number(b.confidence ?? -1) - Number(a.confidence ?? -1));
+  const ft = (document.getElementById("filterText")?.value || "").toLowerCase();
+  const fs = document.getElementById("filterStatus")?.value || "All";
+  const sb = document.getElementById("sortBy")?.value || "fit";
+  let sorted = jobs.filter((j) =>
+    (fs === "All" || j.status === fs) &&
+    (!ft || ((j.company || "") + " " + (j.title || "") + " " + (j.desc || "")).toLowerCase().includes(ft)));
+  sorted.sort((a, b) => {
+    if (sb === "company") return (a.company || a.title || "").localeCompare(b.company || b.title || "");
+    if (sb === "date") return (b.date || "").localeCompare(a.date || "");
+    return Number(b.confidence ?? -1) - Number(a.confidence ?? -1);
+  });
   sorted.forEach((j) => {
     const tr = document.createElement("tr");
     const company = j.company || (j.title || "").split(/ [-|@] | at /)[1] || "";
@@ -153,6 +163,9 @@ async function init() {
   document.getElementById("findJobs").onclick = findJobs;
   document.getElementById("refresh").onclick = refreshList;
   document.getElementById("searchCompanies").onclick = findByCompanies;
+  document.getElementById("filterText").oninput = render;
+  document.getElementById("filterStatus").onchange = render;
+  document.getElementById("sortBy").onchange = render;
   render();
   renderArchive();
   chrome.storage.onChanged.addListener((ch) => { if (ch.jobs) render(); if (ch.tailoredArchive) renderArchive(); });
