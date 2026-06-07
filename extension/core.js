@@ -290,6 +290,14 @@ async function applyResume(file) {
   } catch (e) { return 0; }
 }
 
+function findAtsIframeSrc() {
+  for (const f of document.querySelectorAll("iframe")) {
+    const s = f.src || "";
+    if (/greenhouse\.io|lever\.co|ashbyhq\.com|myworkdayjobs\.com|icims|workable|eightfold|smartrecruiters|jobvite|bamboohr|ashby/i.test(s)) return s;
+  }
+  return "";
+}
+
 function clickApply() {
   const deepAll = (sel) => { const r = []; const w = (n) => { try { n.querySelectorAll(sel).forEach((e) => r.push(e)); } catch (e) {} try { n.querySelectorAll("*").forEach((e) => { if (e.shadowRoot) w(e.shadowRoot); }); } catch (e) {} }; w(document); return r; };
   const cands = deepAll("a,button").filter((e) => e.offsetParent !== null && /^apply\b|apply for|apply now|submit application/i.test((e.innerText || "").trim()));
@@ -443,6 +451,20 @@ async function runFillOnTab(tabId, cfg, onStatus, meta) {
     status("Opening the application form…");
     await chrome.scripting.executeScript({ target: { tabId, allFrames: true }, func: clickApply });
     await sleep(2500); raw = await scanRaw(); cands = pick(raw);
+  }
+  if (!cands.length) {
+    // Form is likely inside a company-site iframe (e.g. Greenhouse embed). Open that
+    // form's own URL as a normal top-level page, which we can always fill.
+    try {
+      const sres = await chrome.scripting.executeScript({ target: { tabId }, func: findAtsIframeSrc });
+      const src = sres[0] && sres[0].result;
+      if (src) {
+        status("Opening the embedded form directly…");
+        await chrome.tabs.update(tabId, { url: src });
+        await waitTabComplete(tabId); await sleep(3000);
+        raw = await scanRaw(); cands = pick(raw);
+      }
+    } catch (e) { /* ignore */ }
   }
   if (!cands.length) {
     const frames = raw.length;
