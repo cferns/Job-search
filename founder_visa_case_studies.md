@@ -1884,6 +1884,79 @@ Practical takeaways:
 
 ---
 
+# Solo Founders (Any Nationality) Who Went H-1B → Founder Status
+
+> Broadened beyond India per request. **Honest finding:** clean, *named*,
+> **non-Indian** solo-founder "H-1B → founder status" first-person stories are
+> **genuinely scarce** — the loudly-documented founder-immigration community
+> (H1B Founders, Unshackled) is overwhelmingly Indian. Below are the strongest
+> *non-Indian* named cases, a few Indian solo cases for completeness, and one route
+> this surfaced that's tailor-made for solo founders: the **GEIR cap-exempt H-1B**.
+
+### Non-Indian named solo founders
+
+- **Felix Huettenbach — Germany** *(PRIMARY)*. Solo founder of **W8X**. Got a
+  **cap-exempt H-1B via the UMass Boston Global Entrepreneur in Residence (GEIR)**
+  program (2018–2020), plus an MIT Sloan visiting-researcher affiliation — i.e., a
+  **no-lottery H-1B sponsored by a university** while he built his startup. His essay
+  *"How to hack your visa"* lays out the playbook.
+  [Medium](https://medium.com/@felix.huettenbach/how-to-hack-your-visa-6e6647b206d4) ·
+  [site](https://www.felixhuettenbach.com/)
+- **Swizec Teller — Slovenia** *(PRIMARY)*. Solo/indie founder; **self-sponsored an
+  O-1 via his own LLC**, then an **EB-2 NIW** green card — record built by *indie
+  hacking* (books, courses, blog). (Full profile in Round 3 above.)
+  [blog](https://swizec.com/blog/how-i-used-indie-hacking-to-sponsor-my-own-greencard/)
+- **Aaron George — born in Dubai (UAE)** *(SECONDARY)*. Solo founder of **SupplyNow**;
+  used a **GEIR cap-exempt H-1B** (via the Cleveland program) to stay and build.
+  [Global Cleveland](https://globalcleveland.org/global-entrepreneur-in-residence/)
+- **Liran Jakob Rosenfeld — Israel** *(PRIMARY, with caveats)*. Founder of **PassRight**;
+  self-petitioned an **EB-1** green card as a startup founder. *Caveats:* he entered
+  on a **tourist visa (not H-1B)** and **co-founded** (not strictly solo) — included as
+  a non-Indian founder-GC example, not a clean H-1B-solo case.
+  [Medium](https://medium.com/frenchtech/my-journey-green-card-with-eb-1-as-a-new-startup-founder-in-the-u-s-823a8802981a)
+- **Unnamed Canadian AI/ML founder** *(SECONDARY/anonymized)*. Solo founder; **EB-2 NIW
+  approved in ~73 days, no RFE** (law-firm approval notice).
+  [Manifest Law](https://manifestlaw.com/immigration/approval-notice-list/eb-2-niw-approved-for-a-machine-learning-and-ai-expert-advancing-national-security)
+- **Unnamed 100%-owner solo-founder CEO** *(SECONDARY/attorney)*. Reported
+  **self-sponsored H-1B approved in 6 days** by attorney Sophie Alcorn (pre-dating the
+  formal Jan 2025 rule).
+  [Sophie Alcorn / LinkedIn](https://www.linkedin.com/posts/sophiealcorn_immigration-h1b-startup-activity-7163707872650940417-3qvP)
+
+### Indian solo founders (for completeness)
+
+- **Soundarya Balasubramani** — **O-1A as a solo founder** (H-1B at Salesforce → O-1A;
+  denied once, approved 2023). The best-documented solo-founder visa story, period.
+- **Sid Sarasvati** — **self-sponsored H-1B** through his own company (+ later EB-1).
+- **Raj Gupta — BortleBuddy** — quit his job, **self-sponsored H-1B (denied, refiled,
+  approved)** as a solo founder.
+  [H1B Founders](https://community.h1bfounders.com/p/h1b-denied-i-fought-and-won-ep-1)
+
+### The solo-founder-friendly route this surfaced: GEIR (cap-exempt H-1B)
+
+The **Global Entrepreneur in Residence (GEIR)** program lets a startup founder get a
+**cap-exempt H-1B sponsored by a university** (no lottery), in exchange for part-time
+value to the school (mentoring/teaching) while building the startup. Pioneered by the
+**University of Massachusetts (2014)**; now at **Babson, NJIT, William Paterson, UCSD,
+Michigan Tech, Cleveland (Global Cleveland)**, and others. *(SECONDARY: [Economic
+Innovation Group — GEIR programs](https://eig.org/geir-programs/) · [VDC/UMass — how it
+works](https://vdc.umb.edu/2019/04/20/how-does-the-massachusetts-global-entrepreneur-in-residence-program-work/).)*
+- **Why it fits solo founders:** it sidesteps the lottery *and* the employer-employee
+  problem (the **university** is your H-1B employer), so you don't need to build a board
+  over yourself the way a self-sponsored founder H-1B requires. Felix Huettenbach and
+  Aaron George both used it.
+- **Catch:** you must be **accepted into a specific university's GEIR program** (limited
+  slots, location-bound), and the cap-exempt H-1B is tied to that university affiliation.
+
+### Pattern across all of them
+- **Solo founders almost never use a *plain* corporate-style H-1B for the startup.** They
+  reach founder status via **O-1A** (Soundarya), **self-sponsored/founder H-1B with a
+  board** (Sid, Alcorn's client), **cap-exempt H-1B via GEIR** (Felix, Aaron), or a
+  **self-petitioned green card — EB-1A / EB-2 NIW** (Swizec, Canadian AI founder, Liran).
+- **The vocal, replicable playbooks are Indian** (Unshackled's O-1A, H1B Founders'
+  self-sponsored H-1B) — useful regardless of nationality.
+
+---
+
 *Compiled June 2026. All sources are linked inline above. Sources labeled
 "secondary" are press/profile pieces; "primary" denotes the founder's own posts,
 company pages, or first-person accounts. The deep-dive sections add government
