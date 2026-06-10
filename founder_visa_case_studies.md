@@ -1631,17 +1631,48 @@ exits, just higher-effort/capital.
 
 ---
 
-## Synthesis for an Indian H-1B holder who wants to found
+## Synthesis — organized by "keep the corporate job" vs "leave it"
 
-1. **To operate the startup *now*:** **switch to O-1A** (Aditya Sharma) **or** run a
-   **concurrent / founder H-1B** (Sid Sarasvati) — no green card required.
-2. **To fix the green card:** **EB-1A** is the standout (~3-yr India backlog); pursue it
-   **in parallel**, reusing your O-1A evidence. **Avoid leaning on EB-2 NIW for
-   *timeline*** — same 13–17-yr India queue.
-3. **Keep your existing PERM/EB-2 case alive** for priority-date retention even as you
-   self-petition EB-1A.
-4. **Don't bank on the "wait for EAD" path** (Jyoti Bansal's) — for India it can be a
-   decade-plus.
+The first real fork is whether you want to **keep your corporate H-1B paycheck while
+building** or **leave to go full-time**. The green-card self-petitions (EB-1A / EB-2
+NIW) are **orthogonal** — they don't require an employer, so you can run them in
+*either* lane.
+
+### Lane A — KEEP your corporate H-1B job (build on the side)
+
+| Option | What it allows | Active startup work? | Real story |
+|---|---|---|---|
+| **Passive equity only** (no status change) | Incorporate, hold founder shares, be a passive owner; a co-founder runs ops | **No** — on the corporate H-1B alone you may own but **not actively work** for your company | (mechanism — USCIS/attorney guidance) |
+| **Concurrent H-1B** | Corporate H-1B stays full-time **+** your startup files a *second, part-time* H-1B (no new lottery) | **Yes, part-time** — keep the paycheck *and* legally work on your startup | VisaPro case; H1B Founders community |
+| **EB-1A in parallel** (self-petition GC) | Pursue a green card **without touching your job**; reuse the evidence later | n/a (it's a GC track) | **Aditya Sharma** |
+
+> Key rule: **on your corporate H-1B alone you can OWN a company but cannot actively
+> *work* for it.** **Concurrent H-1B is the thing that unlocks active work without
+> quitting.**
+
+### Lane B — LEAVE your corporate job (go full-time on the startup)
+
+| Option | What it allows | Real story | Catch |
+|---|---|---|---|
+| **Founder / self-sponsored H-1B** | Your company (you own >50%) sponsors you full-time | **Sid Sarasvati** | 18-mo validity; needs board + cash wage |
+| **O-1A** (switch status) | Run the company full-time, no cap/lottery | **Aditya Sharma** (H-1B→O-1→HiCounselor); **Soundarya** | Evidence bar; O-1 1st try can be denied; no statutory dual intent |
+| **IER (startup parole)** | DHS parole to build (30+30 mo) | **Srikanth Narayan** | Must exit U.S. & re-parole; funding-gated |
+| **L-1A "flip" → EB-1C** | Found abroad ≥1 yr, transfer in, then GC | Krish Subramanian/Chargebee | Needs a real foreign company first |
+| **Wait for GC/EAD, then found** | Found once I-485 EAD/green card lands | **Jyoti Bansal** | For India, a decade-plus wait |
+
+### Either lane — the green-card fix (self-petition, no employer)
+
+- **EB-1A** — the standout for Indians (~3-yr backlog); reuse O-1A-style evidence.
+- **EB-2 NIW** — self-petition too, **but weak for India *timeline*** (same 13–17-yr
+  EB-2 queue); value is mainly the I-140/priority date.
+- **Keep your existing PERM/EB-2 case alive** for priority-date retention regardless.
+
+### A sensible staged play (covers both lanes)
+1. **Now (Lane A):** incorporate + hold equity passively; keep the corporate H-1B.
+2. **When you want to actively build (Lane A):** file a **concurrent H-1B** through
+   the startup → keep the paycheck and work part-time on your company.
+3. **If/when you go full-time (Lane B):** switch to **O-1A** or a **founder H-1B**.
+4. **In parallel (either lane):** self-petition **EB-1A** to fix the green card.
 
 ### Sources (this section) — grouped
 
