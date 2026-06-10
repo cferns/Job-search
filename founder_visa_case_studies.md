@@ -1486,10 +1486,198 @@ patterns, not guaranteed outcomes.)*
 
 ---
 
+# Deep Dive — Every Path from H-1B to Founder Status (with stories)
+
+> **Research context, not legal advice.** Multi-source synthesis (USCIS, Federal
+> Register, eCFR, DOL + attorney/founder accounts). Claims tagged by source type
+> and confidence. 2025–2026 rules are shifting — verify before relying.
+
+From an H-1B today, every route to "legally run my own startup" is one of three
+moves: **(A) switch to a status that lets you found now**, **(B) self-win a green
+card while staying on H-1B, then found**, or **(C) leave H-1B for startup parole.**
+Here is each, with the real person who did it.
+
+## The H-1B → founder decision map
+
+| From H-1B, you can… | Path | Found *now* (pre-GC)? | Best real story | India verdict |
+|---|---|---|---|---|
+| Add a 2nd H-1B (keep day job) | **Concurrent H-1B** | Yes (part-time) | VisaPro case; *see dedicated deep dive above* | Strong "build while employed" |
+| Self-sponsor via your company | **Founder H-1B** (beneficiary-owner, Jan 2025 rule) | Yes | **Sid Sarasvati** | Good once you go full-time |
+| Switch H-1B → O-1A | **O-1A** | Yes | **Aditya Sharma** (H-1B→O-1→HiCounselor) | Strong; pairs with EB-1A |
+| Self-petition a green card, stay on H-1B | **EB-1A** | After GC / I-485 EAD | **Aditya Sharma** (EB-1A Jan 2025) | **Best GC play (~3-yr backlog)** |
+| Self-petition NIW green card | **EB-2 NIW** | After GC / I-485 EAD | Kenji Minami; H1B Founders | **Weak for GC timeline** (13–17 yr) |
+| Wait for employer GC → EAD | **I-485 EAD / AC21** | Only at I-485/EAD stage | **Jyoti Bansal** | Very slow (backlog) |
+| Found abroad, transfer in | **L-1A → EB-1C** | Via L-1A | Krish Subramanian/Chargebee | Strong (EB-1C faster) |
+| Leave H-1B for parole | **IER** | Yes (parole) | **Srikanth Narayan** | Good if funded; must exit/re-parole |
+
+---
+
+## A1. H-1B → O-1A (switch status, then run your company)
+
+**Stories** *(PRIMARY/first-person — high confidence):*
+- **Aditya Sharma** — on **H-1B at Deloitte** (~3 yrs), found it too restrictive,
+  built O-1 evidence, switched to **O-1 (approved in days)**, resigned, founded
+  **HiCounselor**. The cleanest H-1B→O-1→founder match.
+- **Soundarya Balasubramani** — **H-1B at Salesforce** → **O-1A** as a solo
+  founder; her **first O-1 attempt was denied (May 2022)**, approved on the
+  **second attempt (Oct 2023)** at a reported **~$25K** legal cost. Honest proof
+  that O-1 can take two tries.
+- **Ankur Nagpal** — got his **O-1 as a founder**, later green card and citizenship;
+  now publicly argues O-1 is "less constrained and political than H-1B."
+
+**Mechanics** *(SECONDARY law-firm + USCIS — high confidence):*
+- You can **change status H-1B → O-1A inside the U.S.** via Form I-129; **premium
+  processing ~15 business days**. You generally **cannot work for the new entity
+  until it's approved**.
+- **Dual-intent caveat:** unlike H-1B, **O-1 has no statutory dual intent**. It's
+  workable for green cards, but some practitioners advise care at the I-485 stage
+  (advance parole for travel; some even switch back to H-1B before adjusting). *(Medium
+  confidence — practitioner guidance, not statute.)*
+- **O-1 evidence → EB-1A** uses the same record, so O-1A is the natural on-ramp to a
+  self-petitioned green card.
+
+## A2. H-1B → Founder (self-sponsored) H-1B  &  A3. Concurrent H-1B
+
+Both are covered in depth in the **"Concurrent H-1B for Founders" deep dive above**
+(mechanics, the Jan 17 2025 beneficiary-owner rule, 18-month validity, prevailing-wage
+requirement, the $100K-fee wrinkle, and the **Sid Sarasvati** self-sponsored story).
+Short version from H-1B: **concurrent** = keep your job + part-time startup H-1B (no
+new lottery); **founder H-1B** = your company (you owning >50%) sponsors you full-time,
+with an independent board and a real specialty role + cash wage.
+
+---
+
+## B1. H-1B → EB-1A (self-petitioned green card — the standout for Indians)
+
+**Stories:**
+- **Aditya Sharma** *(PRIMARY)* — layered **EB-1A on his O-1**, approved **Jan 2025**:
+  the full **H-1B → O-1 → EB-1A** arc.
+- **Raghu Reddy** *(SECONDARY/self-promotional)* — ex-Salesforce; self-petitioned
+  EB-1A after extensive personal research, now runs an EB-1A consultancy. Useful as a
+  worked example, but he sells EB-1A services — weight accordingly.
+- **"Series A B2B SaaS founder"** *(SECONDARY/law-firm case study)* — **no PhD, no
+  papers**; approved by mapping **VC funding, "founders to watch" lists, speaking,
+  trade-press** to USCIS criteria. Signals that *commercial* founders can qualify.
+
+**Mechanics** *(USCIS PRIMARY + trackers — high on rules, medium on numbers):*
+- **Self-petition (Form I-140), no employer, no PERM.** You can **file while on H-1B
+  without jeopardizing H-1B**, and **start a company / change jobs during I-140**
+  without notifying USCIS.
+- **India backlog edge:** EB-1 India priority date sits around **early-mid 2023** (≈3-yr
+  wait) vs **EB-2 ~2014** (12–13+ yr). For an Indian founder, **EB-1A is the single
+  best green-card play.** *(Medium confidence — bulletin dates move.)*
+- **Approval is getting harder:** reported EB-1A approval ~**66–75%** in FY2025 quarters,
+  trending toward "impact narrative" evidence. *(Medium confidence — secondary trackers.)*
+
+## B2. H-1B → EB-2 NIW (self-petition — but a trap for Indian *timelines*)
+
+**Stories** *(mostly SECONDARY law-firm case studies — medium confidence; few are
+clearly H-1B-origin):* **Kenji Minami** (exec recruitment), plus anonymized approvals
+(Venezuelan brewmaster; "Tom" biotech; "George" internet tech; Brazilian finance pro;
+aerospace engineer **approved in 7 days**). The **H1B Founders** community cites NIW as
+a common "as the company grows" green-card step.
+
+**Mechanics & the critical India caveat:**
+- **Self-petition, no PERM/employer**; **Dhanasar 3-prong** test. The **Jan 15, 2025
+  USCIS policy update** *tightened* Prong 1 — "general economic benefit" or job creation
+  **alone is no longer enough**; you must show **specific** national importance. *(USCIS
+  PRIMARY — high confidence.)*
+- You can **keep H-1B while the NIW I-140 is pending.**
+- **⚠ India red flag:** NIW does **NOT** bypass the **EB-2 India backlog (~13–17 years**;
+  PD ~mid-2014). So for an Indian national, **EB-2 NIW is weak as a green-card *timeline*
+  play** — its value is mainly the I-140 (priority date + H-1B extensions). **EB-1A is the
+  better self-petition.** *(High confidence — multiple trackers agree.)*
+
+## B3. H-1B → I-485 EAD / AC21 (work for your own company once the GC advances)
+
+**Story:** **Jyoti Bansal** — waited ~7 years; once his green card/EAD came through
+(~2007) he **immediately quit and founded AppDynamics (2008)**. The canonical "wait,
+then found" path.
+
+**Mechanics — and a conflict I'm flagging:**
+- **Settled:** On H-1B you **can own a company, incorporate, and hold equity passively**,
+  but you generally **cannot actively *work* for it** without sponsorship. *(High
+  confidence.)*
+- **The unlock:** a **c(9) EAD from a pending I-485** is **unrestricted** and (per the
+  better-supported reading) **permits self-employment / working for your own startup**;
+  **AC21 portability after 180 days** lets you move to a new job/self-employment in a
+  **"same or similar" occupation**.
+- **⚠ Source conflict:** one source claimed you **cannot** self-employ on an I-485 EAD
+  while pending; the weight of sources (and the nature of the unrestricted c(9) EAD) says
+  you **can**, with the "same or similar" caution mainly protecting an employer-sponsored
+  underlying I-140. **Treat as medium confidence and confirm with counsel for your exact
+  category.** *(Resolved toward "self-employment generally allowed," flagged.)*
+- **India reality:** you usually **can't file I-485 until your priority date is current**
+  — for EB-2/EB-3 India that's many years out, so this path's "EAD unlock" is far away
+  *unless* you're on EB-1A.
+
+---
+
+## C. H-1B → International Entrepreneur Rule (startup parole)
+
+**Story:** **Srikanth Narayan** (Cache) used **IER parole** after a long green-card wait
+(see his profile above).
+
+**Mechanic note specific to H-1B holders** *(USCIS PRIMARY — high confidence):* you can
+**apply for IER while on H-1B**, but IER is **parole, not a change of status** — if
+approved you must **depart and be paroled back in**; you **stay eligible for the H-1B
+lottery**. Funding-gated (~$311K qualified investment or ~$124K grants, ≥10% ownership).
+
+## Also from H-1B: L-1A → EB-1C, EB-5
+
+Covered earlier (Round 3 + Master Catalog): the **L-1A "flip"** (found abroad ≥1 yr →
+transfer in → **EB-1C**, faster for India) and **EB-5** ($800K+). Both are real H-1B
+exits, just higher-effort/capital.
+
+---
+
+## Synthesis for an Indian H-1B holder who wants to found
+
+1. **To operate the startup *now*:** **switch to O-1A** (Aditya Sharma) **or** run a
+   **concurrent / founder H-1B** (Sid Sarasvati) — no green card required.
+2. **To fix the green card:** **EB-1A** is the standout (~3-yr India backlog); pursue it
+   **in parallel**, reusing your O-1A evidence. **Avoid leaning on EB-2 NIW for
+   *timeline*** — same 13–17-yr India queue.
+3. **Keep your existing PERM/EB-2 case alive** for priority-date retention even as you
+   self-petition EB-1A.
+4. **Don't bank on the "wait for EAD" path** (Jyoti Bansal's) — for India it can be a
+   decade-plus.
+
+### Sources (this section) — grouped
+
+**Primary (government):**
+[USCIS — Options for Entrepreneurs](https://www.uscis.gov/working-in-the-united-states/options-for-alien-entrepreneurs-to-work-in-the-united-states) ·
+[USCIS — Immigrant Pathways for Entrepreneurs](https://www.uscis.gov/working-in-the-united-states/entrepreneur-employment-pathways/immigrant-pathways-for-entrepreneur-employment-in-the-united-states) ·
+[USCIS — EB-1](https://www.uscis.gov/working-in-the-united-states/permanent-workers/employment-based-immigration-first-preference-eb-1) ·
+[USCIS — NIW policy update PA-2025-03 (Jan 15, 2025)](https://www.uscis.gov/sites/default/files/document/policy-manual-updates/20250115-Employment-BasedNationalInterestWaivers.pdf) ·
+[USCIS — AC21 job portability](https://www.uscis.gov/policy-manual/volume-7-part-e-chapter-5) ·
+[USCIS — International Entrepreneur Rule](https://www.uscis.gov/working-in-the-united-states/international-entrepreneur-rule)
+
+**Primary (first-person / founder):**
+[Aditya Sharma — LinkedIn](https://www.linkedin.com/in/aditya-hicounselor) ·
+[Aditya Sharma — EB-1A story](https://www.indianeagle.com/travelbeats/how-to-get-eb1a-green-card-approval/) ·
+[Soundarya Balasubramani — O-1 story](https://www.linkedin.com/pulse/i-got-my-o-1-visa-founder-after-25-years-25000-denial-balasubramani-bgawc) ·
+[Ankur Nagpal on O-1 vs H-1B](https://x.com/ankurnagpal/status/1969487909276254298) ·
+[H1B Founders — 2024 review](https://community.h1bfounders.com/p/2024-h1b-founders-community-year)
+
+**Secondary (law firm / news / case studies):**
+[Alma — H-1B for startup founders](https://www.tryalma.com/learn/h1b-startup-founders) ·
+[Pathaura — O-1A vs EB-1A vs EB-2 NIW](https://www.pathaura.com/resources/immigration-strategies-for-entrepreneurs-comparing-o1-a-eb1-a-and-eb2-niw) ·
+[Manifest Law — EB-1 India priority dates](https://manifestlaw.com/blog/eb1-priority-date-india/) ·
+[Colombo & Hurd — H-1B to EB-2 NIW guide](https://www.colombohurdlaw.com/h1b-to-eb2-niw-guide/) ·
+[Beyond Border — EB-2 India wait time](https://www.beyondborderglobal.com/resources/eb2-india-green-card-wait-time-2025-predictions-backlogs-and-timeline-forecast) ·
+[Reddy Neumann Brown — starting a business while on I-485/EAD](https://www.rnlawgroup.com/converting-from-a-work-visa-to-ead-based-on-a-pending-i-485-application-to-adjust-status/) ·
+[VisaPro — H-1B → L-1A → EB-1C](https://www.visapro.com/resources/article/h1b-to-l1a-to-eb1/) ·
+[Stelmakh — startup founders O-1/EB-1](https://stelmakhlaw.com/blog/startup-founders-o1-eb1/) ·
+[Alma — H-1B to O-1](https://www.tryalma.com/blog/h1b-to-o1)
+
+---
+
 *Compiled June 2026. All sources are linked inline above. Sources labeled
 "secondary" are press/profile pieces; "primary" denotes the founder's own posts,
-company pages, or first-person accounts. The concurrent-H-1B deep dive adds
-government primary sources (USCIS/Federal Register/eCFR/DOL). Immigration rules and
-case outcomes change — and several 2025–2026 items (the $100K fee, weighted
-selection) are recent and contested — so verify with a licensed U.S. immigration
-attorney before relying on anything here.*
+company pages, or first-person accounts. The deep-dive sections add government
+primary sources (USCIS/Federal Register/eCFR/DOL). Immigration rules and case
+outcomes change — and several 2025–2026 items (the $100K fee, weighted selection,
+the Jan 2025 NIW/beneficiary-owner rules, and India priority-date movement) are
+recent and contested — so verify with a licensed U.S. immigration attorney before
+relying on anything here.*
