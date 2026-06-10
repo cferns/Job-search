@@ -69,6 +69,102 @@ split into (A) **temporary statuses that let you operate a startup**, (B)
 
 ---
 
+# Your Shortlist — Single, 33, Currently on H-1B
+
+> **Research context, not legal advice.** Confirm specifics with a licensed U.S.
+> immigration attorney.
+
+Your profile narrows the 14-route menu sharply. Because you're **already on
+H-1B**, you start *inside* the system (no lottery needed for several moves), and
+because you're **single with no dependents** you have maximum mobility and risk
+tolerance, and the simplest possible family math on any path. Age 33 imposes no
+immigration limits — but the green-card routes reward *starting the evidence
+trail now*, since they take 1–2+ years to mature.
+
+Here are the paths that actually fit you, ranked, each with the real founder who
+did essentially the same thing.
+
+### Tier 1 — Operate your startup *now*, building from H-1B
+
+**1. Concurrent / founder (beneficiary-owner) H-1B — keep your job, add your startup**
+- **The move:** Your startup files a **second, concurrent H-1B** for you (no new
+  lottery — you already hold H-1B). Or, as ≥~50% owner, a **beneficiary-owner
+  founder H-1B** with a real employer-employee structure (independent board).
+- **Real story:** **Sid Sarasvati** publicly documented self-sponsoring an H-1B
+  through his own company (*Trial and Error, Inc.*) and runs the *H1B Founders*
+  community on exactly this.
+- **Why it fits you:** Lowest-disruption path from where you stand — you can keep
+  income while standing up the company. Single status means no dependent H-4s to
+  re-file if anything shifts.
+- **Catch:** Needs airtight corporate governance; a *receipt* ≠ an approval.
+
+**2. Switch H-1B → O-1A and run the company outright**
+- **The move:** Build an "extraordinary ability" record, then change status from
+  H-1B to **O-1A** (no cap, renewable) to work full-time for your venture.
+- **Real story:** **Aditya Sharma** was on an **H-1B at Deloitte**, found it too
+  restrictive to found, spent ~a year building O-1 criteria, switched to **O-1**,
+  and launched **HiCounselor** — the closest match to your exact starting point.
+  Also: Arko Chattopadhyay (Pipeshift), Soundarya Balasubramani, Ankur Nagpal.
+- **Why it fits you:** It's the most common modern "H-1B engineer → founder" jump,
+  and being single makes the temporary income/benefits change easier to absorb.
+- **Catch:** Real evidence bar (press, funding, awards, judging, original
+  contributions) — start assembling now.
+
+### Tier 2 — Self-win the green card in parallel (no employer needed)
+
+**3. EB-1A — self-petitioned green card (cleanest backlog escape)**
+- **The move:** Self-petition a green card on "extraordinary ability." No employer,
+  no PERM. EB-1 moves far faster for India than EB-2/EB-3.
+- **Real story:** **Aditya Sharma** layered **EB-1A on top of his O-1**, approved
+  Jan 2025 — the full "H-1B → O-1 → EB-1A" arc you can copy.
+- **Why it fits you:** Your (previously noted) approved PERM is *one* data point;
+  EB-1A wants a sustained, documented record. Start at 33 → realistic in a couple
+  of years of deliberate record-building.
+
+**4. EB-2 NIW — self-petitioned green card via "national importance"**
+- **The move:** Self-petition (Dhanasar test) — good fallback if EB-1A feels a
+  stretch today; pair with O-1A for work authorization while it's pending.
+- **Real story:** **Swizec Teller** self-sponsored via **O-1 + EB-2 NIW**, building
+  his qualifying record by **building in public** (books, courses, blog). The
+  transferable lesson: *manufacture your evidence* — open source, content, a
+  product with users/press.
+- **Catch:** Still inside the EB-2 India queue (slower than EB-1A); tighter 2026 bar.
+
+### Tier 3 — Situational, if circumstances line up
+
+**5. International Entrepreneur Rule (startup parole) — if you raise real funding**
+- **Real story:** **Srikanth Narayan** (Cache) used **IER parole** to leave Big
+  Tech and build, after a long green-card wait.
+- **Fits you only once** you've raised ~$311K+ from qualifying U.S. investors (or
+  ~$124K in grants) and own ≥10%. It's parole, not a green card.
+
+**6. The "flip" → L-1A → EB-1C — if you're willing to base a company abroad first**
+- **Real story:** **Krish Subramanian / Chargebee** and the broader Indian-SaaS
+  playbook (Freshworks, Postman): build in India ≥1 yr, then transfer in on L-1A,
+  then EB-1C green card (no PERM, faster than EB-2/EB-3).
+- **Why single helps:** Relocating abroad for a year to seed the foreign entity is
+  far easier with no dependents — but it's a big detour if you're settled in the U.S.
+
+### What I'd *not* prioritize for you (and why)
+- **E-2 (via Grenada/Turkey passport)** and **EB-5** — both need large capital
+  ($200K+ second passport, or $800K+ investment); only compelling post-exit.
+- **Cap-exempt concurrent H-1B** — only if a real university/nonprofit affiliation
+  is on the table.
+- **"Just wait for the employer green card"** (Jyoti Bansal's 2000s default) —
+  high opportunity cost given the India backlog; keep it alive for priority-date
+  retention, but don't make it your *only* plan.
+
+### Suggested sequence
+1. **Now:** Start the **EB-1A/O-1 evidence trail** (press, talks, open source, a
+   shipped product, awards, judging) — this feeds *every* good path.
+2. **Build phase:** Stand the company up and run it via **concurrent/founder H-1B
+   or a switch to O-1A** (Sid Sarasvati / Aditya Sharma model).
+3. **In parallel:** File **EB-1A** (or **EB-2 NIW** as fallback) to self-win the
+   green card and escape the backlog (Aditya Sharma / Swizec Teller model).
+4. **Keep** your existing PERM/EB-2 case alive for **priority-date retention**.
+
+---
+
 ## Jyoti Bansal — AppDynamics
 
 ### Snapshot
