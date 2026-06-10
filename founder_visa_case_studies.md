@@ -1704,6 +1704,57 @@ NIW) are **orthogonal** — they don't require an employer, so you can run them 
 4. **Months ~18–24:** if going full-time, switch to **O-1A** or **founder H-1B**; and
    **file EB-1A** (the green card itself lands ~year 3 for India, but it's underway).
 
+## Requirements at a glance (per path)
+
+> Gating split: **concurrent / founder H-1B** is gated on *corporate structure + a
+> real cash wage*; **O-1A / EB-1A** is gated on *a documented achievement record*.
+
+**Concurrent H-1B** *(keep job, part-time)*
+- Already in valid H-1B → **no new lottery**.
+- Bona fide U.S. entity (incorporated, EIN, bank account).
+- Bona fide **employer-employee relationship** — independent board/advisors who can
+  hire/fire/supervise you.
+- **Specialty-occupation** role (genuinely needs a bachelor's in a specific field).
+- Certified **LCA** + **prevailing wage paid in cash** (prorated part-time); equity
+  does **not** count.
+- Plausible workload alongside the day job. File **I-129** (premium ~15 days).
+
+**Founder / self-sponsored H-1B** *(leave, full-time)*
+- **Own >50% / majority voting** (Jan 17 2025 rule).
+- Bona fide entity + bona fide job offer + **independent oversight**.
+- Specialty role; **>50% of time on specialty duties**.
+- **LCA + prevailing wage in cash** (company must have funds to pay you).
+- **18-month** initial validity (+18-mo first extension; then up to 3 yrs).
+- $100K fee targets petitions for beneficiaries **outside the U.S.** (in-U.S. COS
+  generally exempt — *evolving, verify*).
+
+**O-1A** *(extraordinary ability — leave, full-time)*
+- Meet **≥3 of 8 criteria**: awards; selective memberships; press about you; judging
+  others; original contributions of major significance; scholarly articles;
+  critical role for distinguished orgs; high salary. *(Founder evidence: VC funding,
+  notable-company founder, investor backing, advisory roles, press.)*
+- U.S. **petitioner or agent** (own company OK with structure) + **advisory opinion**.
+- **No prevailing wage, no cap, no lottery.** Up to 3 yrs, renewable 1-yr indefinitely.
+- I-129 change of status (premium ~15 days); **no statutory dual intent**.
+
+**IER (startup parole)** *(leave, if funded)*
+- **≥10% ownership** + **central/active role**; startup formed in U.S. within 5 yrs.
+- **≥ ~$311,071** qualified U.S. investor funding **or** **≥ ~$124,429** gov't grants
+  (or partial + other evidence).
+- ≤3 entrepreneurs; parole **30 + 30 months**. File **I-941**; on H-1B you generally
+  must **depart and be paroled back in**. **Not a green-card path.**
+
+**EB-1A** *(self-petitioned green card — parallel long game)*
+- One-time major award **or ≥3 of 10 criteria** + "final merits" totality.
+- **Self-petition I-140** — no employer/PERM/job offer; **file while on H-1B**.
+- India ~**3-yr** backlog → GC / I-485 EAD ~year 3 (I-140 premium ~45 days).
+
+**EB-2 NIW** *(self-petition — weak for India timeline)*
+- **Advanced degree** (or bachelor's + 5 yrs progressive exp.) or exceptional ability.
+- **Dhanasar 3-prong** (merit + **national importance**; well-positioned; beneficial
+  to waive PERM). *Jan 2025: general economic benefit/job creation alone insufficient.*
+- Same **13–17-yr India EB-2 backlog** — value is mainly the I-140/priority date.
+
 ### Sources (this section) — grouped
 
 **Primary (government):**
