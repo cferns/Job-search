@@ -1797,6 +1797,39 @@ threshold for IER (~$311K investors / ~$124K grants), *evidence only* for O-1/EB
 properly and can control you?"*; O-1A/EB-1A ask *"are **you** extraordinary?"*;
 IER/EB-5 ask *"is there enough **money** in the venture?"*
 
+### Special case: solo founder & only employee
+
+This scenario *splits* the paths — H-1B routes assume "an employer controlling an
+employee," while O-1A/EB-1A judge **you as an individual** (org size irrelevant).
+
+**Best fit — O-1A → EB-1A** *(judge you, not your company):*
+- **O-1A** — no prevailing wage, no need for other employees, no rigid employer-
+  employee test; your own company or an agent petitions. **Soundarya Balasubramani was
+  approved O-1A as a *solo* founder** — the exact precedent (also Aditya Sharma).
+- **EB-1A** — self-petitioned green card, purely about your individual record; a
+  one-person company qualifies the same as anyone. (India ~3-yr backlog — file now.)
+- **EB-2 NIW** — self-petition works for solo too, but India 13–17-yr timeline = weak.
+
+**Possible but harder — concurrent / founder H-1B** *(post Jan-2025, even at 100%
+ownership):* you must still show
+1. a **bona fide employer-employee relationship** — as a sole owner you must
+   *manufacture independent control*: appoint an **independent board/advisor with
+   authority to hire, fire, supervise you** (attorney Sophie Alcorn reports approving
+   100%-solo-founder CEOs structured this way);
+2. **>50% of time on specialty-occupation (technical) duties** — hardest when you're
+   the only employee doing everything; frame/document the role as primarily
+   degree-level technical work, not "running the business";
+3. **prevailing wage in cash** (e.g., ~$103K Austin SW-Dev L1; ~$51.6K part-time).
+
+**Poor fit when solo + bootstrapped:**
+- **IER** needs ~$311K qualified investment (or ~$124K grants) + job-creation potential.
+- **EB-5** needs $800K+ **and 10 jobs** — opposite of a one-person shop.
+
+**Bottom line:** as a solo founder/sole employee, **O-1A to operate + EB-1A for the
+green card** is the natural fit; H-1B routes work only if you build a board over
+yourself and keep the role technical; IER/EB-5 are off the table until you raise money
+or hire. The gating factor is your **documented achievement record** — start it now.
+
 ### Worked example: the salary floor (Austin–Round Rock, TX, 2025–26)
 
 The H-1B "salary" isn't a number you pick — it's the **DOL prevailing wage** for your
