@@ -1797,6 +1797,30 @@ threshold for IER (~$311K investors / ~$124K grants), *evidence only* for O-1/EB
 properly and can control you?"*; O-1A/EB-1A ask *"are **you** extraordinary?"*;
 IER/EB-5 ask *"is there enough **money** in the venture?"*
 
+### Worked example: the salary floor (Austin–Round Rock, TX, 2025–26)
+
+The H-1B "salary" isn't a number you pick — it's the **DOL prevailing wage** for your
+SOC code + level + metro. For an Austin-based founder:
+
+**Software Developer (SOC 15-1252)** — *firm, BLS OEWS 2025:*
+- Level 1 ≈ **$103,205** · Level 2 ≈ **$119,524** · Level 3 ≈ **$134,120** · Level 4 ≈ **$159,882**
+
+**Computer & IS Manager (SOC 11-3021)** — *estimate (national median $171,200); verify:*
+- Level 1 ≈ **$120–130K** · Level 2 ≈ **$150K** · Level 3 ≈ **$175K** · Level 4 ≈ **$205–215K**
+
+Practical takeaways:
+- Petition as a **hands-on Software Developer at Level 1 (~$103K)** for the **lowest
+  legal cash floor** — most fundable for an early startup.
+- **Avoid the "Manager/CTO" title trap:** it raises the floor *and* triggers the
+  ">50% specialty-occupation duties" scrutiny.
+- **Concurrent (part-time) prorates the cash:** 20 hrs/week ≈ **~$51,600/yr** at SW Dev
+  Level 1 — the real payroll your startup must cover while you keep the corporate job.
+- **Equity never counts** — must be cash W-2 payroll.
+- For an actual LCA, pull the exact figure from the **DOL OFLC Wage Search**
+  ([flag.dol.gov](https://flag.dol.gov/wage-data/wage-search)) — SOC + Austin-Round Rock
+  MSA + current wage year.
+  *(Sources: [SalaryTruth — SW Dev Austin](https://www.salarytruth.org/prevailing-wage/software-developer/austin); [BLS OEWS 11-3021](https://www.bls.gov/oes/current/oes113021.htm).)*
+
 ### Sources (this section) — grouped
 
 **Primary (government):**
