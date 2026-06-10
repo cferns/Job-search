@@ -1286,7 +1286,210 @@ and **EB-5** (needs ~$800K). These shine *after* an exit or with outside capital
 
 ---
 
+# Deep Dive — Concurrent H-1B for Founders: Stories, Mechanics & Risks
+
+> **Research context, not legal advice.** This section is a multi-source research
+> synthesis (USCIS, Federal Register, eCFR, DOL, plus attorney and founder
+> accounts). Rules here changed materially in 2025–2026 — verify current specifics
+> with a licensed U.S. immigration attorney. Each claim is tagged by **source
+> type** and **confidence**.
+
+## First, untangle three things people conflate
+
+Most "founder on H-1B" stories online are **not** actually *concurrent* H-1B.
+Three distinct structures get mixed up:
+
+| Structure | What it means | Lottery? | Closest real story |
+|---|---|---|---|
+| **Concurrent H-1B** | Keep your primary H-1B job **and** add a *second* H-1B (e.g., your startup) at the same time, often part-time | **No** new lottery (already counted) | VisaPro case study; anonymized Blind threads |
+| **Self-sponsored / founder H-1B** | Your own startup is your **sole** H-1B sponsor (you leave the day job) | Depends on prior cap status | **Sid Sarasvati** (Trial and Error, Inc.) |
+| **H-1B transfer to your own startup** | Move your existing H-1B from employer → your startup (full-time) | **No** new lottery | **Neo accelerator** founder guide |
+
+> **Confirmed-fact / high-confidence honesty note:** Clean, *named, first-person*
+> "I kept my W-2 job **and** ran my startup on a second concurrent H-1B" stories
+> are **genuinely scarce** in public sources. The mechanism is well-documented by
+> attorneys; the *named* public founder stories cluster around **self-sponsored
+> single H-1B** (Sid Sarasvati) and **O-1A** (Soundarya, Aditya Sharma) instead.
+> Treat concurrent H-1B as a **well-supported mechanism** more than a
+> celebrity-founder highlight reel.
+
+## How concurrent H-1B works (the mechanics)
+
+- **No second lottery.** If you are already in H-1B status (cap-counted), a
+  concurrent petition from a second employer does **not** re-enter the cap/lottery.
+  *(PRIMARY: USCIS H-1B Cap Season / Specialty Occupations — high confidence.)*
+- **Part-time is allowed, and you can hold two H-1Bs at once** — provided each is a
+  specialty occupation, the wage is set (and prorated for part-time), and you can
+  realistically perform both. *(PRIMARY: 20 CFR 655.731 (eCFR), DOL FLAG/LCA — high
+  confidence.)*
+- **The startup must still file its own LCA and pay the prevailing wage** for the
+  hours worked. **Equity / stock / "sweat equity" do NOT count** toward the wage —
+  it must be real cash payroll with withholding. *(PRIMARY: DOL Fact Sheet 62G; 20
+  CFR 655.731 — high confidence, "settled, not in flux.")*
+- **Dependency risk:** A concurrent H-1B's validity is **tethered to your primary
+  H-1B**. If the primary job ends — *especially* if your primary employer is
+  **cap-exempt** (university/nonprofit) and the startup petition rode on that
+  cap-exemption — the concurrent approval can collapse (USCIS may revoke; you'd be
+  back to needing the lottery). You generally get a **60-day grace period**.
+  *(PRIMARY: USCIS H-1B FAQs / M-274; SECONDARY law firms — high confidence on the
+  principle; fact-specific on details.)*
+
+## The game-changer: the Jan 17, 2025 H-1B "beneficiary-owner" rule
+
+The DHS **"Modernizing H-1B Requirements" final rule** (published Dec 18, 2024;
+**effective January 17, 2025**) is what makes founder/self-sponsored (and
+founder-concurrent) H-1Bs materially more viable:
+
+- **Founders who own a controlling interest (>50% / majority voting) in their
+  petitioning company can now be the H-1B beneficiary** of that company.
+  *(PRIMARY: Federal Register 2024-29354; USCIS Jan 17, 2025 alert — high
+  confidence.)*
+- **But owner-founder validity is capped at 18 months** for the **initial** grant
+  **and** the **first extension** (subsequent extensions can return to up to 3
+  years). *(PRIMARY: Federal Register; SECONDARY: Serotte Law, Capitol Immigration
+  — high confidence.)*
+- **The old rigid "right to control" itemized test was eliminated**, replaced by a
+  **"bona fide job offer"** standard — owner-founders can do owner tasks (raise
+  money, sign contracts, hire) **as long as >50% of their time is spent on
+  specialty-occupation duties**. *(PRIMARY: Federal Register; SECONDARY: Holland &
+  Knight, Michigan Bar Journal — high confidence.)*
+
+## The 2025–2026 $100K fee wrinkle (evolving — verify)
+
+- A **Sept 2025 presidential proclamation** introduced a **~$100,000 fee** tied to
+  certain H-1B petitions. **Per agency guidance as clarified afterward, the fee
+  targets *new* petitions for workers who are *outside the U.S.*** — it is
+  **generally not** applied to people **already in the U.S.** filing
+  **change-of-status, extensions, amendments, or concurrent** petitions.
+  *(SECONDARY: multiple law-firm/news explainers — **medium confidence; recent and
+  politically contested — confirm before relying.**)*
+- **Practical implication (if it holds):** Concurrent / change-of-status routes for
+  someone **already on H-1B in the U.S.** look *more* attractive precisely because
+  they sidestep both the lottery and (likely) the $100K fee. A separate **proposed
+  weighted/wage-based selection** (reported effective ~Feb 2026) could disadvantage
+  lower-salary startup roles in the *lottery* — but concurrent filings don't enter
+  the lottery. *(SECONDARY — medium confidence; monitor.)*
+
+## Documented stories & examples (named where possible)
+
+- **Sid Sarasvati — self-sponsored H-1B** *(PRIMARY)*. Founder/CEO of *Trial and
+  Error, Inc.*; publicly documented USCIS accepting an H-1B petition **from his own
+  company** and built the *H1B Founders* community around the founder-H-1B playbook
+  (market-rate salary, board that can fire you). Closest high-signal public founder
+  example — though *self-sponsored*, not dual-employer concurrent.
+  [LinkedIn](https://www.linkedin.com/pulse/i-sponsored-my-own-h1b-visa-sid-sarasvati-ekxqc) ·
+  [H1B Founders](https://community.h1bfounders.com/p/founding-a-company-on-h1b-visa)
+- **"Immigrant founders: keep your H-1B visa in 10 steps" — Neo accelerator** *(PRIMARY/accelerator)*.
+  First-person-style guide describing **transferring an H-1B from a big-tech
+  employer to a co-founded startup** (transfer completed in ~30 days; admitted to
+  Neo with funding).
+  [Neo Substack](https://neo.substack.com/p/immigrant-founders-keep-your-h-1b)
+- **Soundarya Balasubramani** *(PRIMARY)*. Did an **H-1B transfer from Salesforce
+  (2021)**, then moved to **O-1A as a solo founder (2023)** — illustrates founders
+  often *leave* H-1B for O-1A rather than run concurrent.
+  [O-1 story](https://www.linkedin.com/pulse/i-got-my-o-1-visa-founder-after-25-years-25000-denial-balasubramani-bgawc)
+- **VisaPro concurrent case study** *(SECONDARY/illustrative)*. Anonymized example
+  of a biotech H-1B holder obtaining a **concurrent H-1B** to start a consulting
+  company — an actual dual-employment fact pattern.
+  [VisaPro](https://www.visapro.com/resources/article/concurrent-h1b-visa/)
+- **"Ask Sophie" (Sophie Alcorn, TechCrunch)** *(SECONDARY/expert)*. Recurring
+  attorney columns on transferring an H-1B to a startup you founded and on the new
+  beneficiary-owner rule (she reports a solo-founder H-1B approved in days under the
+  new rule).
+  [TechCrunch](https://techcrunch.com/2021/05/05/dear-sophie-can-i-transfer-my-h-1b-to-a-startup-i-founded/)
+- **H1B Founders community** *(PRIMARY/community)*. 700+ immigrant founders; podcast
+  and meetups; members report H-1B approvals through their own startups and $100K+
+  MRR. Useful real-world signal, though individual outcomes are self-reported.
+  [Community](https://community.h1bfounders.com/about)
+- **Anonymized practitioner discussion (Blind)** *(SECONDARY/community)*. Threads of
+  tech workers discussing co-founding while on an H-1B job then going full-time —
+  unnamed but on-point lived experience.
+  [Blind thread](https://www.teamblind.com/post/Anyone-on-H1B-visa-successfully-co-founded-a-startup-while-working-on-their-visa-job-and-then-moved-full-time-BLmhziDA)
+
+## Risks, RFEs & denials (what people actually hit)
+
+*(All SECONDARY law-firm/USCIS-guidance unless noted — treat as documented risk
+patterns, not guaranteed outcomes.)*
+
+1. **Cap-exempt trap (highest-severity).** If your primary is cap-exempt
+   (university/nonprofit) and the startup concurrent rode on that exemption, losing
+   the primary job can **void the concurrent approval immediately** — and you can't
+   just continue at the startup.
+2. **Workload-feasibility denials.** USCIS questions whether you can realistically
+   perform **both** roles (the "two full-time jobs" / 50+ hrs problem).
+3. **Wage/prevailing-wage RFEs.** Zero or below-market "founder salary" gets denied;
+   startup must show real W-2 payroll capacity.
+4. **Employer-employee / control RFEs for founders.** Even post-2025, expect
+   scrutiny that a **bona fide** offer and (ideally) **independent board governance**
+   exist; document it.
+5. **Specialty-occupation RFEs (most common H-1B RFE overall).** Ambiguous startup
+   job descriptions invite "is this really a degree-requiring role?" challenges.
+6. **>50% specialty-occupation time.** Owner-founders must show the majority of time
+   is specialty work, not pure "running the business."
+7. **Prior approval ≠ guaranteed extension.** Each petition is judged fresh; owner
+   extensions face the 18-month cap and renewed scrutiny.
+8. **Strict RFE clock (~87 days, FY2025).** Weak/late responses → denial → out of
+   status.
+
+## Concurrent H-1B vs O-1A vs founder/self-sponsored H-1B
+
+| Factor | Concurrent H-1B | O-1A | Founder self-sponsored H-1B |
+|---|---|---|---|
+| New lottery? | **No** (already counted) | **No cap at all** | Maybe (if not previously counted) |
+| Likely hit by $100K fee? | **No** (in-US filing) — *verify* | **No** | **Maybe** if filed from abroad — *verify* |
+| Wage requirement | Prevailing wage (prorated) | **No prevailing-wage rule** | Prevailing wage |
+| Run company full-time? | Part-time on the startup petition | **Yes**, full flexibility | Yes |
+| Initial validity | Up to 3 yrs (tied to primary) | Up to 3 yrs, renewable | **18 mos** (owner-founder) |
+| Green-card synergy | Standard EB-2/EB-3 | **Same evidence → EB-1A** | Standard EB-2/EB-3 |
+| Evidence bar | Specialty role + real wage | **High** (extraordinary ability) | Ownership + bona fide role + wage |
+| 2026 read | Strong **if you keep the day job** | Increasingly the **founder default** | Viable post-Jan-2025, watch 18-mo cap |
+
+## Bottom line for you (Indian, single, 33, on H-1B)
+
+- **Concurrent H-1B is your lowest-disruption "build-while-employed" move** — no new
+  lottery, likely no $100K fee, keep your salary and current GC/PERM track intact —
+  **but** the startup petition still needs a real specialty role and **prevailing
+  wage in cash**, and the concurrent leg leans on your primary job continuing.
+- **When you're ready to go full-time on the startup,** the 2025 **founder/
+  self-sponsored H-1B** (Sid Sarasvati model) or a **switch to O-1A** (Aditya
+  Sharma model) are the next steps — with **O-1A → EB-1A** the cleanest long game.
+- **Single + no dependents** = you can absorb the wage/benefit changes of switching
+  status and move fast; **start the O-1A/EB-1A evidence trail now** since it
+  underwrites every exit from H-1B.
+
+### Sources (this section) — grouped
+
+**Primary (government):**
+[Federal Register — H-1B Modernization Final Rule](https://www.federalregister.gov/documents/2024/12/18/2024-29354/modernizing-h-1b-requirements-providing-flexibility-in-the-f-1-program-and-program-improvements) ·
+[USCIS — Jan 17, 2025 Final Rule alert](https://www.uscis.gov/newsroom/alerts/h-1b-final-rule-h-2-final-rule-and-revised-form-i-129-effective-jan-17-2025) ·
+[USCIS — H-1B Cap Season](https://www.uscis.gov/working-in-the-united-states/temporary-workers/h-1b-specialty-occupations/h-1b-cap-season) ·
+[eCFR — 20 CFR 655.731 (LCA wage)](https://www.ecfr.gov/current/title-20/chapter-V/part-655/subpart-H/section-655.731) ·
+[DOL — Fact Sheet 62G (guaranteed wage)](https://www.dol.gov/agencies/whd/fact-sheets/62g-h1b-required-wage) ·
+[USCIS — H-1B status FAQs / grace period](https://www.uscis.gov/archive/faqs-for-individuals-in-h-1b-nonimmigrant-status)
+
+**Primary (first-person / founder / accelerator):**
+[Sid Sarasvati — "I sponsored my own H1B Visa"](https://www.linkedin.com/pulse/i-sponsored-my-own-h1b-visa-sid-sarasvati-ekxqc) ·
+[Neo — "Immigrant founders: keep your H-1B in 10 steps"](https://neo.substack.com/p/immigrant-founders-keep-your-h-1b) ·
+[Soundarya Balasubramani — O-1 founder story](https://www.linkedin.com/pulse/i-got-my-o-1-visa-founder-after-25-years-25000-denial-balasubramani-bgawc) ·
+[H1B Founders community](https://community.h1bfounders.com/about)
+
+**Secondary (law firm / news / expert):**
+[Holland & Knight — H-1B Modernization analysis](https://www.hklaw.com/en/insights/publications/2025/01/positive-changes-for-business-immigration-the-h-1b-modernization-rule) ·
+[Serotte Law — rule changes for founders](https://serottelaw.com/the-new-h-1b-modernization-rule-key-changes-for-founders-startups/) ·
+[Michigan Bar Journal — Jan 17, 2025 rule & entrepreneurs](https://www.michbar.org/journal/Details/The-H-1B-Visa-Navigating-the-January-17-2025-final-rule-and-its-impact-on-entrepreneurs-and-employers?ArticleID=5102) ·
+[VisaPro — concurrent H-1B for startups](https://www.visapro.com/resources/article/concurrent-h1b-visa/) ·
+[Reddy Neumann Brown — concurrent H-1B explained](https://www.rnlawgroup.com/understanding-concurrent-h-1b-employment-working-for-multiple-employers-at-the-same-time/) ·
+[Badmus & Associates — concurrent/third-party skip the lottery](https://badmuslaw.com/blog/the-h-1b-loophole-how-third-party-and-concurrent-jobs-skip-the-lottery/) ·
+[Alma — H-1B for startup founders](https://www.tryalma.com/learn/h1b-startup-founders) ·
+[TechCrunch "Ask Sophie" — transfer H-1B to your startup](https://techcrunch.com/2021/05/05/dear-sophie-can-i-transfer-my-h-1b-to-a-startup-i-founded/) ·
+[StartSmart Counsel — self-sponsorship guide](https://www.startsmartcounsel.com/resource-center/self-sponsorship-under-the-new-h-1b-rules-a-strategic-guide-for-startup-founders)
+
+---
+
 *Compiled June 2026. All sources are linked inline above. Sources labeled
 "secondary" are press/profile pieces; "primary" denotes the founder's own posts,
-company pages, or first-person accounts. Immigration rules and case outcomes
-change — verify with a licensed U.S. immigration attorney.*
+company pages, or first-person accounts. The concurrent-H-1B deep dive adds
+government primary sources (USCIS/Federal Register/eCFR/DOL). Immigration rules and
+case outcomes change — and several 2025–2026 items (the $100K fee, weighted
+selection) are recent and contested — so verify with a licensed U.S. immigration
+attorney before relying on anything here.*
