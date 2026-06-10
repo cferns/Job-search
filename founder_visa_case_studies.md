@@ -14,6 +14,61 @@ directly stated by a source, it is labeled "not confirmed" or "unclear."
 
 ---
 
+# Master Catalog — Every Path to a Legal Status to Found a U.S. Startup
+
+This is the **status-agnostic** answer: *all* the realistic routes to a legal
+status that lets you found and run a startup in the U.S., regardless of where you
+start — each backed by a **real story** documented later in this note. There is
+**no single "startup visa"** in the U.S.; instead there is a menu. The routes
+split into (A) **temporary statuses that let you operate a startup**, (B)
+**self-driven green cards**, and (C) a **cautionary** non-path.
+
+### A. Temporary (non-immigrant) statuses that let you run a startup
+
+| # | Path | What it is, in one line | Real story (below) | Key requirement | Bridges to a green card? |
+|---|---|---|---|---|---|
+| 1 | **O-1A** "extraordinary ability" | Work for your own venture via a petitioner/agent; no lottery, no cap | Arko Chattopadhyay (Pipeshift), Soundarya Balasubramani, Aditya Sharma, Ankur Nagpal | A documented "top of field" record (press, awards, funding, judging, memberships) | Yes — same evidence → EB-1A |
+| 2 | **Self-sponsored / founder H-1B** (beneficiary-owner) | Your own startup petitions for you | Sid Sarasvati | ≥~50% owner **and** bona-fide employer-employee setup (independent board) | Via your EB-2/EB-3 or EB-1A |
+| 3 | **Concurrent H-1B** through the startup | Add a 2nd, part-time H-1B for your company while keeping a primary H-1B | Sid Sarasvati (adjacent) | Already hold an H-1B; real role + wage at the startup | Same as your H-1B GC track |
+| 4 | **Cap-exempt H-1B** (university/nonprofit) + concurrent startup | Lottery-free H-1B base via a cap-exempt employer, plus a startup H-1B | *(mechanism — startup-immigration counsel)* | A genuine cap-exempt affiliation | Same as H-1B track |
+| 5 | **L-1A "new office"** (the "flip") | Found abroad first, run it ≥1 yr, transfer yourself into a U.S. subsidiary | Indian SaaS playbook (Chargebee / Freshworks / Postman-style) | A real foreign company + ≥1 yr exec/manager role | Yes — direct line to **EB-1C** |
+| 6 | **E-2 treaty investor** (Indians: via 2nd citizenship) | Invest a "substantial" amount; run the business; renewable | *(mechanism — Grenada/Turkey CBI)* | Treaty-country nationality (India has none) + real investment | No (not a GC path); AMIGOS Act caveat |
+| 7 | **International Entrepreneur Rule** (IER / "startup parole") | DHS parole for high-growth founders (30 + 30 months) | Srikanth Narayan (Cache) | ≥10% ownership + ~$311K U.S. investor funding (or ~$124K grants) | No (parole, not a GC) |
+| 8 | **F-1 → OPT / STEM OPT** (found while studying/training) | Build on student work authorization, then move to O-1/GC | Ankur Nagpal (Teachable), Aravind Srinivas (Perplexity), Sabeer Bhatia (Hotmail) | Student status; STEM OPT for up to 3 yrs total | Via O-1 → EB-1A/NIW next |
+
+### B. Self-driven green cards (you can petition without an employer)
+
+| # | Path | What it is, in one line | Real story (below) | Key requirement | Escapes the India backlog? |
+|---|---|---|---|---|---|
+| 9 | **EB-1A** extraordinary ability | Self-petitioned green card — no employer, no PERM | Aditya Sharma (HiCounselor) | Sustained, documented top-of-field record | **Yes** (EB-1 moves faster) |
+| 10 | **EB-2 NIW** (National Interest Waiver) | Self-petitioned GC for work of "national importance" (Dhanasar test) | Swizec Teller (O-1 + NIW) | Advanced degree/exceptional ability + national-importance case | Partial (still EB-2 queue) |
+| 11 | **EB-1C** multinational manager | Green-card sequel to the L-1A "flip" | Indian SaaS playbook | ≥1 yr as exec/manager abroad + qualifying U.S. entity | **Yes** (EB-1 moves faster) |
+| 12 | **EB-5** immigrant investor | Invest $800K+ (TEA) / $1.05M, create 10 jobs → GC | *(mechanism — anonymized Chennai founder)* | Large at-risk capital + job creation | **Yes** (India set-asides) |
+| 13 | **Employer-sponsored EB-2/EB-3, then found** | Stay on H-1B, get the GC, *then* start the company | Jyoti Bansal (AppDynamics) | Employer sponsorship; patience through the backlog | **No** (the long wait itself) |
+
+### C. The cautionary non-path
+
+| # | Path | Why it's here | Real story (below) |
+|---|---|---|---|
+| 14 | **H-1B lottery as your *only* tether** | Can simply fail — and force you to build your company abroad | Kunal Bahl (Snapdeal — H-1B denied → founded in India) |
+
+### Routes deliberately excluded (and why)
+
+- **Dependent/family-based** (H-4, L-2, marriage green card): excluded by request
+  — these are not founder routes in their own right.
+- **Country-specific work visas** (TN for Canada/Mexico, E-3 Australia, H-1B1
+  Chile/Singapore): not available to Indian nationals.
+- **J-1 exchange:** often carries a 2-year home-residency requirement; rarely a
+  clean founder path.
+- **Diversity Visa lottery:** India is **not** eligible.
+- **Asylum/refugee:** not an entrepreneurship pathway.
+
+> **How to read this:** Most successful founders **stack** these — e.g., *O-1A to
+> operate now* **+** *EB-1A or EB-2 NIW to self-win the green card*, or *L-1 flip*
+> **→** *EB-1C*. The detailed, sourced stories for every row are below.
+
+---
+
 ## Jyoti Bansal — AppDynamics
 
 ### Snapshot
@@ -969,71 +1024,6 @@ discipline: confirmed facts vs. interpretation, with caveats flagged.
 
 ---
 
-## Arjita Sethi — Equally / New Founder School *(H-4 spouse → self-made EB-1A)*
-
-> The "**my visa was my first startup**" story. She arrived as a *dependent
-> spouse* — arguably the *least* founder-friendly status — and engineered her way
-> to a self-petitioned green card, then sponsored her co-founder husband.
-
-### Snapshot
-
-- **Country of origin:** India
-- **Company:** Equally (edtech); later New Founder School, Indiarath
-- **Founded year:** ~2016–2017 (incorporated after status was resolved)
-- **Role:** Founder & CEO
-- **Visa pathway mentioned publicly:** Arrived on **H-4** (dependent spouse) in
-  Jan 2014 → got **H-4 EAD** when the program launched → self-petitioned and
-  qualified for **EB-1A "extraordinary ability"** (approved ~Oct 2017) → green
-  card. Her approval also gave her husband/co-founder a work permit.
-- **Did they wait for green card before founding?** **Partly** — they ran the
-  startup as a side hustle on H-4 EAD, then *officially incorporated and went
-  full-time* once her EB-1A green card came through (publicly documented).
-- **Relevance to Clinton's situation:** Proof that even a non-work-primary status
-  can be turned into a *self-petitioned* green card via EB-1A — and that EB-1A
-  can be earned through startup/social-entrepreneurship/education work, not just
-  academia. Also a model for **sponsoring your co-founder spouse**.
-
-### Timeline
-
-- **Year: Jan 2014** — Immigration: Moved to San Francisco on **H-4** after marriage.
-- **Year: ~2015** — Immigration: Applied for **H-4 EAD** when the program launched.
-- **Year: ~2015–2017** — Startup: Built the venture as a side hustle while raising.
-- **Year: Oct 2017** — Immigration: **EB-1A** ("extraordinary ability") approved —
-  based on startup work, social-entrepreneurship awards, and education work; her
-  husband Anshul got a work permit via her petition.
-- **Year: ~2017** — Startup: Officially incorporated; applied to Y Combinator
-  (reached interview, was not accepted).
-
-### What is publicly known
-
-- She moved on H-4, used H-4 EAD, then self-qualified for **EB-1A** (~2017),
-  which also benefited her co-founder spouse (her own first-person accounts).
-- She founded Equally and now runs New Founder School / Indiarath and teaches
-  entrepreneurship at SF State (publicly documented).
-
-### What is unclear
-
-- Exact filing dates and the precise EB-1A evidence mix are summarized by her but
-  not exhaustively documented in third-party sources here.
-- Whether she held any other status between H-4 EAD and EB-1A is not detailed.
-
-### Lessons for an Indian H-1B founder
-
-EB-1A is **self-petitioned** (no employer, no PERM) and the "extraordinary
-ability" record can be built from *founder* activities — awards, speaking,
-press, judging, original contributions — not only research papers. If your
-spouse is the H-1B holder and you're on H-4, the H-4 EAD lets you *operate*, and
-a self-won EB-1A can flip the whole household's status. For Clinton: an approved
-PERM is one data point, but EB-1A wants a *sustained, documented* record.
-
-### Sources
-
-- [Arjita Sethi — "My Visa WAS My First Startup" (LinkedIn)](https://www.linkedin.com/pulse/my-visa-first-startup-immigrant-stories-arjita-a-sethi) *(primary)*
-- [Arjita Sethi — "My Immigrant Founder Journey" (Substack)](https://arjitasethi.substack.com/p/myimmigrationjourney) *(primary)*
-- [The Better India — profile of Arjita Sethi](https://thebetterindia.com/251888/delhi-silicon-valley-entrepreneur-startup-edtech-equally-arjita-sethi-new-founder-school-indiarath-incubator-san-francisco-india-nor41) *(secondary)*
-
----
-
 ## Swizec Teller — self-sponsored via indie hacking *(mechanism, non-Indian)*
 
 > Included for the *mechanism*, not the nationality (he's Slovenian, not Indian):
@@ -1118,9 +1108,10 @@ Start accumulating *now* — these take 1–2+ years to mature into a filing.
   L-1 starts at **1 year** and must show growth to extend. Governance/structure
   must be airtight.
 - **Real-world use:** The classic **Indian SaaS playbook** — many India-born
-  companies (Freshworks, Chargebee, Postman, etc.) were built from India with U.S.
-  entities and founder/exec relocations; the L-1→EB-1C route is the standard tool.
-- **Sources:** [USCIS — L-1A Intracompany Transferee](https://www.uscis.gov/working-in-the-united-states/temporary-workers/l-1a-intracompany-transferee-executive-or-manager) *(primary)* · [Davies & Associates — L-1 new office guide](https://www.usimmigrationadvisor.com/l1-visa-new-office) *(secondary)*
+  companies (Freshworks, **Chargebee** (Krish Subramanian), Postman, etc.) were
+  built from India with U.S. entities and founder/exec relocations; the L-1→EB-1C
+  route is the standard tool for moving the founder/leadership across.
+- **Sources:** [USCIS — L-1A Intracompany Transferee](https://www.uscis.gov/working-in-the-united-states/temporary-workers/l-1a-intracompany-transferee-executive-or-manager) *(primary)* · [Davies & Associates — L-1 new office guide](https://www.usimmigrationadvisor.com/l1-visa-new-office) *(secondary)* · [Insight Partners — how Krish Subramanian built Chargebee out of India](https://www.insightpartners.com/ideas/how-krish-subramanian-built-global-saas-unicorn-chargebee-out-of-india/) *(secondary)*
 
 ### C. **EB-2 NIW** — self-petitioned green card (no employer, no PERM, no investment)
 
@@ -1171,7 +1162,7 @@ Start accumulating *now* — these take 1–2+ years to mature into a filing.
 
 | Route | Core move | Green card built in? | India-backlog escape? | Capital needed | Risk / catch |
 |---|---|---|---|---|---|
-| EB-1A self-petition (Arjita Sethi) | Self-win "extraordinary ability" | **Yes (is the GC)** | **Yes** (EB-1 faster) | Low ($ on legal) | High evidence bar |
+| EB-1A self-petition (Aditya Sharma) | Self-win "extraordinary ability" | **Yes (is the GC)** | **Yes** (EB-1 faster) | Low ($ on legal) | High evidence bar |
 | Indie-hacking O-1 + NIW (Swizec) | Build public record, self-sponsor | NIW = yes; O-1 = no | NIW: partial; O-1: n/a | Low | Must build record over years |
 | E-2 via Grenada/Turkey passport | Buy 2nd citizenship → E-2 | No | N/A (not a GC) | **High** ($200K+ passport + investment) | AMIGOS Act domicile; not a GC |
 | L-1 "flip" → EB-1C | Found abroad, transfer in | **Yes (EB-1C)** | **Yes** | Med (real foreign biz) | Needs genuine ≥1-yr foreign company |
@@ -1184,7 +1175,7 @@ Start accumulating *now* — these take 1–2+ years to mature into a filing.
 Given Clinton is **Indian, on H-1B, with PERM approved** (no exit liquidity
 assumed), the highest-leverage *non-traditional* moves are:
 
-1. **EB-1A self-petition** (à la Arjita Sethi) — the cleanest backlog escape, if
+1. **EB-1A self-petition** (à la Aditya Sharma) — the cleanest backlog escape, if
    he builds the record. His approved PERM is a starting data point, not enough alone.
 2. **Build-in-public for O-1A/EB-1A** (à la Swizec) — start *now*: content,
    open source, talks, a product with users/press. Evidence compounds over 1–2 years.
