@@ -1755,6 +1755,48 @@ NIW) are **orthogonal** — they don't require an employer, so you can run them 
   to waive PERM). *Jan 2025: general economic benefit/job creation alone insufficient.*
 - Same **13–17-yr India EB-2 backlog** — value is mainly the I-140/priority date.
 
+## What variables does USCIS actually weigh?
+
+> **Myth check:** there is **no single "company net worth" test** for H-1B / O-1A /
+> EB-1A. Net worth only matters *indirectly* (can the company pay your wage?) and as a
+> hard number only for investment routes (IER / E-2 / EB-5). The real variables fall
+> into five buckets, weighted differently per path.
+
+**1. About YOU (beneficiary):** degree + field match; achievements (awards, press,
+**funding you raised**, judging, memberships, original contributions); salary level.
+
+**2. About the ROLE:** **specialty occupation** (genuinely needs a bachelor's in a
+specific field); for owner-founders, **>50% of time on specialty duties**.
+
+**3. About the COMPANY:** legitimacy (real operations — incorporation, EIN,
+office/site, contracts, business plan, not a shell); **ability to pay your wage**
+(revenue, funding, bank balance — the closest thing to "net worth," formally an I-140
+doctrine but RFE'd for startups); **ownership % + governance/control** (employer-
+employee / "bona fide job offer").
+
+**4. About the MONEY:** **wage** = DOL **prevailing wage** floor for the role/level/
+location, paid in **cash** (equity never counts) — H-1B; **investment raised** = hard
+threshold for IER (~$311K investors / ~$124K grants), *evidence only* for O-1/EB-1;
+**investor quality/track record** (IER).
+
+**5. About INTENT & mechanics:** dual intent (H-1B yes, **O-1 no**); validity caps
+(owner-founder H-1B = 18 mo); maintaining status; the **$100K-fee** triggers
+(new petitions for beneficiaries outside the U.S.).
+
+**Which variables decide each path:**
+
+| Path | Decisive variables |
+|---|---|
+| **Concurrent / Founder H-1B** | Specialty role · **prevailing wage in cash** · company **ability to pay** · governance/ownership · (founder) >50% specialty time |
+| **O-1A** | **Your** achievements (awards, press, funding raised, judging, memberships, high salary) — *not* company financials |
+| **EB-1A** | Same as O-1A, higher bar + "final merits" totality |
+| **IER** | **≥10% ownership · ~$311K qualified investment (or ~$124K grants) · investor track record · growth potential** |
+| **EB-2 NIW** | Advanced degree · **national importance** · well-positioned (traction, funding, letters) |
+
+**Mental model:** H-1B asks *"is this a real job at a real company that pays you
+properly and can control you?"*; O-1A/EB-1A ask *"are **you** extraordinary?"*;
+IER/EB-5 ask *"is there enough **money** in the venture?"*
+
 ### Sources (this section) — grouped
 
 **Primary (government):**
