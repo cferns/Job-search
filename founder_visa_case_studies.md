@@ -1674,6 +1674,36 @@ NIW) are **orthogonal** — they don't require an employer, so you can run them 
 3. **If/when you go full-time (Lane B):** switch to **O-1A** or a **founder H-1B**.
 4. **In parallel (either lane):** self-petition **EB-1A** to fix the green card.
 
+## Filtered for a ~2-year horizon
+
+**Achievable to *legally run your startup* within ~2 years:**
+
+| Path | Time to operate | Lane | Gating factor |
+|---|---|---|---|
+| **Concurrent H-1B** | **~3–6 months** | Keep job | Real entity + part-time specialty role + prevailing wage; premium-processed ~15 days |
+| **Founder / self-sponsored H-1B** | **~3–6 months** | Leave (full-time) | Own >50% + independent board + cash prevailing wage |
+| **O-1A** | **~12–24 months** | Leave (full-time) | Building the extraordinary-ability evidence is the bottleneck |
+| **IER (startup parole)** | **~6–18 months** | Leave | Raise ~$311K qualifying funding; must exit U.S. & re-parole |
+
+**NOT a 2-year deliverable for an Indian national:**
+- **EB-1A green card** — you can *file* the I-140 within 2 years, but the India EB-1
+  priority date (~3-yr backlog) means the actual **green card / I-485 EAD lands ~3+
+  years out**. Seed it now as the long game; don't count on it as the 2-year unlock.
+- **EB-2 NIW** — 13–17-yr India queue. Not a 2-year play.
+- **Wait for employer GC/EAD** — decade-plus for India.
+- **L-1A flip / EB-5** — possible in ~2 yrs but need a year abroad (L-1) or ~$800K (EB-5).
+
+**Recommended 2-year sequence (delivers active-founder status in months):**
+1. **Months 0–2:** incorporate; set up governance (board/advisors who can hire/fire
+   you). Do this as a **passive owner** on your current corporate H-1B.
+2. **Months 2–6:** file a **concurrent H-1B** via the startup → legally work
+   **part-time on your company while keeping the corporate paycheck** (no lottery;
+   likely no $100K fee since it's an in-U.S. filing). *This is your "within 2 years."*
+3. **Months 0–18 (parallel):** build **O-1A / EB-1A evidence** — shipped product +
+   traction, funding, press, awards, judging, memberships, recommendation letters.
+4. **Months ~18–24:** if going full-time, switch to **O-1A** or **founder H-1B**; and
+   **file EB-1A** (the green card itself lands ~year 3 for India, but it's underway).
+
 ### Sources (this section) — grouped
 
 **Primary (government):**
