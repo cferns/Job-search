@@ -374,6 +374,397 @@ useful (secondary) starting map, not legal advice.
 
 ---
 
+# Round 2 — More Indian Founders: H-1B / No-Visa → U.S. Startup Pathways
+
+This second set focuses on Indian founders who moved from **H-1B (or student/no
+work visa) toward a founder-friendly status** — O-1A, EB-1A, the International
+Entrepreneur Rule ("startup parole"), or who were *blocked* by the system and
+became cautionary tales. Same evidentiary discipline: confirmed facts are
+separated from interpretation, and unconfirmed items are labeled.
+
+---
+
+## Srikanth Narayan — Cache (Cache Financials)
+
+> The single most on-point example for "no green card yet → U.S. **startup
+> visa**." He used the **International Entrepreneur Rule (IER / startup parole)**
+> — the closest thing the U.S. has to a dedicated startup visa.
+
+### Snapshot
+
+- **Country of origin:** India
+- **Company:** Cache Financials (fintech; modern "exchange fund" for concentrated stock)
+- **Founded year:** ~2022–2023 (first product launched March 2024)
+- **Role:** Founder & CEO
+- **Visa pathway mentioned publicly:** Spent ~a decade on the green-card track
+  (employment-based) while at Big Tech (Uber, Waymo); then obtained
+  **International Entrepreneur Parole (IEP/IER)** to leave his job and build
+  Cache — reportedly one of the few approvals after the program was revived.
+- **Did they wait for green card before founding?** **No** — he explicitly chose
+  *not* to keep waiting and used startup parole instead (publicly documented).
+- **Relevance to Clinton's situation:** Direct proof that the **"startup visa"
+  (IER parole)** can free an Indian national stuck in the green-card backlog to
+  found a venture-scale company — without an O-1A and without a green card.
+
+### Timeline
+
+- **Year: ~2010s** — Career/immigration: Senior engineer/leader at Uber and
+  Waymo; ~a decade on the employment-based green-card track (reported).
+- **Year: ~2022–2023** — Immigration: Worked with immigration attorney Seth
+  Leech; **IER parole approved** to pursue his startup (reported).
+- **Year: ~2023** — Startup: Founded Cache Financials.
+- **Year: Mar 2024** — Startup: Launched first product (exchange-fund platform).
+
+### What is publicly known
+
+- Ex-Uber/Waymo engineer-leader who left Big Tech to found Cache (reported).
+- He pursued **International Entrepreneur Parole** rather than continuing to wait
+  on the green card, and was cited as an early/rare approval after the program
+  was revived (reported, including a first-person LinkedIn essay).
+- Cache launched its inaugural exchange-fund product in March 2024 (reported).
+
+### What is unclear
+
+- **Exact prior visa status** (H-1B vs. other) before IER is not fully confirmed
+  here, though a long employment-based green-card wait is reported.
+- **Exact IER approval date** and parole validity window are not confirmed here.
+- Whether he has since layered on another status (O-1A/EB-1A) is not confirmed.
+
+### Lessons for an Indian H-1B founder
+
+IER parole is real and has been used successfully by an Indian founder in
+exactly the "stuck in the backlog" position. Caveats: IER is *parole*, not a
+visa or a path to a green card; approvals are few (historically a small number
+out of all applications); it requires a qualifying startup (substantial U.S.
+investor funding or grants, ownership ≥10%, central/active role) and skilled
+legal strategy. Good "build-now" option if you can raise qualifying capital.
+
+### Sources
+
+- [International Entrepreneur Parole: "or How I learned to stop worrying about the Green Card" (LinkedIn essay)](https://www.linkedin.com/pulse/international-entrepreneur-parole-how-i-learned-stop-worrying) *(primary/first-person)*
+- [BizTech Weekly — Srikanth Narayan / Cache Financials profile](https://biztechweekly.com/srikanth-narayans-journey-from-big-tech-to-founder-launching-cache-financials-to-solve-stock-concentration-risk-for-tech-employees/) *(secondary)*
+- [Srikanth Narayan — Crunchbase](https://www.crunchbase.com/person/srikanth-narayan-5250) *(secondary)*
+- [USCIS — International Entrepreneur Rule (official)](https://www.uscis.gov/working-in-the-united-states/international-entrepreneur-rule) *(primary/government)*
+
+---
+
+## Aravind Srinivas — Perplexity AI
+
+### Snapshot
+
+- **Country of origin:** India (Chennai)
+- **Company:** Perplexity AI (AI answer engine)
+- **Founded year:** 2022 (co-founded Aug 2022)
+- **Role:** Co-founder & CEO
+- **Visa pathway mentioned publicly:** Came as an **F-1 student** (IIT Madras →
+  PhD at UC Berkeley); worked at OpenAI/DeepMind/Google; founded Perplexity
+  while still navigating U.S. immigration. In Oct 2024 he publicly said he had
+  been **waiting ~3 years for a green card**.
+- **Did they wait for green card before founding?** **No** — he co-founded
+  Perplexity *while still waiting* for permanent residency (publicly documented).
+- **Relevance to Clinton's situation:** A current, high-profile case of an Indian
+  founder building a major AI company *without* a green card in hand — and being
+  vocal about the backlog's absurdity even at his level of success.
+
+### Timeline
+
+- **Year: 2017** — Education: Dual degree (B.Tech/M.Tech), IIT Madras.
+- **Year: ~2017–2021** — Education/career: PhD, UC Berkeley (CS); internships/
+  roles at OpenAI, DeepMind, Google (F-1 / OPT / work status, reported).
+- **Year: Aug 2022** — Startup: Co-founded Perplexity AI in San Francisco.
+- **Year: Oct 2024** — Immigration: Publicly stated he had been waiting ~3 years
+  for a green card, criticizing the system's unpredictability.
+
+### What is publicly known
+
+- Indian national, IIT Madras + UC Berkeley PhD; ex-OpenAI/DeepMind/Google
+  (publicly documented).
+- Co-founded Perplexity AI in 2022 (widely reported).
+- He publicly described an ongoing ~3-year green-card wait as of late 2024
+  (reported).
+
+### What is unclear
+
+- **Exact status while founding** (O-1, H-1B, OPT/cap-gap, or other) is **not
+  confirmed** in the sources reviewed here — only that he was *not* yet a green
+  card holder.
+- **Which green-card category** he is waiting in (EB-1A/EB-2 NIW/employer EB-2)
+  is not confirmed.
+- Exact transition dates between statuses are not documented here.
+
+### Lessons for an Indian H-1B founder
+
+You can found and scale a major company on a non-immigrant status while the
+green card lags — even running a multi-billion-dollar AI company. His case also
+underscores that *founding does not require a green card first*; the constraint
+is having *some* valid status that permits the founder's work (commonly O-1A for
+people with his record). Treat the specific mechanism as unconfirmed.
+
+### Sources
+
+- [Business Today — "'Waiting for my green card for last 3 years': Perplexity AI CEO Aravind Srinivas"](https://www.businesstoday.in/nri/visa/story/waiting-for-my-green-card-for-last-3-years-perplexity-ai-ceo-aravind-srinivas-on-struggles-of-us-immigration-452182-2024-10-31) *(secondary)*
+- [OnlineVisas — "Immigrant Innovators: Aravind Srinivas"](https://onlinevisas.com/green-card-news/immigrant-innovators-aravind/) *(secondary)*
+
+---
+
+## Ankur Nagpal — Teachable (and Ocho)
+
+### Snapshot
+
+- **Country of origin:** India
+- **Company:** Teachable (creator/course platform; later founded Ocho)
+- **Founded year:** ~2013–2014
+- **Role:** Founder & CEO
+- **Visa pathway mentioned publicly:** Arrived on an **F-1 student visa** at 17;
+  used an LLC to sponsor his own OPT/training, hopped student statuses to stay,
+  then obtained an **O-1 visa → green card**. Says he founded Teachable only
+  *after* fixing his immigration.
+- **Did they wait for green card before founding?** **No / mixed** — he founded
+  on O-1 (not a green card), but he *did* wait until he had stable status
+  (O-1) before going all-in (publicly documented).
+- **Relevance to Clinton's situation:** A vivid, first-person account of the
+  student-visa → O-1 → green-card founder path, plus active mentorship (he signs
+  O-1 letters for strangers) and built a course on entrepreneur visas (with Ocho).
+
+### Timeline
+
+- **Year: (age 17)** — Immigration: Moved to the U.S. for college on F-1;
+  graduated at ~20.
+- **Year: post-grad** — Immigration: Created his own LLC to sponsor ~12 months of
+  OPT "training," extended ~17 more months (STEM); later got another student
+  visa via a community college to maintain status (his own account).
+- **Year: ~2013–2014** — Immigration/startup: Obtained **O-1**, then founded
+  Teachable "only after figuring out immigration."
+- **Year: 2020** — Startup: Teachable acquired (reported ~$250M).
+- **Year: later** — Immigration: Obtained green card, then U.S. citizenship; now
+  publicly offers O-1 reference letters and built visa content via Ocho.
+
+### What is publicly known
+
+- Indian national; moved to the U.S. for college at 17 (his own accounts).
+- Used creative-but-legal student/OPT structuring, then an **O-1 visa**, before
+  founding Teachable; later got a green card and citizenship (publicly documented
+  via his posts/podcasts).
+- Active advocate: signs O-1 letters for others and created entrepreneur-visa
+  educational content (publicly documented).
+
+### What is unclear
+
+- **Exact dates** of O-1 approval, green card, and Teachable's founding are
+  approximate in the sources here.
+- **Green-card category** (EB-1A vs. other) is not confirmed.
+- Details of the LLC/OPT structuring are his own narrative; replicate only with
+  counsel.
+
+### Lessons for an Indian H-1B founder
+
+Two takeaways: (1) the **O-1 was the unlock** — he didn't found seriously until
+he had it; (2) he's a *living reference network* — founders often need
+high-quality recommendation letters for O-1A/EB-1A, and people like Nagpal
+explicitly offer them. His Ocho visa course is a (secondary) resource.
+
+### Sources
+
+- [Barrett Brooks — "How Ankur Nagpal Turned Adversity into a $250M Empire" (podcast/profile)](https://barrettbrooks.com/podcast/how-ankur-nagpal-turned-adversity-into-a-250m-empire/) *(secondary)*
+- [Ankur Nagpal on X — offering to sign O-1 reference letters](https://x.com/ankurnagpal/status/1415644370603282439) *(primary)*
+- [Ankur Nagpal on X — collecting O-1/EB-1 examples for an entrepreneur-visa course](https://x.com/ankurnagpal/status/1647648990303748096) *(primary)*
+
+---
+
+## Sabeer Bhatia — Hotmail
+
+### Snapshot
+
+- **Country of origin:** India (Chandigarh / Bangalore)
+- **Company:** Hotmail (web-based email)
+- **Founded year:** 1996
+- **Role:** Co-founder & CEO
+- **Visa pathway mentioned publicly:** Came as an **F-1 student** (Stanford MS);
+  worked at Apple and Firepower Systems (work-visa era, presumably H-1B) before
+  co-founding Hotmail.
+- **Did they wait for green card before founding?** **No / unclear** — he founded
+  Hotmail while working in the U.S. on employment status, not as the endpoint of
+  a green-card wait. Exact status at founding **not confirmed**.
+- **Relevance to Clinton's situation:** The original "immigrant founds on a work
+  visa, not a green card" template — though from a different visa era (mid-1990s,
+  pre-modern backlog), so treat as inspirational rather than a procedural map.
+
+### Timeline
+
+- **Year: ~1988–1990s** — Immigration/education: F-1 to the U.S. (Caltech transfer,
+  then Stanford MS).
+- **Year: early 1990s** — Career: Hardware engineer at Apple, then Firepower
+  Systems (with co-founder Jack Smith).
+- **Year: 1996** — Startup: Co-founded Hotmail; launched July 4, 1996; backed by
+  Draper Fisher Jurvetson (~$300K).
+- **Year: 1997** — Exit: Microsoft acquired Hotmail (~$400M in stock); ~8.5M users.
+
+### What is publicly known
+
+- Indian national; Stanford MS; worked at Apple and Firepower before Hotmail
+  (widely documented, incl. Wikipedia and immigrant-profile features).
+- Co-founded and led Hotmail to a ~$400M Microsoft acquisition in 1997 (widely
+  documented).
+
+### What is unclear
+
+- **Exact visa status at founding** (H-1B vs. other) is **not confirmed** in the
+  sources here.
+- Green-card timing is not documented here.
+- 1990s immigration context differs materially from today's India backlog — not
+  a procedural template.
+
+### Lessons for an Indian H-1B founder
+
+Useful as proof that immigrant founders building on work status is *decades old*
+and normal — but do **not** treat the 1990s process as a guide to today's rules.
+The modern equivalents are the O-1A / concurrent-H-1B / founder-H-1B / IER routes
+covered elsewhere in this note.
+
+### Sources
+
+- [Sabeer Bhatia — Wikipedia](https://en.wikipedia.org/wiki/Sabeer_Bhatia) *(secondary)*
+- [The Immigrant Learning Center — Sabeer Bhatia](https://www.ilctr.org/about-immigrants/immigrant-entrepreneurs/hall-of-fame/sabeer-bhatia/) *(secondary)*
+- [LCR Capital — Immigrant Profile: Sabeer Bhatia](https://www.lcrcapital.com/blog/immigrant-profile-sabeer-bhatia/) *(secondary)*
+
+---
+
+## Kunal Bahl — Snapdeal *(cautionary tale: the system blocked him)*
+
+> Included as a **counter-example**: what happens when the visa path fails. He
+> founded in **India**, not the U.S. — the opportunity the U.S. lost.
+
+### Snapshot
+
+- **Country of origin:** India
+- **Company:** Snapdeal (India e-commerce) — *founded in India, not the U.S.*
+- **Founded year:** 2010
+- **Role:** Co-founder & CEO
+- **Visa pathway mentioned publicly:** Had a job at Microsoft after Wharton
+  (2007) but his **H-1B was not granted** (lost the lottery / petition rejected);
+  forced to return to India.
+- **Did they wait for green card before founding?** **N/A** — never reached the
+  green-card stage; the H-1B failure pushed him out of the U.S. entirely.
+- **Relevance to Clinton's situation:** The downside scenario. It illustrates why
+  *securing a durable status (O-1A/EB-1A/founder structure) matters* — and why a
+  founder shouldn't leave their ability to stay hostage to the H-1B lottery.
+
+### Timeline
+
+- **Year: 2007** — Immigration: Graduated Wharton; had a Microsoft offer but
+  **H-1B not granted**; returned to India ("crushing and numbing," his words).
+- **Year: 2010** — Startup: Co-founded Snapdeal in India with Rohit Bansal.
+- **Year: later** — Recognition: Even cited (by then-candidate Trump, 2016) as an
+  example of talent the U.S. lost to its visa system; later a Shark Tank India judge.
+
+### What is publicly known
+
+- His H-1B was not granted in 2007; he returned to India and co-founded Snapdeal
+  in 2010 (widely reported, incl. CNN, Quartz).
+- His story is frequently cited in U.S. high-skilled-immigration debates (reported).
+
+### What is unclear
+
+- Whether it was a lottery loss vs. a substantive denial is described variously;
+  treat the precise mechanism as reported, not confirmed.
+
+### Lessons for an Indian H-1B founder
+
+The cautionary half of the picture: relying on the H-1B lottery/renewal as your
+*only* tether is fragile. If you intend to found, build toward a status you
+control (O-1A, EB-1A, founder/self-sponsored H-1B, or IER) so a single
+immigration setback can't force you to relocate your company abroad.
+
+### Sources
+
+- [CNN Money — "Kunal Bahl was denied an H-1B visa. Now he competes with Amazon in India"](https://money.cnn.com/2017/02/02/news/india/snapdeal-india-kunal-bahl-h1b-visa/) *(secondary)*
+- [Quartz India — "One of Amazon's fiercest competitors in India was created by an H-1B reject"](https://qz.com/india/903861/one-of-amazons-fiercest-competitors-in-india-was-created-by-an-h-1b-reject) *(secondary)*
+
+---
+
+## Dheeraj Pandey — Nutanix
+
+### Snapshot
+
+- **Country of origin:** India (Bihar)
+- **Company:** Nutanix (enterprise cloud/HCI); later co-founded DevRev
+- **Founded year:** 2009 (Nutanix)
+- **Role:** Co-founder & CEO
+- **Visa pathway mentioned publicly:** Came in 1997 as an **F-1 student** (IIT
+  Kanpur → UT Austin); worked at Trilogy, Oracle, Aster Data (work-visa/green-card
+  era) before co-founding Nutanix.
+- **Did they wait for green card before founding?** **Unclear** — by 2009 he had
+  been in the U.S. ~12 years and was likely a permanent resident, but this is
+  **not confirmed** in the sources here.
+- **Relevance to Clinton's situation:** A "long-runway" immigrant founder — F-1 →
+  career → founder over a decade. Less of a procedural model (status at founding
+  unconfirmed), more a data point that the student→career→founder arc is common.
+
+### Timeline
+
+- **Year: 1997** — Immigration: Moved to the U.S. on F-1; MS (and started PhD) at
+  UT Austin after IIT Kanpur.
+- **Year: ~2000s** — Career: Trilogy, then Oracle, then VP Engineering at Aster
+  Data (reported).
+- **Year: 2009** — Startup: Co-founded Nutanix (San Jose); IPO Sept 2016; CEO
+  until 2020.
+- **Year: 2020+** — Later co-founded DevRev.
+
+### What is publicly known
+
+- IIT Kanpur + UT Austin; career at Trilogy/Oracle/Aster Data; co-founded Nutanix
+  in 2009; took it public in 2016 (widely documented).
+
+### What is unclear
+
+- **Visa/green-card status at founding (2009) is not confirmed** in the sources
+  reviewed here.
+- Whether any employer sponsored his green card, and when, is not documented here.
+
+### Lessons for an Indian H-1B founder
+
+Mostly an inspiration/arc data point rather than a tactical template (because
+his founding-status is unconfirmed). If anything, it mirrors Jyoti Bansal's
+generation: many 2000s-era Indian founders reached founding *after* long
+employment and likely permanent residency — which is exactly the slow default
+the modern O-1A/IER routes are meant to short-circuit.
+
+### Sources
+
+- [Dheeraj Pandey — Wikipedia](https://en.wikipedia.org/wiki/Dheeraj_Pandey) *(secondary)*
+- [Sramana Mitra — "From Hardcore Techie to Unicorn Entrepreneur: Dheeraj Pandey" (interview)](https://www.sramanamitra.com/2022/04/08/from-hardcore-techie-to-unicorn-entrepreneur-dheeraj-pandey-founder-of-nutanix-part-1/) *(secondary, founder interview)*
+
+---
+
+## The U.S. "Startup Visa": International Entrepreneur Rule (IER)
+
+The user's question references a "startup visa." Important clarification: **the
+U.S. has no dedicated startup visa.** The closest mechanism is the **International
+Entrepreneur Rule (IER)**, which grants **parole** (not a visa, not a green card)
+to qualifying founders. Srikanth Narayan (above) is a documented Indian user.
+
+**Confirmed facts (per USCIS):**
+
+- IER lets DHS grant **parole** to entrepreneurs for an initial period of up to
+  **30 months**, extendable by up to **30 more** (5 years total).
+- Core eligibility (high level): you generally must **own at least 10%** of a
+  recently-formed U.S. startup, have a **central and active role**, and show the
+  startup has **substantial potential for rapid growth and job creation** —
+  typically evidenced by **≥ ~$311K in qualified U.S. investor funding**, **≥
+  ~$124K in qualified government grants**, or partial-plus-other evidence
+  (thresholds are periodically adjusted for inflation; verify current numbers).
+
+**Reasonable interpretation / caveats:**
+
+- It is **parole**, which is **discretionary and revocable**, and does **not**
+  directly lead to a green card. Approvals have historically been **few**.
+- It can let a backlogged Indian founder **build in the U.S. now**, but it's
+  usually paired with a longer-term plan (O-1A → EB-1A).
+
+**Sources:** [USCIS — International Entrepreneur Rule](https://www.uscis.gov/working-in-the-united-states/international-entrepreneur-rule) *(primary/government)* · [Boundless — IER guide](https://www.boundless.com/immigration-resources/international-entrepreneur-rule) *(secondary)*
+
+---
+
 ## Comparison Table
 
 | Founder | Company | Founded year | Publicly known visa path | Green-card-first? | Exact transition year known? | Closest lesson for Clinton |
@@ -383,6 +774,12 @@ useful (secondary) starting map, not legal advice.
 | Soundarya Balasubramani | Unshackled | ~2022–23 | F-1 → H-1B/EB → **O-1A solo founder** | No | Partly (O-1A ≈2023) | O-1A "solo founder" is real and documented; build + document the record |
 | Aditya Sharma | HiCounselor | ~2019–20 | H-1B (Deloitte) → **O-1** → **EB-1A** (Jan 2025) | No | Partly (EB-1A Jun'24–Jan'25) | Near-identical profile: H-1B → O-1 to found → EB-1A later |
 | Sid Sarasvati | Trial and Error / "Ternwheel" (unconfirmed) | Unclear | **Self-sponsored / founder H-1B** | No | No | Your own startup can petition for you (beneficiary-owner H-1B) |
+| Srikanth Narayan | Cache Financials | ~2023 | **International Entrepreneur Rule (startup parole)** after long GC wait | No | No (IER date approx.) | The actual "startup visa" — escape the backlog to build now (if you can raise qualifying funding) |
+| Aravind Srinivas | Perplexity AI | 2022 | F-1 student → founder; **not yet a green card** (3-yr GC wait, stated 2024) | No | No | Found and scale on non-immigrant status; GC can lag far behind |
+| Ankur Nagpal | Teachable | ~2013–14 | F-1/OPT (self-LLC) → **O-1** → green card | No | Partly | O-1 was the unlock; build a reference-letter network |
+| Sabeer Bhatia | Hotmail | 1996 | F-1 → work visa (H-1B-era, unconfirmed) → founder | No / unclear | No | Immigrant founding on work status is old & normal (but 1990s ≠ today's rules) |
+| Kunal Bahl | Snapdeal *(India)* | 2010 | **H-1B not granted** → forced back to India | N/A | N/A | Cautionary: don't leave your stay hostage to the H-1B lottery |
+| Dheeraj Pandey | Nutanix | 2009 | F-1 → career → founder (status at founding unconfirmed) | Unclear | No | Long-runway arc; the slow default the O-1A/IER routes short-circuit |
 
 ---
 
@@ -517,6 +914,25 @@ backlogged many years, so "just wait for the green card" may mean a decade-plus.
   own company before I-485? Can I run an O-1A/EB-1A track *in parallel* without
   losing my current priority date?
 
+### 7. International Entrepreneur Rule (IER / "startup parole") — Srikanth Narayan-style
+
+- **What it allows:** DHS parole to live in the U.S. and run your startup for up
+  to 30 months (+30 month extension). No green card and no O-1 needed; designed
+  specifically for high-growth founders. Lets you actively run the company.
+- **What it does not allow:** It's **parole, not a visa** — discretionary,
+  revocable, and **not** a path to a green card by itself. Requires a qualifying
+  startup: ~≥10% ownership, central/active role, and substantial U.S. investor
+  funding (~$311K+) or qualified grants (~$124K+) — so it's gated on raising real
+  money. Historically few approvals.
+- **When it becomes realistic:** Once you've formed the startup *and* raised
+  qualifying U.S. investor/grant funding (i.e., not at day-zero idea stage).
+- **Risk level:** **Medium-High** — politically/administratively sensitive,
+  revocable, and approval rates are low; needs strong legal strategy.
+- **Attorney questions to ask:** Do I meet the funding/ownership thresholds (and
+  what are the current numbers)? How does parole interact with my existing H-1B
+  and PERM/priority date — do I have to abandon anything? What's my bridge from
+  IER parole to a durable status (O-1A/EB-1A) before it expires?
+
 ### Quick synthesis for Clinton
 
 - **Want to start building now, passively:** Path 1 (own equity, co-founder
@@ -527,6 +943,9 @@ backlogged many years, so "just wait for the green card" may mean a decade-plus.
   route all three *modern* founders above used or discussed.
 - **Want to escape the India backlog for the green card itself:** Path 5
   (EB-1A), ideally layered on an O-1A.
+- **Already raising real U.S. funding and want to relocate/build now:** Path 7
+  (IER startup parole) — the literal "startup visa," used successfully by an
+  Indian founder (Srikanth Narayan), but gated on funding and revocable.
 - **Lowest effort, highest opportunity cost:** Path 6 (wait) — the dated
   default; rarely the best plan for an Indian national given backlog length.
 
