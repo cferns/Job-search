@@ -1,0 +1,15 @@
+# Firebase App Hosting configuration for catholiccolabs.com
+# Docs: https://firebase.google.com/docs/app-hosting/configure
+#
+# Supabase connection details are baked into the app as browser-safe defaults
+# (see lib/supabase/env.ts), so no secrets are required here. OAuth and
+# password-reset redirects are derived from the incoming request origin, so they
+# work automatically on both the default App Hosting URL and catholiccolabs.com.
+
+runConfig:
+  # Scale to zero when idle to keep costs minimal.
+  minInstances: 0
+  maxInstances: 2
+  concurrency: 80
+  cpu: 1
+  memoryMiB: 512
