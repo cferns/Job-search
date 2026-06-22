@@ -55,8 +55,8 @@ export default async function LoginPage({
           {/* Brand */}
           <div className="flex flex-col items-center text-center">
             <Cross className="h-7 w-7 text-gold" strokeWidth={2.5} />
-            <h1 className="mt-2 font-serif text-4xl font-semibold text-ink">
-              Catholic Colabs
+            <h1 className="mt-2 font-serif text-3xl font-semibold text-ink">
+              Catholiccolabs.com
             </h1>
             <p className="mt-1.5 text-sm text-ink-soft">
               Collaborate. Create. Grow in Faith.

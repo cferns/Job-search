@@ -28,7 +28,7 @@ export function AuthShell({ children }: { children: React.ReactNode }) {
           <div className="mb-8 flex flex-col items-center text-center lg:hidden">
             <Cross className="h-7 w-7 text-gold" strokeWidth={2.5} />
             <h1 className="mt-2 font-serif text-3xl font-semibold text-ink">
-              Catholic Colabs
+              Catholiccolabs.com
             </h1>
             <p className="mt-1 text-sm text-ink-soft">
               Collaborate. Create. Grow in Faith.
